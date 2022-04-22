@@ -13,8 +13,7 @@ public class FileNetworkDao<T> implements Dao<T> {
              ObjectInputStream in = new ObjectInputStream(inputFileStream)) {
             temp = (T)in.readObject();
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error");
+            System.out.println("Could not load file with given name");
         }
         return (T) temp;
     }

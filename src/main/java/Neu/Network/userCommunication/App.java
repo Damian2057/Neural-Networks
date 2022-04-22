@@ -4,7 +4,6 @@ import Neu.Network.model.Structure;
 import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.FileNetworkDao;
 import Neu.Network.model.flower.Irys;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,28 +16,25 @@ public class App {
         try {
             data = DataReader.readData();
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error occured");
+            System.out.println("Error occurred");
             return;
         }
 
-        String operationMessage = """
+        System.out.println("""
                 Select an operating mode:
                 [1]. Learning mode
-                [2]. Test mode""";
-        System.out.println(operationMessage);
+                [2]. Test mode""");
         int choice = Integer.parseInt(scanner.nextLine());
-        String networkMessage = """
+        System.out.println("""
                 Network options:
                 [1]. Create a new network
-                [2]. Load the saved network""";
-        System.out.println(networkMessage);
+                [2]. Load the saved network""");
         int networkChoice = Integer.parseInt(scanner.nextLine());
 
         Structure structure;
         switch (networkChoice) {
             case 1 -> {
-                structure = new Structure();
+                structure = new Structure(data);
             }
             case 2 -> {
                 try(FileNetworkDao<Structure> fileManager = new FileNetworkDao<>()) {
@@ -47,15 +43,14 @@ public class App {
                     fileManager.readNamesOfFilesInDirectory();
                     selectedFile = scanner.nextLine();
                     structure = fileManager.read(selectedFile);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception ignored) {
                 }
             }
             default -> {
                 System.out.println("Invalid option");
+                return;
             }
         }
-
 
         switch (choice) {
             case 1 -> {
