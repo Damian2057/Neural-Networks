@@ -1,12 +1,26 @@
 package Neu.Network.userCommunication;
 
 import Neu.Network.model.Structure;
+import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.FileNetworkDao;
+import Neu.Network.model.flower.Irys;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
         Scanner scanner= new Scanner(System.in);
+
+        //Upload data
+        ArrayList<Irys> data;
+        try {
+            data = DataReader.readData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error occured");
+            return;
+        }
 
         String operationMessage = """
                 Select an operating mode:

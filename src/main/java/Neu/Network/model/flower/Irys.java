@@ -9,12 +9,12 @@ public class Irys implements Serializable {
     private double petalWidth;
     private int type;
 
-    public Irys(double sepalLength, double sepalWidth, double petalLength, double petalWidth, int type) {
-        this.sepalLength = sepalLength;
-        this.sepalWidth = sepalWidth;
-        this.petalLength = petalLength;
-        this.petalWidth = petalWidth;
-        this.type = type;
+    public Irys(String sepalLength, String sepalWidth, String petalLength, String petalWidth, String type) {
+        this.sepalLength = Double.parseDouble(sepalLength);
+        this.sepalWidth = Double.parseDouble(sepalWidth);
+        this.petalLength = Double.parseDouble(petalLength);
+        this.petalWidth = Double.parseDouble(petalWidth);
+        this.type = Integer.parseInt(type);
     }
 
     public double getSepalLength() {
