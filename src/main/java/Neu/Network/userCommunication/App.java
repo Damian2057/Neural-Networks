@@ -29,6 +29,10 @@ public class App {
         Structure structure = null;
         switch (networkChoice) {
             case 1 -> {
+                System.out.println("Enter learning factor:");
+                Double learningFactor = Double.parseDouble(scanner.nextLine());
+                System.out.println("Enter the momentum factor:");
+                Double momentumFactor = Double.parseDouble(scanner.nextLine());
                 structure = new Structure(data);
             }
             case 2 -> {
