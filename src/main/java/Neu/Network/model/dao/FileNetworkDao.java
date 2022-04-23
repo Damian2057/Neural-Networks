@@ -1,5 +1,6 @@
 package Neu.Network.model.dao;
 
+import Neu.Network.model.exceptions.model.LogicException;
 import java.io.*;
 
 public class FileNetworkDao<T> implements Dao<T> {
@@ -32,6 +33,11 @@ public class FileNetworkDao<T> implements Dao<T> {
     public void readNamesOfFilesInDirectory() {
         File folder = new File("@../../archives/");
         File[] listOfFiles = folder.listFiles();
+
+        if(listOfFiles.length == 0) {
+            throw new LogicException("No previously saved object was found");
+        }
+
         for (File file : listOfFiles) {
             if (file.isFile()) {
                 System.out.println(file.getName());
