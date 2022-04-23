@@ -21,5 +21,4 @@ public class DataReader {
         csvReader.close();
         return temp;
     }
-
 }

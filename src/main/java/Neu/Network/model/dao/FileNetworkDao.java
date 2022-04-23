@@ -10,7 +10,7 @@ public class FileNetworkDao<T> implements Dao<T> {
     @Override
     public T read(String name) throws IOException, ClassNotFoundException {
         T temp = null;
-        try (FileInputStream inputFileStream = new FileInputStream(name);
+        try (FileInputStream inputFileStream = new FileInputStream(path+name);
              ObjectInputStream in = new ObjectInputStream(inputFileStream)) {
             temp = (T)in.readObject();
         } catch (Exception e) {
@@ -35,12 +35,12 @@ public class FileNetworkDao<T> implements Dao<T> {
         File[] listOfFiles = folder.listFiles();
 
         if(listOfFiles.length == 0) {
-            throw new LogicException("No previously saved object was found");
+            throw new LogicException("No previously saved object was found.");
         }
-
+        System.out.println("Select a saved network: ");
         for (File file : listOfFiles) {
             if (file.isFile()) {
-                System.out.println(file.getName());
+                System.out.println("- "+file.getName());
             }
         }
     }
