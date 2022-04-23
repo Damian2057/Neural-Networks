@@ -12,9 +12,8 @@ public class App {
     public static void main(String[] args) {
         Scanner scanner= new Scanner(System.in);
 
-        //Upload data
         ArrayList<Irys> data;
-        try {
+        try { //Upload data
             data = DataReader.readData();
         } catch (Exception e) {
             System.out.println("Error occurred");
@@ -27,19 +26,12 @@ public class App {
                 [2]. Load the saved network""");
         int networkChoice = Integer.parseInt(scanner.nextLine());
 
-        System.out.println("""
-                Select an operating mode:
-                [1]. Learning mode
-                [2]. Test mode""");
-        int modeChoice = Integer.parseInt(scanner.nextLine());
-
         Structure structure = null;
         switch (networkChoice) {
             case 1 -> {
                 structure = new Structure(data);
             }
             case 2 -> {
-
                 try(FileNetworkDao<Structure> fileManager = new FileNetworkDao<>()) {
                     String selectedFile = "";
                     System.out.println("Select a saved network: ");
@@ -58,42 +50,55 @@ public class App {
             }
         }
 
-        switch (modeChoice) {
-            case 1 -> {
+        while (true) {
 
-            }
-            case 2 -> {
+            System.out.println("""
+                Select an operating mode:
+                [1]. Learning mode
+                [2]. Test mode
+                [3]. Exit""");
+            int modeChoice = Integer.parseInt(scanner.nextLine());
 
+            switch (modeChoice) {
+                case 1 -> {
+                    //Operation
+                }
+                case 2 -> {
+                    //Operation
+                }
+                case 3 -> {
+                    return;
+                }
+                default -> {
+                    System.out.println("Invalid option");
+                    return;
+                }
             }
-            default -> {
-                System.out.println("Invalid option");
-            }
-        }
 
-        System.out.println("""
+            System.out.println("""
                 Do you want to save the network to a file?:
                 Yes/No""");
-        String saveChoice = scanner.nextLine();
-        switch (saveChoice) {
-            case "No" -> {
-                return;
-            }
-            case "Yes" -> {
-                String fileName;
-                System.out.println("Enter a name for the saved network");
-                fileName = scanner.nextLine();
-                try(FileNetworkDao<Structure> fileManager = new FileNetworkDao<>()) {
-                    fileManager.write(fileName,structure);
-                    System.out.println("Saved!");
-                } catch (Exception e) {
-                    System.out.println("Error occurred");
-                }
+            String saveChoice = scanner.nextLine();
+            switch (saveChoice) {
+                case "No" -> {
 
-            }
-            default -> {
-                System.out.println("Invalid option, end of the program");
+                }
+                case "Yes" -> {
+                    String fileName;
+                    System.out.println("Enter a name for the saved network");
+                    fileName = scanner.nextLine();
+                    try(FileNetworkDao<Structure> fileManager = new FileNetworkDao<>()) {
+                        fileManager.write(fileName,structure);
+                        System.out.println("Saved!");
+                    } catch (Exception e) {
+                        System.out.println("Error occurred");
+                    }
+                }
+                default -> {
+                    System.out.println("Invalid option, end of the program");
+                    return;
+                }
             }
         }
-
     }
 }
