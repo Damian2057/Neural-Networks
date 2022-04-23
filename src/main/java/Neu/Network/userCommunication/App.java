@@ -15,7 +15,7 @@ public class App {
         ArrayList<Irys> data;
         try { //Upload data
             data = DataReader.readData();
-            System.out.println("Collected "+data.size()+" portions of data.");
+            System.out.println("Collected "+data.size()+" portions of data.\n");
         } catch (Exception e) {
             System.out.println("Error occurred");
             return;
@@ -31,14 +31,14 @@ public class App {
         switch (networkChoice) {
             case 1 -> {
                 System.out.println("Enter learning factor:");
-                Double learningFactor = Double.parseDouble(scanner.nextLine());
+                double learningFactor = Double.parseDouble(scanner.nextLine());
                 System.out.println("Enter the momentum factor:");
-                Double momentumFactor = Double.parseDouble(scanner.nextLine());
+                double momentumFactor = Double.parseDouble(scanner.nextLine());
                 neuralNetwork = new NeuralNetwork(learningFactor,momentumFactor);
             }
             case 2 -> {
                 try(FileNetworkDao<NeuralNetwork> fileManager = new FileNetworkDao<>()) {
-                    String selectedFile = "";
+                    String selectedFile;
                     fileManager.readNamesOfFilesInDirectory();
                     selectedFile = scanner.nextLine();
                     neuralNetwork = fileManager.read(selectedFile);
@@ -58,7 +58,6 @@ public class App {
         }
 
         while (true) {
-
             System.out.println("""
                 Select an operating mode:
                 [1]. Learning mode.
