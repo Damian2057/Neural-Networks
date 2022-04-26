@@ -5,7 +5,7 @@ import Neu.Network.model.component.Neural;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class HiddenLayer implements Serializable {
+public class HiddenLayer implements Serializable, Layer {
     private final ArrayList<Neural> neurals = new ArrayList<>();
 
     public HiddenLayer(int countOfWeights, int countOfNeurals) {
@@ -20,5 +20,10 @@ public class HiddenLayer implements Serializable {
             resultSet.add(neurals.get(i).calculate(data.get(0),data.get(1),data.get(2),data.get(3)));
         }
         return resultSet;
+    }
+
+    @Override
+    public void updateWeight(int numberOfNeural, int numberOfWeight, double value) {
+        neurals.get(numberOfNeural).updateWeight(numberOfWeight,value);
     }
 }

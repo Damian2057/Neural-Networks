@@ -6,7 +6,7 @@ import Neu.Network.model.flower.Irys;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class InputLayer implements Serializable {
+public class InputLayer implements Serializable, Layer {
     private ArrayList<Neural> neurals = new ArrayList<>();
 
     public InputLayer(int countOfWeights) {
@@ -23,4 +23,8 @@ public class InputLayer implements Serializable {
         return resultSet;
     }
 
+    @Override
+    public void updateWeight(int numberOfNeural, int numberOfWeight, double value) {
+        neurals.get(numberOfNeural).updateWeight(numberOfWeight,value);
+    }
 }

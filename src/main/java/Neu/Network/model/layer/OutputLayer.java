@@ -5,7 +5,7 @@ import Neu.Network.model.component.Neural;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class OutputLayer implements Serializable {
+public class OutputLayer implements Serializable, Layer {
     private ArrayList<Neural> neurals = new ArrayList<>();
 
     public OutputLayer(int countOfWeights, int countOfNeurals) {
@@ -20,5 +20,10 @@ public class OutputLayer implements Serializable {
             resultSet.add(neurals.get(i).calculate(data.get(0),data.get(1)));
         }
         return resultSet;
+    }
+
+    @Override
+    public void updateWeight(int numberOfNeural, int numberOfWeight, double value) {
+        neurals.get(numberOfNeural).updateWeight(numberOfWeight,value);
     }
 }
