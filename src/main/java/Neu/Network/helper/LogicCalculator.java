@@ -8,26 +8,43 @@ public class LogicCalculator {
     //0 - 1 0 0 0
     //1 - 0 1 0 0
     //2 - 0 0 1 0
+    private int firstType = 0;
+    private int secondType = 0;
+    private int thirdType = 0;
+    private int unidentified = 0;
 
-    public static void Summarize(ArrayList<Double> result, Irys flower) {
+    public void summarize(ArrayList<Double> result, Irys flower) {
         if(flower.getType() == 0) {
             if(result.get(0) > 0.8 && result.get(1) < 0.5 && result.get(2) < 0.5 && result.get(3) < 0.5) {
                 System.out.println("Flower type FIRST found as expected, The significant factor has been reached:" + result.get(0));
+                firstType++;
             } else {
                 System.out.println("The obtained data did not clearly identify the type of flower");
+                unidentified++;
             }
         } else if(flower.getType() == 1) {
             if(result.get(0) > 0.8 && result.get(1) < 0.5 && result.get(2) < 0.5 && result.get(3) < 0.5) {
                 System.out.println("Flower type SECOND found as expected, The significant factor has been reached:" + result.get(0));
+                secondType++;
             } else {
                 System.out.println("The obtained data did not clearly identify the type of flower");
+                unidentified++;
             }
         } else {
             if(result.get(0) > 0.8 && result.get(1) < 0.5 && result.get(2) < 0.5 && result.get(3) < 0.5) {
                 System.out.println("Flower type THIRD found as expected, The significant factor has been reached:" + result.get(0));
+                thirdType++;
             } else {
                 System.out.println("The obtained data did not clearly identify the type of flower");
+                unidentified++;
             }
         }
+    }
+
+    public void summarizeOfAllTypes() {
+        System.out.println("\nIdentified number of flowers of the first species: "+ firstType);
+        System.out.println("Identified number of flowers of the second species: " + secondType);
+        System.out.println("Identified number of flowers of the third species: " + thirdType);
+        System.out.println("unidentified flowers: " + unidentified);
     }
 }

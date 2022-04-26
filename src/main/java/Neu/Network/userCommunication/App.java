@@ -70,16 +70,17 @@ public class App {
 
             switch (modeChoice) {
                 case 1 -> {
-                    //Operation
                     for (var sample: data) {
                         neuralNetwork.train(sample, 5000);
                     }
                 }
                 case 2 -> {
+                    LogicCalculator logicCalculator = new LogicCalculator();
                     for (var sample : data) {
                        // LogicCalculator.Summarize(neuralNetwork.calculate(sample),sample);
                         System.out.println(neuralNetwork.calculate(sample));
                     }
+                    logicCalculator.summarizeOfAllTypes();
                 }
                 case 3 -> {
                     return;
@@ -91,7 +92,7 @@ public class App {
             }
 
             System.out.println("""
-                Do you want to save the network to a file?:
+                \nDo you want to save the network to a file?:
                 Yes/No""");
             String saveChoice = scanner.nextLine();
             switch (saveChoice) {
