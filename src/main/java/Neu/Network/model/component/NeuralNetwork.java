@@ -9,16 +9,16 @@ import java.util.ArrayList;
 
 public class NeuralNetwork implements Serializable {
     private final double learningFactor;
-    private final double momentumFactor;
+    private double momentumFactor = 0;
     private int epochs = 0;
+    private double accuracy = 0.0;
 
     private final InputLayer inputLayer;
     private final HiddenLayer hiddenLayer;
     private final OutputLayer outputLayer;
 
-    public NeuralNetwork(double learningFactor, double momentumFactor) {
+    public NeuralNetwork(double learningFactor) {
         this.learningFactor = learningFactor;
-        this.momentumFactor = momentumFactor;
         inputLayer = new InputLayer(4);
         hiddenLayer = new HiddenLayer(4,2);
         outputLayer = new OutputLayer(2,4);
@@ -40,12 +40,37 @@ public class NeuralNetwork implements Serializable {
         return output;
     }
 
-    public void train(Irys flower, int epochs) {
-        this.epochs = epochs;
+    public void train(Irys flower, boolean stopFlag, double epochsError, double momentumFactor) {
+        if(stopFlag) {
+            this.epochs = (int) epochsError;
+        } else {
+            this.accuracy = epochsError;
+        }
+        this.momentumFactor = momentumFactor;
 
     }
 
     public int getEpochs() {
         return epochs;
+    }
+
+    private void calculateError() {
+
+    }
+
+    public double getAccuracy() {
+        return accuracy;
+    }
+
+    public void showInformation() {
+        if(epochs > 0 ) {
+            System.out.println("\nlearning factor: " + getLearningFactor()
+                    + "\nmomentum factor: " + getMomentumFactor()
+                    +"\nTaught on: " + getEpochs() + " epochs");
+        } else {
+            System.out.println("\nlearning factor: " + getLearningFactor()
+                    + "\nmomentum factor: " + getMomentumFactor()
+                    +"\nTaught with accuracy: "+ getAccuracy());
+        }
     }
 }

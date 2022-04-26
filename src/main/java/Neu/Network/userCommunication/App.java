@@ -6,8 +6,9 @@ import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.FileNetworkDao;
 import Neu.Network.model.exceptions.model.LogicException;
 import Neu.Network.model.flower.Irys;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class App {
     public static void main(String[] args) {
@@ -33,9 +34,7 @@ public class App {
             case 1 -> {
                 System.out.println("Enter learning factor:");
                 double learningFactor = Double.parseDouble(scanner.nextLine());
-                System.out.println("Enter the momentum factor:");
-                double momentumFactor = Double.parseDouble(scanner.nextLine());
-                neuralNetwork = new NeuralNetwork(learningFactor,momentumFactor);
+                neuralNetwork = new NeuralNetwork(learningFactor);
             }
             case 2 -> {
                 try(FileNetworkDao<NeuralNetwork> fileManager = new FileNetworkDao<>()) {
@@ -43,10 +42,8 @@ public class App {
                     fileManager.readNamesOfFilesInDirectory();
                     selectedFile = scanner.nextLine();
                     neuralNetwork = fileManager.read(selectedFile);
-                    System.out.println("Network loaded!\nlearning factor: "
-                            + neuralNetwork.getLearningFactor()+"\nmomentum factor: "
-                            + neuralNetwork.getMomentumFactor()+"\n"
-                            +"Taught on: " + neuralNetwork.getEpochs() + " epochs");
+                    System.out.println("Network loaded!");
+                    neuralNetwork.showInformation();
                 } catch (LogicException e) {
                     System.out.println(e.getMessage());
                     return;
@@ -70,11 +67,65 @@ public class App {
 
             switch (modeChoice) {
                 case 1 -> {
-                    for (var sample: data) {
-                        neuralNetwork.train(sample, 5000);
+                    System.out.println("Select the options based on which you want to create the network:\n");
+                    System.out.println("Stop condition:\n[1]. number of epochs\n[2]. error level");
+                    String stopCondition = scanner.nextLine();
+                    System.out.println("Enter value: ");
+                    double errorEpochsLevel;
+                    boolean stopConditionFlag;
+                    switch (stopCondition) {
+                        case "1" -> {
+                            errorEpochsLevel = Double.parseDouble(scanner.nextLine());
+                            stopConditionFlag = true;
+                        }
+                        case "2" -> {
+                            errorEpochsLevel = Double.parseDouble(scanner.nextLine());
+                            stopConditionFlag = false;
+                        }
+                        default -> throw new IllegalStateException("Unexpected value: " + stopCondition);
                     }
+
+                    System.out.println("Do take into account the momentum:\nYes/No");
+                    double momentumFactor = 0;
+                    if(Objects.equals(scanner.nextLine(), "Yes")) {
+                        System.out.println("Enter the momentum factor:");
+                        momentumFactor = Double.parseDouble(scanner.nextLine());
+                    }
+
+                    System.out.println("Enter the method of entering the data:\n[1]. Random\n[2]. Sequentially");
+                    String enterChoice = scanner.nextLine();
+                    switch (enterChoice) {
+                        case "1" -> {
+                            List<Integer> randList;
+                            randList = IntStream.rangeClosed(0, data.size()-1).boxed().collect(Collectors.toList());
+                            for (int i = 0; i < 150; i++) {
+                                Random randomizer = new Random();
+                                int j = randList.get(randomizer.nextInt(randList.size()));
+                                randList.remove(Integer.valueOf(j));
+                                neuralNetwork.train(data.get(j)
+                                        , stopConditionFlag, errorEpochsLevel
+                                        , momentumFactor);
+                            }
+                        }
+                        case "2" -> {
+                            for (var sample: data) {
+                                neuralNetwork.train(sample
+                                        , stopConditionFlag, errorEpochsLevel
+                                        , momentumFactor);
+                            }
+                        }
+                        default -> {
+                            System.out.println("Invalid option.");
+                            return;
+                        }
+                    }
+
+
+
                 }
                 case 2 -> {
+
+                    //uwzglednij bias
                     LogicCalculator logicCalculator = new LogicCalculator();
                     for (var sample : data) {
                        // LogicCalculator.Summarize(neuralNetwork.calculate(sample),sample);
