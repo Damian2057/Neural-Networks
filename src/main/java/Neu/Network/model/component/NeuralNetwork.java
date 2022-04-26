@@ -32,7 +32,7 @@ public class NeuralNetwork implements Serializable {
         return momentumFactor;
     }
 
-    public ArrayList<Double> calculate(Irys flower) {
+    public ArrayList<Double> calculate(Irys flower, boolean bias) {
         ArrayList<Double> input = inputLayer.calculate(flower);
         ArrayList<Double> hidden = hiddenLayer.calculate(input);
         ArrayList<Double> output = outputLayer.calculate(hidden);
@@ -47,6 +47,8 @@ public class NeuralNetwork implements Serializable {
             this.accuracy = epochsError;
         }
         this.momentumFactor = momentumFactor;
+
+        //TODO:train HERE
 
     }
 

@@ -119,17 +119,19 @@ public class App {
                             return;
                         }
                     }
-
-
-
                 }
                 case 2 -> {
-
-                    //uwzglednij bias
                     LogicCalculator logicCalculator = new LogicCalculator();
+
+                    boolean flag = false;
+                    System.out.println("Do you want to take into account the value of the bias input\nYes/No");
+                    if(Objects.equals(scanner.nextLine(), "Yes")) {
+                        flag = true;
+                    }
+
                     for (var sample : data) {
                        // LogicCalculator.Summarize(neuralNetwork.calculate(sample),sample);
-                        System.out.println(neuralNetwork.calculate(sample));
+                        System.out.println(neuralNetwork.calculate(sample,flag));
                     }
                     logicCalculator.summarizeOfAllTypes();
                 }
