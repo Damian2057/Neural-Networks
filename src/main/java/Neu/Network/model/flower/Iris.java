@@ -36,5 +36,4 @@ public class Iris implements Serializable {
     public int getType() {
         return type;
     }
-
 }

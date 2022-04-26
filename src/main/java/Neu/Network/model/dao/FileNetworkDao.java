@@ -48,6 +48,5 @@ public class FileNetworkDao<T> implements Dao<T> {
 
     @Override
     public void close() {
-
     }
 }

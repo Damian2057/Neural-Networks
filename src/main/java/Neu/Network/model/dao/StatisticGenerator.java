@@ -6,8 +6,6 @@ import Neu.Network.model.exceptions.dao.FileOperationException;
 import java.io.*;
 
 public class StatisticGenerator {
-//TODO: collect data from testing
-
 
     public static void saveEpochStats(int numberOfEpoch, double value) {
         try {
@@ -26,4 +24,6 @@ public class StatisticGenerator {
                     + GlobalConfiguration.iterator + "during the era: "+ numberOfEpoch + "value: "+ value);
         }
     }
+
+    //TODO: collect data from testing
 }

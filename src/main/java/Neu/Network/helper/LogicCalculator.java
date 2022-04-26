@@ -10,10 +10,11 @@ public class LogicCalculator {
     private int unidentified = 0;
 
     /**
+     * method summarizing the result
+     * @param result obtained data
+     * @param flower object holding data about its type
      *
-     * @param result
-     * @param flower
-     *
+     * explanation:
      * 0 - 1 0 0 0
      * 1 - 0 1 0 0
      * 2 - 0 0 1 0
