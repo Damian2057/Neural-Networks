@@ -9,12 +9,12 @@ import java.util.ArrayList;
 
 public class DataReader {
 
-    private static final String path = "@../../Data/data.csv";
+    private static final String path = "@../../Data/";
 
-    public static ArrayList<Iris> readData() throws IOException {
+    public static ArrayList<Iris> readData(String fileName) {
         try {
             ArrayList<Iris> temp = new ArrayList<>();
-            BufferedReader csvReader = new BufferedReader(new FileReader(path));
+            BufferedReader csvReader = new BufferedReader(new FileReader(path+fileName));
             String row;
             while ((row = csvReader.readLine()) != null) {
                 String[] data = row.split(",");

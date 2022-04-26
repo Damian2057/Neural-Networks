@@ -15,9 +15,13 @@ public class App {
         Scanner scanner= new Scanner(System.in);
 
         ArrayList<Iris> data;
+        ArrayList<Iris> trainingData;
+
         try { //Upload data
-            data = DataReader.readData();
+            data = DataReader.readData("data.csv");
+            trainingData = DataReader.readData("trainingPartOfData.csv");
             System.out.println("Collected "+data.size()+" portions of data.\n");
+            System.out.println("Collected "+trainingData.size()+" portions of data to train.\n");
         } catch (Exception e) {
             System.out.println("Error occurred");
             return;
