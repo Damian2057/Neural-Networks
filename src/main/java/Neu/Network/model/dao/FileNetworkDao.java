@@ -1,5 +1,6 @@
 package Neu.Network.model.dao;
 
+import Neu.Network.model.exceptions.dao.FileOperationException;
 import Neu.Network.model.exceptions.model.LogicException;
 import java.io.*;
 
@@ -13,10 +14,10 @@ public class FileNetworkDao<T> implements Dao<T> {
         try (FileInputStream inputFileStream = new FileInputStream(path+name);
              ObjectInputStream in = new ObjectInputStream(inputFileStream)) {
             temp = (T)in.readObject();
+            return temp;
         } catch (Exception e) {
-            System.out.println("Could not load file with given name");
+            throw new FileOperationException("Network read error");
         }
-        return temp;
     }
 
     @Override
@@ -25,8 +26,7 @@ public class FileNetworkDao<T> implements Dao<T> {
              ObjectOutputStream out = new ObjectOutputStream(outputFileStream)) {
             out.writeObject(obj);
         } catch (IOException exception) {
-            exception.printStackTrace();
-            System.out.println("Error");
+            throw new FileOperationException("Network write error");
         }
     }
 

@@ -1,6 +1,7 @@
 package Neu.Network.model.dao;
 
 import Neu.Network.config.GlobalConfiguration;
+import Neu.Network.model.exceptions.dao.FileOperationException;
 
 import java.io.*;
 
@@ -21,7 +22,8 @@ public class StatisticGenerator {
             bw.write(String.valueOf(value));
             bw.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new FileOperationException("Error generating statistics file number: "
+                    + GlobalConfiguration.iterator + "during the era: "+ numberOfEpoch + "value: "+ value);
         }
     }
 }
