@@ -20,4 +20,13 @@ public class NeuralNetwork implements Serializable {
     public double getMomentumFactor() {
         return momentumFactor;
     }
+
+    public ArrayList<Double> calculate(Irys flower) {
+        return null;
+
+    }
+
+    public void train(Irys flowe) {
+
+    }
 }
