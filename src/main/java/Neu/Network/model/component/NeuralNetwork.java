@@ -1,5 +1,6 @@
 package Neu.Network.model.component;
 
+import Neu.Network.config.GlobalConfiguration;
 import Neu.Network.model.dao.StatisticGenerator;
 import Neu.Network.model.flower.Irys;
 import Neu.Network.model.layer.HiddenLayer;
@@ -56,7 +57,7 @@ public class NeuralNetwork implements Serializable {
         this.momentumFactor = momentumFactor;
         for (int i = 0; i < epochs; i++) {
             if(i%100 == 0) {
-              //  StatisticGenerator.saveEpochStats(500,5.569);
+                //StatisticGenerator.saveEpochStats(GlobalConfiguration.epochsToCollect,5.569);
             }
         }
         //TODO:train HERE
