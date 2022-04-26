@@ -72,8 +72,8 @@ public class App {
                 }
                 case 2 -> {
                     for (var sample : data) {
-                        LogicCalculator.Summarize(neuralNetwork.calculate(sample),sample);
-                       // System.out.println(neuralNetwork.calculate(sample));
+                       // LogicCalculator.Summarize(neuralNetwork.calculate(sample),sample);
+                        System.out.println(neuralNetwork.calculate(sample));
                     }
                 }
                 case 3 -> {

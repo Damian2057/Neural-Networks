@@ -21,7 +21,7 @@ public class NeuralNetwork implements Serializable {
         this.momentumFactor = momentumFactor;
         inputLayer = new InputLayer(4);
         hiddenLayer = new HiddenLayer(4,2);
-        outputLayer = new OutputLayer();
+        outputLayer = new OutputLayer(2,4);
     }
 
     public double getLearningFactor() {
@@ -35,9 +35,9 @@ public class NeuralNetwork implements Serializable {
     public ArrayList<Double> calculate(Irys flower) {
         ArrayList<Double> input = inputLayer.calculate(flower);
         ArrayList<Double> hidden = hiddenLayer.calculate(input);
+        ArrayList<Double> output = outputLayer.calculate(hidden);
 
-        return input;
-
+        return output;
     }
 
     public void train(Irys flower) {
