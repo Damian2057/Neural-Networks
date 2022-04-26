@@ -1,7 +1,7 @@
 package Neu.Network.model.layer;
 
 import Neu.Network.model.component.Neural;
-import Neu.Network.model.flower.Irys;
+import Neu.Network.model.flower.Iris;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class InputLayer implements Serializable, Layer {
         }
     }
 
-    public ArrayList<Double> calculate(Irys flower) {
+    public ArrayList<Double> calculate(Iris flower) {
         ArrayList<Double> resultSet = new ArrayList<>();
         for (Neural neural : neurals) {
             resultSet.add(neural.calculate(flower));

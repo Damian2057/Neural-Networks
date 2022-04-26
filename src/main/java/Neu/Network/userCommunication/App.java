@@ -5,7 +5,7 @@ import Neu.Network.model.component.NeuralNetwork;
 import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.FileNetworkDao;
 import Neu.Network.model.exceptions.model.LogicException;
-import Neu.Network.model.flower.Irys;
+import Neu.Network.model.flower.Iris;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -14,7 +14,7 @@ public class App {
     public static void main(String[] args) {
         Scanner scanner= new Scanner(System.in);
 
-        ArrayList<Irys> data;
+        ArrayList<Iris> data;
         try { //Upload data
             data = DataReader.readData();
             System.out.println("Collected "+data.size()+" portions of data.\n");

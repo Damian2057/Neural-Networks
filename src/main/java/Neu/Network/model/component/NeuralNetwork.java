@@ -1,8 +1,6 @@
 package Neu.Network.model.component;
 
-import Neu.Network.config.GlobalConfiguration;
-import Neu.Network.model.dao.StatisticGenerator;
-import Neu.Network.model.flower.Irys;
+import Neu.Network.model.flower.Iris;
 import Neu.Network.model.layer.HiddenLayer;
 import Neu.Network.model.layer.InputLayer;
 import Neu.Network.model.layer.OutputLayer;
@@ -34,7 +32,7 @@ public class NeuralNetwork implements Serializable {
         return momentumFactor;
     }
 
-    public ArrayList<Double> calculate(Irys flower, boolean bias) {
+    public ArrayList<Double> calculate(Iris flower, boolean bias) {
         ArrayList<Double> input = inputLayer.calculate(flower);
         ArrayList<Double> hidden = hiddenLayer.calculate(input);
         ArrayList<Double> output = outputLayer.calculate(hidden);
@@ -48,7 +46,7 @@ public class NeuralNetwork implements Serializable {
      * @param stopFlag  true -> epochs, false -> accuracy
      */
 
-    public void train(Irys flower, boolean stopFlag, double epochsError, double momentumFactor) {
+    public void train(Iris flower, boolean stopFlag, double epochsError, double momentumFactor) {
         if(stopFlag) {
             this.epochs = (int) epochsError;
         } else {

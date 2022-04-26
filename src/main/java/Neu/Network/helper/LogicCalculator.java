@@ -1,19 +1,25 @@
 package Neu.Network.helper;
 
-import Neu.Network.model.flower.Irys;
-
+import Neu.Network.model.flower.Iris;
 import java.util.ArrayList;
 
 public class LogicCalculator {
-    //0 - 1 0 0 0
-    //1 - 0 1 0 0
-    //2 - 0 0 1 0
     private int firstType = 0;
     private int secondType = 0;
     private int thirdType = 0;
     private int unidentified = 0;
 
-    public void summarize(ArrayList<Double> result, Irys flower) {
+    /**
+     *
+     * @param result
+     * @param flower
+     *
+     * 0 - 1 0 0 0
+     * 1 - 0 1 0 0
+     * 2 - 0 0 1 0
+     */
+
+    public void summarize(ArrayList<Double> result, Iris flower) {
         if(flower.getType() == 0) {
             if(result.get(0) > 0.8 && result.get(1) < 0.5 && result.get(2) < 0.5 && result.get(3) < 0.5) {
                 System.out.println("Flower type FIRST found as expected, The significant factor has been reached:" + result.get(0));
