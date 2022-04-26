@@ -56,12 +56,11 @@ public class NeuralNetwork implements Serializable {
         }
         this.momentumFactor = momentumFactor;
         for (int i = 0; i < epochs; i++) {
-            if(i%100 == 0) {
+            if(i % 100 == 0) {
                 //StatisticGenerator.saveEpochStats(GlobalConfiguration.epochsToCollect,5.569);
             }
         }
         //TODO:train HERE
-
     }
 
     public int getEpochs() {
