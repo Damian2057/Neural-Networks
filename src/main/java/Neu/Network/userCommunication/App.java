@@ -45,11 +45,13 @@ public class App {
                     neuralNetwork = fileManager.read(selectedFile);
                     System.out.println("Network loaded!\nlearning factor: "
                             + neuralNetwork.getLearningFactor()+"\nmomentum factor: "
-                            + neuralNetwork.getMomentumFactor()+"\n");
+                            + neuralNetwork.getMomentumFactor()+"\n"
+                            +"Taught on: " + neuralNetwork.getEpochs() + " epochs");
                 } catch (LogicException e) {
                     System.out.println(e.getMessage());
                     return;
                 } catch (Exception ignored) {
+                    return;
                 }
             }
             default -> {

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class NeuralNetwork implements Serializable {
     private final double learningFactor;
     private final double momentumFactor;
+    private int epochs = 0;
 
     private final InputLayer inputLayer;
     private final HiddenLayer hiddenLayer;
@@ -40,6 +41,11 @@ public class NeuralNetwork implements Serializable {
     }
 
     public void train(Irys flower, int epochs) {
+        this.epochs = epochs;
 
+    }
+
+    public int getEpochs() {
+        return epochs;
     }
 }
