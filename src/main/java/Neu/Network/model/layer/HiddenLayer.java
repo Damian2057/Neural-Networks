@@ -1,4 +1,6 @@
 package Neu.Network.model.layer;
 
-public class HiddenLayer {
+import java.io.Serializable;
+
+public class HiddenLayer implements Serializable {
 }

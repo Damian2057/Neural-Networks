@@ -1,5 +1,6 @@
 package Neu.Network.userCommunication;
 
+import Neu.Network.helper.LogicCalculator;
 import Neu.Network.model.component.NeuralNetwork;
 import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.FileNetworkDao;
@@ -70,7 +71,10 @@ public class App {
                     //Operation
                 }
                 case 2 -> {
-                    //Operation
+                    for (var sample : data) {
+                        LogicCalculator.Summarize(neuralNetwork.calculate(sample),sample);
+                       // System.out.println(neuralNetwork.calculate(sample));
+                    }
                 }
                 case 3 -> {
                     return;

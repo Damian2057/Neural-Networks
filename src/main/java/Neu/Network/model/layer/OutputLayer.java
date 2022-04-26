@@ -1,5 +1,7 @@
 package Neu.Network.model.layer;
 
-public class OutputLayer {
+import java.io.Serializable;
+
+public class OutputLayer implements Serializable {
 
 }

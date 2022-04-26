@@ -1,6 +1,10 @@
 package Neu.Network.model.component;
 
 import Neu.Network.model.flower.Irys;
+import Neu.Network.model.layer.HiddenLayer;
+import Neu.Network.model.layer.InputLayer;
+import Neu.Network.model.layer.OutputLayer;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -8,9 +12,16 @@ public class NeuralNetwork implements Serializable {
     private final double learningFactor;
     private final double momentumFactor;
 
+    private final InputLayer inputLayer;
+    private final HiddenLayer hiddenLayer;
+    private final OutputLayer outputLayer;
+
     public NeuralNetwork(double learningFactor, double momentumFactor) {
         this.learningFactor = learningFactor;
         this.momentumFactor = momentumFactor;
+        inputLayer = new InputLayer(4);
+        hiddenLayer = new HiddenLayer();
+        outputLayer = new OutputLayer();
     }
 
     public double getLearningFactor() {
@@ -22,11 +33,13 @@ public class NeuralNetwork implements Serializable {
     }
 
     public ArrayList<Double> calculate(Irys flower) {
-        return null;
+        ArrayList<Double> input = inputLayer.calculate(flower);
+
+        return input;
 
     }
 
-    public void train(Irys flowe) {
+    public void train(Irys flower) {
 
     }
 }
