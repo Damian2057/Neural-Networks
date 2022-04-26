@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class InputLayer implements Serializable, Layer {
-    private ArrayList<Neural> neurals = new ArrayList<>();
+    private final ArrayList<Neural> neurals = new ArrayList<>();
 
     public InputLayer(int countOfWeights) {
         for (int i = 0; i < countOfWeights; i++) {
@@ -17,8 +17,8 @@ public class InputLayer implements Serializable, Layer {
 
     public ArrayList<Double> calculate(Irys flower) {
         ArrayList<Double> resultSet = new ArrayList<>();
-        for (int i = 0; i < neurals.size(); i++) {
-            resultSet.add(neurals.get(i).calculate(flower));
+        for (Neural neural : neurals) {
+            resultSet.add(neural.calculate(flower));
         }
         return resultSet;
     }

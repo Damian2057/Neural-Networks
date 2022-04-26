@@ -16,8 +16,8 @@ public class HiddenLayer implements Serializable, Layer {
 
     public ArrayList<Double> calculate(ArrayList<Double> data) {
         ArrayList<Double> resultSet = new ArrayList<>();
-        for (int i = 0; i < neurals.size(); i++) {
-            resultSet.add(neurals.get(i).calculate(data.get(0),data.get(1),data.get(2),data.get(3)));
+        for (Neural neural : neurals) {
+            resultSet.add(neural.calculate(data.get(0), data.get(1), data.get(2), data.get(3)));
         }
         return resultSet;
     }

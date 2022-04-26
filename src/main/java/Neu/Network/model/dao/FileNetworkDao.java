@@ -8,7 +8,7 @@ public class FileNetworkDao<T> implements Dao<T> {
     private final String path = "@../../archives/";
 
     @Override
-    public T read(String name) throws IOException, ClassNotFoundException {
+    public T read(String name) {
         T temp = null;
         try (FileInputStream inputFileStream = new FileInputStream(path+name);
              ObjectInputStream in = new ObjectInputStream(inputFileStream)) {
@@ -16,11 +16,11 @@ public class FileNetworkDao<T> implements Dao<T> {
         } catch (Exception e) {
             System.out.println("Could not load file with given name");
         }
-        return (T) temp;
+        return temp;
     }
 
     @Override
-    public void write(String name, T obj) throws IOException {
+    public void write(String name, T obj) {
         try (FileOutputStream outputFileStream = new FileOutputStream(path+name);
              ObjectOutputStream out = new ObjectOutputStream(outputFileStream)) {
             out.writeObject(obj);
@@ -34,6 +34,7 @@ public class FileNetworkDao<T> implements Dao<T> {
         File folder = new File("@../../archives/");
         File[] listOfFiles = folder.listFiles();
 
+        assert listOfFiles != null;
         if(listOfFiles.length == 0) {
             throw new LogicException("No previously saved object was found.");
         }
@@ -46,7 +47,7 @@ public class FileNetworkDao<T> implements Dao<T> {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
 
     }
 }
