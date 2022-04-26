@@ -1,5 +1,6 @@
 package Neu.Network.model.component;
 
+import Neu.Network.model.dao.StatisticGenerator;
 import Neu.Network.model.flower.Irys;
 import Neu.Network.model.layer.HiddenLayer;
 import Neu.Network.model.layer.InputLayer;
@@ -40,6 +41,12 @@ public class NeuralNetwork implements Serializable {
         return output;
     }
 
+    /**
+     * method of weight change
+     * @param epochsError value taken from the app layer
+     * @param stopFlag  true -> epochs, false -> accuracy
+     */
+
     public void train(Irys flower, boolean stopFlag, double epochsError, double momentumFactor) {
         if(stopFlag) {
             this.epochs = (int) epochsError;
@@ -47,7 +54,11 @@ public class NeuralNetwork implements Serializable {
             this.accuracy = epochsError;
         }
         this.momentumFactor = momentumFactor;
-
+        for (int i = 0; i < epochs; i++) {
+            if(i%100 == 0) {
+              //  StatisticGenerator.saveEpochStats(500,5.569);
+            }
+        }
         //TODO:train HERE
 
     }
