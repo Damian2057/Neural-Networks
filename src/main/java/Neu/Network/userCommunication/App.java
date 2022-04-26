@@ -1,6 +1,6 @@
 package Neu.Network.userCommunication;
 
-import Neu.Network.helper.LogicCalculator;
+import Neu.Network.helper.LogicSummary;
 import Neu.Network.model.component.NeuralNetwork;
 import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.FileNetworkDao;
@@ -125,7 +125,7 @@ public class App {
                     }
                 }
                 case 2 -> {
-                    LogicCalculator logicCalculator = new LogicCalculator();
+                    LogicSummary logicCalculator = new LogicSummary();
 
                     boolean flag = false;
                     System.out.println("Do you want to take into account the value of the bias input\nYes/No");

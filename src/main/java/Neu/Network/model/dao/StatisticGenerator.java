@@ -2,7 +2,6 @@ package Neu.Network.model.dao;
 
 import Neu.Network.config.GlobalConfiguration;
 import Neu.Network.model.exceptions.dao.FileOperationException;
-
 import java.io.*;
 
 public class StatisticGenerator {

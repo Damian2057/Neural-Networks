@@ -3,7 +3,7 @@ package Neu.Network.helper;
 import Neu.Network.model.flower.Iris;
 import java.util.ArrayList;
 
-public class LogicCalculator {
+public class LogicSummary {
     private int firstType = 0;
     private int secondType = 0;
     private int thirdType = 0;
@@ -48,10 +48,32 @@ public class LogicCalculator {
         }
     }
 
+    private void recallTest(double value) {
+
+    }
+
+    private double precision() {
+        return (firstType/50 + secondType/50 + thirdType/50);
+    }
+
+    private double recall() {
+        return (firstType/150 + secondType/150 + thirdType/150);
+    }
+
+    private double fMeasure(double precision, double recall) {
+        return 2*precision*recall/(precision+recall);
+    }
+
     public void summarizeOfAllTypes() {
         System.out.println("\nIdentified number of flowers of the first species: "+ firstType);
         System.out.println("Identified number of flowers of the second species: " + secondType);
         System.out.println("Identified number of flowers of the third species: " + thirdType);
         System.out.println("unidentified flowers: " + unidentified);
+        double precision = precision();
+        System.out.println("Precision: "+ precision);
+        double recall = recall();
+        System.out.println("Recall: "+ precision);
+        System.out.println("F-Measure: " + fMeasure(precision,recall));
+
     }
 }

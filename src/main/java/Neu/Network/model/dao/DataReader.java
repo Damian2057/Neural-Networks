@@ -4,7 +4,6 @@ import Neu.Network.model.exceptions.dao.FileOperationException;
 import Neu.Network.model.flower.Iris;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class DataReader {
