@@ -14,7 +14,6 @@ public class OutputLayer implements Serializable {
         }
     }
 
-
     public ArrayList<Double> calculate(ArrayList<Double> data) {
         ArrayList<Double> resultSet = new ArrayList<>();
         for (int i = 0; i < neurals.size(); i++) {
@@ -22,8 +21,4 @@ public class OutputLayer implements Serializable {
         }
         return resultSet;
     }
-
-
-
-
 }

@@ -69,6 +69,9 @@ public class App {
             switch (modeChoice) {
                 case 1 -> {
                     //Operation
+                    for (var sample: data) {
+                        neuralNetwork.train(sample, 5000);
+                    }
                 }
                 case 2 -> {
                     for (var sample : data) {

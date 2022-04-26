@@ -4,7 +4,6 @@ import Neu.Network.model.flower.Irys;
 import Neu.Network.model.layer.HiddenLayer;
 import Neu.Network.model.layer.InputLayer;
 import Neu.Network.model.layer.OutputLayer;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -40,7 +39,7 @@ public class NeuralNetwork implements Serializable {
         return output;
     }
 
-    public void train(Irys flower) {
+    public void train(Irys flower, int epochs) {
 
     }
 }
