@@ -48,16 +48,12 @@ public class LogicSummary {
         }
     }
 
-    private void recallTest(double value) {
-
-    }
-
     private double precision() {
-        return (firstType/50 + secondType/50 + thirdType/50);
+        return (firstType/50.0 + secondType/50.0 + thirdType/50.0);
     }
 
     private double recall() {
-        return (firstType/150 + secondType/150 + thirdType/150);
+        return (firstType/150.0 + secondType/150.0 + thirdType/150.0);
     }
 
     private double fMeasure(double precision, double recall) {
