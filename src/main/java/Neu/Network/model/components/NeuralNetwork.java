@@ -12,7 +12,9 @@ public class NeuralNetwork implements Serializable {
     private int epochs = 0;
     private double accuracy = 0.0;
     private final Layer hiddenNeurons;
+    private final Layer prevHiddenNeurons;
     private final Layer outPutNeurons;
+    private final Layer prevOutPutNeurons;
     private final Layer hiddenBias;
     private final Layer outPutBias;
     private boolean bias;
@@ -20,7 +22,9 @@ public class NeuralNetwork implements Serializable {
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
         this.learningFactor = learningFactor;
         hiddenNeurons = new Layer(numberOfHiddenNeurons, numberOfInPuts);
+        prevHiddenNeurons = hiddenNeurons.clone();
         outPutNeurons = new Layer(numberOfOutPuts, numberOfHiddenNeurons);
+        prevOutPutNeurons = outPutNeurons.clone();
         hiddenBias = new Layer(numberOfHiddenNeurons,1);
         outPutBias = new Layer(numberOfOutPuts,1);
     }
@@ -74,12 +78,17 @@ public class NeuralNetwork implements Serializable {
         gradient.multiply(error);
         gradient.multiply(learningFactor);
 
-        //printLoss(error);
+        //calculateError(error);
 
         Layer hidden_T = Layer.transpose(hidden);
         Layer who_delta =  Layer.multiply(gradient, hidden_T);
 
         outPutNeurons.add(who_delta);
+        if(momentumFactor != 0) {
+            Layer prev = Layer.substract(outPutNeurons,prevOutPutNeurons);
+            prev.multiply(momentumFactor);
+            outPutNeurons.add(prev);
+        }
         outPutBias.add(gradient);
 
         Layer who_T = Layer.transpose(outPutNeurons);
@@ -93,6 +102,11 @@ public class NeuralNetwork implements Serializable {
         Layer wih_delta = Layer.multiply(h_gradient, i_T);
 
         hiddenNeurons.add(wih_delta);
+        if(momentumFactor != 0) {
+            Layer prev = Layer.substract(hiddenNeurons,prevHiddenNeurons);
+            prev.multiply(momentumFactor);
+            hiddenNeurons.add(prev);
+        }
         hiddenBias.add(h_gradient);
     }
 
