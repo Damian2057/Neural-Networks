@@ -1,23 +1,25 @@
 package Neu.Network.userCommunication;
 
-import Neu.Network.helper.LogicCalculator;
-import Neu.Network.model.component.NeuralNetwork;
+import Neu.Network.helper.LogicSummary;
+import Neu.Network.model.components.NeuralNetwork;
 import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.FileNetworkDao;
 import Neu.Network.model.exceptions.model.LogicException;
-import Neu.Network.model.flower.Irys;
+import Neu.Network.model.flower.Iris;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class App {
     public static void main(String[] args) {
         Scanner scanner= new Scanner(System.in);
 
-        ArrayList<Irys> data;
+        ArrayList<Iris> data;
+        ArrayList<Iris> trainingData;
+
         try { //Upload data
-            data = DataReader.readData();
+            data = DataReader.readData("data.csv");
+            trainingData = DataReader.readData("trainingPartOfData.csv");
             System.out.println("Collected "+data.size()+" portions of data.\n");
+            System.out.println("Collected "+trainingData.size()+" portions of data to train.\n");
         } catch (Exception e) {
             System.out.println("Error occurred");
             return;
@@ -34,7 +36,13 @@ public class App {
             case 1 -> {
                 System.out.println("Enter learning factor:");
                 double learningFactor = Double.parseDouble(scanner.nextLine());
-                neuralNetwork = new NeuralNetwork(learningFactor);
+                neuralNetwork = new NeuralNetwork(4,60,4, learningFactor);
+                System.out.println("Do you want to reflect the bias:\nYes/No");
+                if(Objects.equals(scanner.nextLine(), "Yes")) {
+                    neuralNetwork.setBias(true);
+                } else {
+                    neuralNetwork.setBias(false);
+                }
             }
             case 2 -> {
                 try(FileNetworkDao<NeuralNetwork> fileManager = new FileNetworkDao<>()) {
@@ -96,22 +104,20 @@ public class App {
                     String enterChoice = scanner.nextLine();
                     switch (enterChoice) {
                         case "1" -> {
-                            List<Integer> randList;
-                            randList = IntStream.rangeClosed(0, data.size()-1).boxed().collect(Collectors.toList());
-                            for (int i = 0; i < 150; i++) {
-                                Random randomizer = new Random();
-                                int j = randList.get(randomizer.nextInt(randList.size()));
-                                randList.remove(Integer.valueOf(j));
-                                neuralNetwork.train(data.get(j)
-                                        , stopConditionFlag, errorEpochsLevel
-                                        , momentumFactor);
+                            if(stopConditionFlag) {
+                                neuralNetwork.trainByEpochs(data, (int) errorEpochsLevel
+                                        ,momentumFactor,true);
+                            } else {
+                                neuralNetwork.trainByAccurany(data,errorEpochsLevel,momentumFactor,true);
                             }
+
                         }
                         case "2" -> {
-                            for (var sample: data) {
-                                neuralNetwork.train(sample
-                                        , stopConditionFlag, errorEpochsLevel
-                                        , momentumFactor);
+                            if(stopConditionFlag) {
+                                neuralNetwork.trainByEpochs(data, (int) errorEpochsLevel
+                                        ,momentumFactor,false);
+                            } else {
+                                neuralNetwork.trainByAccurany(data,errorEpochsLevel,momentumFactor,false);
                             }
                         }
                         default -> {
@@ -121,17 +127,11 @@ public class App {
                     }
                 }
                 case 2 -> {
-                    LogicCalculator logicCalculator = new LogicCalculator();
-
-                    boolean flag = false;
-                    System.out.println("Do you want to take into account the value of the bias input\nYes/No");
-                    if(Objects.equals(scanner.nextLine(), "Yes")) {
-                        flag = true;
-                    }
-
+                    LogicSummary logicCalculator = new LogicSummary();
                     for (var sample : data) {
-                       // LogicCalculator.Summarize(neuralNetwork.calculate(sample),sample);
-                        System.out.println(neuralNetwork.calculate(sample,flag));
+                        ArrayList<Double> result = neuralNetwork.calculate(sample);
+                        logicCalculator.summarize(result,sample);
+                        System.out.println(result);
                     }
                     logicCalculator.summarizeOfAllTypes();
                 }
@@ -143,7 +143,6 @@ public class App {
                     return;
                 }
             }
-
             System.out.println("""
                 \nDo you want to save the network to a file?:
                 Yes/No""");

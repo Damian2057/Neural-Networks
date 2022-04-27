@@ -1,6 +1,6 @@
-package Neu.Network.config;
+package Neu.Network.global;
 
-public class GlobalConfiguration {
+public class GlobalVariables {
     public static int iterator = 0;
     public static int epochsToCollect = 100;
 }
