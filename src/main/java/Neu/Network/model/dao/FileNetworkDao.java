@@ -2,6 +2,8 @@ package Neu.Network.model.dao;
 
 import Neu.Network.model.exceptions.dao.FileOperationException;
 import Neu.Network.model.exceptions.model.LogicException;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.*;
 
 public class FileNetworkDao<T> implements Dao<T> {
@@ -21,7 +23,7 @@ public class FileNetworkDao<T> implements Dao<T> {
     }
 
     @Override
-    public void write(String name, T obj) {
+    public void write(String name, @NotNull T obj) {
         try (FileOutputStream outputFileStream = new FileOutputStream(path+name);
              ObjectOutputStream out = new ObjectOutputStream(outputFileStream)) {
             out.writeObject(obj);

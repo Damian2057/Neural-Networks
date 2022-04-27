@@ -1,6 +1,6 @@
 package Neu.Network.model.dao;
 
-import Neu.Network.config.GlobalConfiguration;
+import Neu.Network.config.GlobalVariables;
 import Neu.Network.model.exceptions.dao.FileOperationException;
 import java.io.*;
 
@@ -8,8 +8,8 @@ public class StatisticGenerator {
 
     public static void saveEpochStats(int numberOfEpoch, double value) {
         try {
-            String name = "Science_"+ GlobalConfiguration.iterator+".txt";
-            GlobalConfiguration.iterator++;
+            String name = "Science_"+ GlobalVariables.iterator+".txt";
+            GlobalVariables.iterator++;
             File fout = new File("@../../statistics/"+name);
             FileOutputStream fos = new FileOutputStream(fout);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
@@ -20,7 +20,7 @@ public class StatisticGenerator {
             bw.close();
         } catch (IOException e) {
             throw new FileOperationException("Error generating statistics file number: "
-                    + GlobalConfiguration.iterator + "during the era: "+ numberOfEpoch + "value: "+ value);
+                    + GlobalVariables.iterator + "during the era: "+ numberOfEpoch + "value: "+ value);
         }
     }
 

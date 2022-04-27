@@ -2,6 +2,8 @@ package Neu.Network.model.component;
 
 import Neu.Network.model.flower.Iris;
 import Neu.Network.model.math.Sigmoid;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -39,7 +41,7 @@ public class Neural implements Serializable {
         weights.set(numberToUpdate,value);
     }
 
-    public double calculate(Iris flower) {
+    public double calculate(@NotNull Iris flower) {
         double calculatedSum = 0.0;
 
         calculatedSum += flower.getPetalLength() * weights.get(0);
