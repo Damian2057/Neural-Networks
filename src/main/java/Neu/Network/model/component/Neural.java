@@ -1,14 +1,14 @@
 package Neu.Network.model.component;
 
 import Neu.Network.model.flower.Iris;
-import Neu.Network.model.math.Math;
+import Neu.Network.model.math.Sigmoid;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Neural implements Serializable {
 
     private final int countOfWeights;
-    private final Math functionality = new Math();
+    private final Sigmoid functionality = new Sigmoid();
     private ArrayList<Double> weights = new ArrayList<>();
 
     public Neural(int countOfWeights) {

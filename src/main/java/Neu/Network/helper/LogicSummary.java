@@ -70,6 +70,5 @@ public class LogicSummary {
         double recall = recall();
         System.out.println("Recall: "+ precision);
         System.out.println("F-Measure: " + fMeasure(precision,recall));
-
     }
 }
