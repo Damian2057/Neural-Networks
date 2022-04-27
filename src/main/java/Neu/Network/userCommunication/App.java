@@ -16,7 +16,7 @@ public class App {
         ArrayList<Iris> trainingData;
 
         try { //Upload data
-            data = DataReader.readData("data2.csv");
+            data = DataReader.readData("data.csv");
             trainingData = DataReader.readData("trainingPartOfData.csv");
             System.out.println("Collected "+data.size()+" portions of data.\n");
             System.out.println("Collected "+trainingData.size()+" portions of data to train.\n");
@@ -36,7 +36,7 @@ public class App {
             case 1 -> {
                 System.out.println("Enter learning factor:");
                 double learningFactor = Double.parseDouble(scanner.nextLine());
-                neuralNetwork = new NeuralNetwork(4,20,4, learningFactor);
+                neuralNetwork = new NeuralNetwork(4,60,4, learningFactor);
                 System.out.println("Do you want to reflect the bias:\nYes/No");
                 if(Objects.equals(scanner.nextLine(), "Yes")) {
                     neuralNetwork.setBias(true);
