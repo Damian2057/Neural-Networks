@@ -28,8 +28,15 @@ public class NeuralNetwork implements Serializable {
     }
 
     public ArrayList<Double> calculate(Iris flower, boolean bias) {
+        Layer inPut = Layer.toLayer(flower);
+        Layer hiddenOutPut = Layer.multiply(hiddenNeurons,inPut);
+        hiddenOutPut.add(hiddenBias);
+        hiddenOutPut.sigmoid();
 
-        return null;
+        Layer outPut = Layer.multiply(outPutNeurons,hiddenOutPut);
+        outPut.add(outPutBias);
+        outPut.sigmoid();
+        return outPut.toArray();
     }
 
     /**
