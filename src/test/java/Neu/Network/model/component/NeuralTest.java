@@ -2,15 +2,22 @@ package Neu.Network.model.component;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class NeuralTest {
 
     @Test
-    public void runTestTest() {
+    public void weightTest() {
         for (int i = 0; i < 1000000; i++) {
-            Neural neural = new Neural(1);
-            assertTrue(neural.getWeights().get(0) >= -0.5 && neural.getWeights().get(0) <= 0.5);
+            Layer neural = new Layer(1,1);
+            assertTrue(neural.getWeights()[0][0] >= -0.5 && neural.getWeights()[0][0] <= 0.5);
+        }
+    }
+
+    @Test
+    public void noZeroWeightTest() {
+        for (int i = 0; i < 10000000; i++) {
+            Layer neural = new Layer(1,1);
+            assertNotEquals(neural.getWeights()[0][0], 0);
         }
     }
 }

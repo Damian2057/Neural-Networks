@@ -1,9 +1,7 @@
 package Neu.Network.model.component;
 
 import Neu.Network.model.flower.Iris;
-import Neu.Network.model.layer.HiddenLayer;
-import Neu.Network.model.layer.InputLayer;
-import Neu.Network.model.layer.OutputLayer;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -13,15 +11,8 @@ public class NeuralNetwork implements Serializable {
     private int epochs = 0;
     private double accuracy = 0.0;
 
-    private final InputLayer inputLayer;
-    private final HiddenLayer hiddenLayer;
-    private final OutputLayer outputLayer;
-
     public NeuralNetwork(double learningFactor) {
         this.learningFactor = learningFactor;
-        inputLayer = new InputLayer(4);
-        hiddenLayer = new HiddenLayer(4,2);
-        outputLayer = new OutputLayer(2,4);
     }
 
     public double getLearningFactor() {
@@ -33,11 +24,8 @@ public class NeuralNetwork implements Serializable {
     }
 
     public ArrayList<Double> calculate(Iris flower, boolean bias) {
-        ArrayList<Double> input = inputLayer.calculate(flower);
-        ArrayList<Double> hidden = hiddenLayer.calculate(input);
-        ArrayList<Double> output = outputLayer.calculate(hidden);
 
-        return output;
+        return null;
     }
 
     /**
