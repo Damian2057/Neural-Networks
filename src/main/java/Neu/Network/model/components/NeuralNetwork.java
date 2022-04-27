@@ -9,7 +9,10 @@ public class NeuralNetwork implements Serializable {
     private double momentumFactor = 0;
     private int epochs = 0;
     private double accuracy = 0.0;
-    private Layer hiddenNeurons, outPutNeurons, hiddenBias, outPutBias;
+    private final Layer hiddenNeurons;
+    private final Layer outPutNeurons;
+    private final Layer hiddenBias;
+    private final Layer outPutBias;
 
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
         this.learningFactor = learningFactor;
@@ -51,12 +54,6 @@ public class NeuralNetwork implements Serializable {
      */
 
     public void train(Iris flower, boolean stopFlag, double epochsError, double momentumFactor) {
-        if(stopFlag) {
-            this.epochs = (int) epochsError;
-        } else {
-            this.accuracy = epochsError;
-        }
-        this.momentumFactor = momentumFactor;
 
         if(!stopFlag) {
             //Error here (accuracy)
@@ -70,6 +67,17 @@ public class NeuralNetwork implements Serializable {
 
         }
     }
+
+    public void trainByEpochs(ArrayList<Iris> data, int epochs, double momentumFactor, boolean method) {
+        this.epochs = epochs;
+        this.momentumFactor = momentumFactor;
+    }
+
+    public void trainByAccurany(ArrayList<Iris> data, double accuracy, double momentumFactor, boolean method) {
+        this.accuracy = accuracy;
+        this.momentumFactor = momentumFactor;
+    }
+
 
     public int getEpochs() {
         return epochs;

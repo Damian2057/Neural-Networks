@@ -100,22 +100,20 @@ public class App {
                     String enterChoice = scanner.nextLine();
                     switch (enterChoice) {
                         case "1" -> {
-                            List<Integer> randList;
-                            randList = IntStream.rangeClosed(0, data.size()-1).boxed().collect(Collectors.toList());
-                            for (int i = 0; i < 150; i++) {
-                                Random randomizer = new Random();
-                                int j = randList.get(randomizer.nextInt(randList.size()));
-                                randList.remove(Integer.valueOf(j));
-                                neuralNetwork.train(data.get(j)
-                                        , stopConditionFlag, errorEpochsLevel
-                                        , momentumFactor);
+                            if(stopConditionFlag) {
+                                neuralNetwork.trainByEpochs(data,Integer.parseInt(String.valueOf(errorEpochsLevel))
+                                        ,momentumFactor,true);
+                            } else {
+                                neuralNetwork.trainByAccurany(data,errorEpochsLevel,momentumFactor,true);
                             }
+
                         }
                         case "2" -> {
-                            for (var sample: data) {
-                                neuralNetwork.train(sample
-                                        , stopConditionFlag, errorEpochsLevel
-                                        , momentumFactor);
+                            if(stopConditionFlag) {
+                                neuralNetwork.trainByEpochs(data,Integer.parseInt(String.valueOf(errorEpochsLevel))
+                                        ,momentumFactor,false);
+                            } else {
+                                neuralNetwork.trainByAccurany(data,errorEpochsLevel,momentumFactor,false);
                             }
                         }
                         default -> {
