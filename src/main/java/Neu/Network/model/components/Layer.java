@@ -2,8 +2,10 @@ package Neu.Network.model.components;
 
 import Neu.Network.model.exceptions.model.ShapeException;
 import Neu.Network.model.flower.Iris;
+import Neu.Network.model.math.Sigmoid;
 import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Layer implements Serializable {
 
@@ -77,17 +79,100 @@ public class Layer implements Serializable {
         }
     }
 
-    public static Layer toLayer(Iris flower)
+    public static @NotNull Layer toLayer(Iris flower)
     {
         Layer temp = new Layer(4,1);
-        temp.getWeights()[0][0] = flower.getPetalLength();
-        temp.getWeights()[1][0] = flower.getPetalWidth();
-        temp.getWeights()[2][0] = flower.getSepalLength();
-        temp.getWeights()[3][0] = flower.getSepalWidth();
-
+        for (int i = 0; i < 4; i++) {
+            temp.getWeights()[i][0] = flower.getFeatures(i);
+        }
         return temp;
     }
 
+    public ArrayList<Double> toArray() {
+        ArrayList<Double> temp = new ArrayList<>();
+        for (int i = 0; i < numberOfNeurons; i++) {
+            for (int j = 0; j < numberOfInputs; j++) {
+                temp.add(weights[i][j]);
+            }
+        }
+        return temp;
+    }
 
+    public static Layer substract(@NotNull Layer a, @NotNull Layer b) {
+        Layer temp = new Layer(a.getNumberOfNeurons(), a.getNumberOfInputs());
+        for (int i = 0; i < a.getNumberOfNeurons(); i++) {
+            for (int j = 0; j < a.getNumberOfInputs(); j++) {
+                temp.getWeights()[i][j] = a.getWeights()[i][j] - b.getWeights()[i][j];
+            }
+        }
+        return temp;
+    }
 
+    public static @NotNull Layer transpose(Layer a) {
+        Layer temp = new Layer(a.getNumberOfInputs(), a.getNumberOfNeurons());
+        for(int i = 0; i < a.getNumberOfNeurons(); i++)
+        {
+            for(int j = 0; j < a.getNumberOfInputs(); j++)
+            {
+                temp.getWeights()[j][i] = a.getWeights()[i][j];
+            }
+        }
+        return temp;
+    }
+
+    public static Layer multiply(@NotNull Layer a, @NotNull Layer b) {
+        Layer temp = new Layer(a.getNumberOfNeurons() ,b.getNumberOfInputs());
+        for(int i = 0; i < temp.getNumberOfNeurons() ;i++)
+        {
+            for(int j = 0; j < temp.getNumberOfInputs(); j++)
+            {
+                double sum = 0;
+                for(int k = 0; k < a.getNumberOfInputs() ;k++)
+                {
+                    sum += a.getWeights()[i][k] * b.getWeights()[k][j];
+                }
+                temp.getWeights()[i][j] = sum;
+            }
+        }
+        return temp;
+    }
+
+    public void multiply(Layer a) {
+        for(int i = 0; i < a.getNumberOfNeurons(); i++)
+        {
+            for(int j = 0; j < a.getNumberOfInputs(); j++)
+            {
+                this.weights[i][j] *= a.getWeights()[i][j];
+            }
+        }
+    }
+
+    public void multiply(double a) {
+        for(int i = 0; i < getNumberOfNeurons(); i++)
+        {
+            for(int j = 0; j < getNumberOfInputs(); j++)
+            {
+                this.weights[i][j] *= a;
+            }
+        }
+    }
+
+    public void sigmoid() {
+        for(int i = 0; i < getNumberOfNeurons(); i++)
+        {
+            for(int j = 0; j < getNumberOfInputs(); j++)
+                this.weights[i][j] = Sigmoid.sigmoid(this.weights[i][j]);
+        }
+
+    }
+
+    public Layer dsigmoid() {
+        Layer temp = new Layer(getNumberOfNeurons(), getNumberOfInputs());
+        for(int i = 0; i < getNumberOfNeurons(); i++)
+        {
+            for(int j = 0;j < getNumberOfInputs(); j++)
+                temp.weights[i][j] = Sigmoid.dsigmoid(this.weights[i][j]);
+        }
+        return temp;
+    }
 }
