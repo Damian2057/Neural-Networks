@@ -16,7 +16,7 @@ public class App {
         ArrayList<Iris> trainingData;
 
         try { //Upload data
-            data = DataReader.readData("data2.csv");
+            data = DataReader.readData("data.csv");
             trainingData = DataReader.readData("trainingPartOfData.csv");
             System.out.println("Collected "+data.size()+" portions of data.\n");
             System.out.println("Collected "+trainingData.size()+" portions of data to train.\n");
@@ -105,19 +105,19 @@ public class App {
                     switch (enterChoice) {
                         case "1" -> {
                             if(stopConditionFlag) {
-                                neuralNetwork.trainByEpochs(data, (int) errorEpochsLevel
+                                neuralNetwork.trainByEpochs(trainingData, (int) errorEpochsLevel
                                         ,momentumFactor,true);
                             } else {
-                                neuralNetwork.trainByAccurany(data,errorEpochsLevel,momentumFactor,true);
+                                neuralNetwork.trainByAccurany(trainingData,errorEpochsLevel,momentumFactor,true);
                             }
 
                         }
                         case "2" -> {
                             if(stopConditionFlag) {
-                                neuralNetwork.trainByEpochs(data, (int) errorEpochsLevel
+                                neuralNetwork.trainByEpochs(trainingData, (int) errorEpochsLevel
                                         ,momentumFactor,false);
                             } else {
-                                neuralNetwork.trainByAccurany(data,errorEpochsLevel,momentumFactor,false);
+                                neuralNetwork.trainByAccurany(trainingData,errorEpochsLevel,momentumFactor,false);
                             }
                         }
                         default -> {
