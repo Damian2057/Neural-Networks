@@ -10,7 +10,7 @@ public class Iris implements Serializable {
     private final double petalLength;
     private final double petalWidth;
     private final int type;
-    private double[] matrixFigure = new double[5];
+    private final double[] matrixFigure = new double[5];
 
     public Iris(String sepalLength, String sepalWidth, String petalLength, String petalWidth, String type) {
         this.sepalLength = Double.parseDouble(sepalLength);
@@ -55,6 +55,4 @@ public class Iris implements Serializable {
         }
         return matrixFigure[number];
     }
-
-
 }

@@ -79,11 +79,32 @@ public class Layer implements Serializable {
         }
     }
 
-    public static @NotNull Layer toLayer(Iris flower)
+    public static Layer toLayer(@NotNull Iris flower)
     {
         Layer temp = new Layer(4,1);
         for (int i = 0; i < 4; i++) {
             temp.getWeights()[i][0] = flower.getFeatures(i);
+        }
+        return temp;
+    }
+
+    public static Layer expectedTarget(@NotNull Iris flower) {
+        Layer temp = new Layer(4,1);
+        if(flower.getType() == 0) {
+            temp.getWeights()[0][1] = 1;
+            temp.getWeights()[1][1] = 0;
+            temp.getWeights()[2][1] = 0;
+            temp.getWeights()[3][1] = 0;
+        } else if(flower.getType() == 1) {
+            temp.getWeights()[0][1] = 0;
+            temp.getWeights()[1][1] = 1;
+            temp.getWeights()[2][1] = 0;
+            temp.getWeights()[3][1] = 0;
+        } else {
+            temp.getWeights()[0][1] = 0;
+            temp.getWeights()[1][1] = 0;
+            temp.getWeights()[2][1] = 1;
+            temp.getWeights()[3][1] = 0;
         }
         return temp;
     }

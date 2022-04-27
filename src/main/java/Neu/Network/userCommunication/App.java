@@ -39,6 +39,12 @@ public class App {
                 System.out.println("Enter learning factor:");
                 double learningFactor = Double.parseDouble(scanner.nextLine());
                 neuralNetwork = new NeuralNetwork(4,2,4, learningFactor);
+                System.out.println("Do you want to reflect the bias:\nYes/No");
+                if(Objects.equals(scanner.nextLine(), "Yes")) {
+                    neuralNetwork.setBias(true);
+                } else {
+                    neuralNetwork.setBias(false);
+                }
             }
             case 2 -> {
                 try(FileNetworkDao<NeuralNetwork> fileManager = new FileNetworkDao<>()) {
@@ -124,16 +130,9 @@ public class App {
                 }
                 case 2 -> {
                     LogicSummary logicCalculator = new LogicSummary();
-
-                    boolean flag = false;
-                    System.out.println("Do you want to take into account the value of the bias input\nYes/No");
-                    if(Objects.equals(scanner.nextLine(), "Yes")) {
-                        flag = true;
-                    }
-
                     for (var sample : data) {
                        // LogicCalculator.Summarize(neuralNetwork.calculate(sample),sample);
-                        System.out.println(neuralNetwork.calculate(sample,flag));
+                        System.out.println(neuralNetwork.calculate(sample));
                     }
                     logicCalculator.summarizeOfAllTypes();
                 }
