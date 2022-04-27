@@ -1,7 +1,7 @@
 package Neu.Network.userCommunication;
 
 import Neu.Network.helper.LogicSummary;
-import Neu.Network.model.component.NeuralNetwork;
+import Neu.Network.model.components.NeuralNetwork;
 import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.FileNetworkDao;
 import Neu.Network.model.exceptions.model.LogicException;

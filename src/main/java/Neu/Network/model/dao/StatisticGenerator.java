@@ -1,6 +1,6 @@
 package Neu.Network.model.dao;
 
-import Neu.Network.config.GlobalVariables;
+import Neu.Network.global.GlobalVariables;
 import Neu.Network.model.exceptions.dao.FileOperationException;
 import java.io.*;
 

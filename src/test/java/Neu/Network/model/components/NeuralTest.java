@@ -1,4 +1,4 @@
-package Neu.Network.model.component;
+package Neu.Network.model.components;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

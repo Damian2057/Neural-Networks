@@ -1,4 +1,4 @@
-package Neu.Network.model.component;
+package Neu.Network.model.components;
 
 import Neu.Network.model.flower.Iris;
 
