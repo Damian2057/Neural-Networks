@@ -30,11 +30,16 @@ public class NeuralNetwork implements Serializable {
     public ArrayList<Double> calculate(Iris flower, boolean bias) {
         Layer inPut = Layer.toLayer(flower);
         Layer hiddenOutPut = Layer.multiply(hiddenNeurons,inPut);
-        hiddenOutPut.add(hiddenBias);
+        if(bias) {
+            hiddenOutPut.add(hiddenBias);
+        }
         hiddenOutPut.sigmoid();
 
         Layer outPut = Layer.multiply(outPutNeurons,hiddenOutPut);
-        outPut.add(outPutBias);
+
+        if(bias) {
+            outPut.add(outPutBias);
+        }
         outPut.sigmoid();
         return outPut.toArray();
     }
@@ -52,13 +57,18 @@ public class NeuralNetwork implements Serializable {
             this.accuracy = epochsError;
         }
         this.momentumFactor = momentumFactor;
+
+        if(!stopFlag) {
+            //Error here (accuracy)
+        }
+
+
         for (int i = 0; i < epochs; i++) {
             if(i % 100 == 0) {
                 //StatisticGenerator.saveEpochStats(GlobalConfiguration.epochsToCollect,5.569);
             }
 
         }
-        //TODO:train HERE
     }
 
     public int getEpochs() {
