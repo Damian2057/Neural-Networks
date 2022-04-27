@@ -108,7 +108,7 @@ public class Layer implements Serializable {
         return temp;
     }
 
-    public static @NotNull Layer transpose(Layer a) {
+    public static Layer transpose(@NotNull Layer a) {
         Layer temp = new Layer(a.getNumberOfInputs(), a.getNumberOfNeurons());
         for(int i = 0; i < a.getNumberOfNeurons(); i++)
         {
@@ -137,7 +137,7 @@ public class Layer implements Serializable {
         return temp;
     }
 
-    public void multiply(Layer a) {
+    public void multiply(@NotNull Layer a) {
         for(int i = 0; i < a.getNumberOfNeurons(); i++)
         {
             for(int j = 0; j < a.getNumberOfInputs(); j++)

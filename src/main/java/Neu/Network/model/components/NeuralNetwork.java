@@ -1,7 +1,6 @@
 package Neu.Network.model.components;
 
 import Neu.Network.model.flower.Iris;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -10,9 +9,14 @@ public class NeuralNetwork implements Serializable {
     private double momentumFactor = 0;
     private int epochs = 0;
     private double accuracy = 0.0;
+    private Layer hiddenNeurons, outPutNeurons, hiddenBias, outPutBias;
 
-    public NeuralNetwork(double learningFactor) {
+    public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
         this.learningFactor = learningFactor;
+        hiddenNeurons = new Layer(numberOfHiddenNeurons, numberOfInPuts);
+        outPutNeurons = new Layer(numberOfOutPuts, numberOfHiddenNeurons);
+        hiddenBias = new Layer(numberOfHiddenNeurons,1);
+        outPutBias = new Layer(numberOfOutPuts,1);
     }
 
     public double getLearningFactor() {
@@ -45,6 +49,7 @@ public class NeuralNetwork implements Serializable {
             if(i % 100 == 0) {
                 //StatisticGenerator.saveEpochStats(GlobalConfiguration.epochsToCollect,5.569);
             }
+
         }
         //TODO:train HERE
     }
