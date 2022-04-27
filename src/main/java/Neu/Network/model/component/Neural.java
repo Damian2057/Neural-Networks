@@ -20,8 +20,12 @@ public class Neural implements Serializable {
 
     private void initializeTheWeights() {
         for (int i = 0; i < countOfWeights; i++) {
-            //(((java.lang.Math.random() % 1000000L) / 1700.0) - 9.8)*0.0015;
-            weights.add(java.lang.Math.sin(java.lang.Math.random())/2);
+            //(((Math.random() % 1000000L) / 1700.0) - 9.8)*0.0015;
+            double value  = Math.sin(java.lang.Math.random())/2;
+            if(value == 0) {
+                value = 0.01492;
+            }
+            weights.add(value);
         }
     }
 
