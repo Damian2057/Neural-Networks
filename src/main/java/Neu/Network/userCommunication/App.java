@@ -101,7 +101,7 @@ public class App {
                     switch (enterChoice) {
                         case "1" -> {
                             if(stopConditionFlag) {
-                                neuralNetwork.trainByEpochs(data,Integer.parseInt(String.valueOf(errorEpochsLevel))
+                                neuralNetwork.trainByEpochs(data, (int) errorEpochsLevel
                                         ,momentumFactor,true);
                             } else {
                                 neuralNetwork.trainByAccurany(data,errorEpochsLevel,momentumFactor,true);
@@ -110,7 +110,7 @@ public class App {
                         }
                         case "2" -> {
                             if(stopConditionFlag) {
-                                neuralNetwork.trainByEpochs(data,Integer.parseInt(String.valueOf(errorEpochsLevel))
+                                neuralNetwork.trainByEpochs(data, (int) errorEpochsLevel
                                         ,momentumFactor,false);
                             } else {
                                 neuralNetwork.trainByAccurany(data,errorEpochsLevel,momentumFactor,false);
