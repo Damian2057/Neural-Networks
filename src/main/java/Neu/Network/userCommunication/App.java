@@ -16,7 +16,7 @@ public class App {
         ArrayList<Iris> trainingData;
 
         try { //Upload data
-            data = DataReader.readData("data.csv");
+            data = DataReader.readData("data2.csv");
             trainingData = DataReader.readData("trainingPartOfData.csv");
             System.out.println("Collected "+data.size()+" portions of data.\n");
             System.out.println("Collected "+trainingData.size()+" portions of data to train.\n");
