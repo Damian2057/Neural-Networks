@@ -7,8 +7,6 @@ import Neu.Network.model.dao.FileNetworkDao;
 import Neu.Network.model.exceptions.model.LogicException;
 import Neu.Network.model.flower.Iris;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class App {
     public static void main(String[] args) {
@@ -18,7 +16,7 @@ public class App {
         ArrayList<Iris> trainingData;
 
         try { //Upload data
-            data = DataReader.readData("data.csv");
+            data = DataReader.readData("data2.csv");
             trainingData = DataReader.readData("trainingPartOfData.csv");
             System.out.println("Collected "+data.size()+" portions of data.\n");
             System.out.println("Collected "+trainingData.size()+" portions of data to train.\n");
@@ -38,7 +36,7 @@ public class App {
             case 1 -> {
                 System.out.println("Enter learning factor:");
                 double learningFactor = Double.parseDouble(scanner.nextLine());
-                neuralNetwork = new NeuralNetwork(4,2,4, learningFactor);
+                neuralNetwork = new NeuralNetwork(4,20,4, learningFactor);
                 System.out.println("Do you want to reflect the bias:\nYes/No");
                 if(Objects.equals(scanner.nextLine(), "Yes")) {
                     neuralNetwork.setBias(true);
@@ -131,8 +129,9 @@ public class App {
                 case 2 -> {
                     LogicSummary logicCalculator = new LogicSummary();
                     for (var sample : data) {
-                       // LogicCalculator.Summarize(neuralNetwork.calculate(sample),sample);
-                        System.out.println(neuralNetwork.calculate(sample));
+                        ArrayList<Double> result = neuralNetwork.calculate(sample);
+                        logicCalculator.summarize(result,sample);
+                        System.out.println(result);
                     }
                     logicCalculator.summarizeOfAllTypes();
                 }
@@ -144,7 +143,6 @@ public class App {
                     return;
                 }
             }
-
             System.out.println("""
                 \nDo you want to save the network to a file?:
                 Yes/No""");

@@ -30,7 +30,7 @@ public class LogicSummary {
                 unidentified++;
             }
         } else if(flower.getType() == 1) {
-            if(result.get(0) > 0.8 && result.get(1) < 0.5 && result.get(2) < 0.5 && result.get(3) < 0.5) {
+            if(result.get(0) < 0.5 && result.get(1) > 0.8 && result.get(2) < 0.5 && result.get(3) < 0.5) {
                 System.out.println("Flower type SECOND found as expected, The significant factor has been reached:" + result.get(0));
                 secondType++;
             } else {
@@ -38,7 +38,7 @@ public class LogicSummary {
                 unidentified++;
             }
         } else {
-            if(result.get(0) > 0.8 && result.get(1) < 0.5 && result.get(2) < 0.5 && result.get(3) < 0.5) {
+            if(result.get(0) < 0.5 && result.get(1) < 0.5 && result.get(2) < 0.5 && result.get(3) > 0.8) {
                 System.out.println("Flower type THIRD found as expected, The significant factor has been reached:" + result.get(0));
                 thirdType++;
             } else {

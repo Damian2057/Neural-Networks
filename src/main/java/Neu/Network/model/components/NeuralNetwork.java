@@ -59,20 +59,41 @@ public class NeuralNetwork implements Serializable {
 
     public void train(Iris flower, double momentumFactor) {
         Layer inPut = Layer.toLayer(flower);
-        Layer hiddenOutPut = Layer.multiply(hiddenNeurons,inPut);
-        if(bias) {
-            hiddenOutPut.add(hiddenBias);
-        }
-        hiddenOutPut.sigmoid();
+        Layer hidden = Layer.multiply(hiddenNeurons, inPut);
+        hidden.add(hiddenBias);
+        hidden.sigmoid();
 
-        Layer outPut = Layer.multiply(outPutNeurons,hiddenOutPut);
-        if(bias) {
-            outPut.add(outPutBias);
-        }
-        outPut.sigmoid();
+        Layer output = Layer.multiply(outPutNeurons,hidden);
+        output.add(outPutBias);
+        output.sigmoid();
 
         Layer target = Layer.expectedTarget(flower);
 
+        Layer error = Layer.substract(target, output);
+        Layer gradient = output.dsigmoid();
+        gradient.multiply(error);
+        gradient.multiply(learningFactor);
+
+        //printLoss(error);
+
+        Layer hidden_T = Layer.transpose(hidden);
+        Layer who_delta =  Layer.multiply(gradient, hidden_T);
+
+        outPutNeurons.add(who_delta);
+        outPutBias.add(gradient);
+
+        Layer who_T = Layer.transpose(outPutNeurons);
+        Layer hidden_errors = Layer.multiply(who_T, error);
+
+        Layer h_gradient = hidden.dsigmoid();
+        h_gradient.multiply(hidden_errors);
+        h_gradient.multiply(learningFactor);
+
+        Layer i_T = Layer.transpose(inPut);
+        Layer wih_delta = Layer.multiply(h_gradient, i_T);
+
+        hiddenNeurons.add(wih_delta);
+        hiddenBias.add(h_gradient);
     }
 
     public LinkedList<Iris> getSequencesData(ArrayList<Iris> data, boolean flag) {

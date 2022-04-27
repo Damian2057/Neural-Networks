@@ -23,7 +23,7 @@ public class Layer implements Serializable {
     private void initializeTheWeights() {
         for(int i = 0; i < numberOfNeurons; i++) {
             for(int j = 0; j < numberOfInputs; j++) {
-                double value  = Math.sin(java.lang.Math.random())/2;
+                double value  = Math.sin(java.lang.Math.random());
                 if(value == 0) {
                     value = 0.01492;
                 }
@@ -35,7 +35,6 @@ public class Layer implements Serializable {
     public double[][] getWeights() {
         return weights;
     }
-
 
     public int getNumberOfNeurons() {
         return numberOfNeurons;
@@ -91,20 +90,20 @@ public class Layer implements Serializable {
     public static Layer expectedTarget(@NotNull Iris flower) {
         Layer temp = new Layer(4,1);
         if(flower.getType() == 0) {
-            temp.getWeights()[0][1] = 1;
-            temp.getWeights()[1][1] = 0;
-            temp.getWeights()[2][1] = 0;
-            temp.getWeights()[3][1] = 0;
+            temp.getWeights()[0][0] = 1;
+            temp.getWeights()[1][0] = 0;
+            temp.getWeights()[2][0] = 0;
+            temp.getWeights()[3][0] = 0;
         } else if(flower.getType() == 1) {
-            temp.getWeights()[0][1] = 0;
-            temp.getWeights()[1][1] = 1;
-            temp.getWeights()[2][1] = 0;
-            temp.getWeights()[3][1] = 0;
+            temp.getWeights()[0][0] = 0;
+            temp.getWeights()[1][0] = 1;
+            temp.getWeights()[2][0] = 0;
+            temp.getWeights()[3][0] = 0;
         } else {
-            temp.getWeights()[0][1] = 0;
-            temp.getWeights()[1][1] = 0;
-            temp.getWeights()[2][1] = 1;
-            temp.getWeights()[3][1] = 0;
+            temp.getWeights()[0][0] = 0;
+            temp.getWeights()[1][0] = 0;
+            temp.getWeights()[2][0] = 1;
+            temp.getWeights()[3][0] = 0;
         }
         return temp;
     }
