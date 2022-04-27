@@ -6,7 +6,7 @@ import java.io.*;
 
 public class StatisticGenerator {
 
-    public static void saveEpochStats(int numberOfEpoch, double value) {
+    public static void saveEpochErrorStats(int numberOfEpoch, double value) {
         try {
             String name = "Science_"+ GlobalVariables.iterator+".txt";
             GlobalVariables.iterator++;

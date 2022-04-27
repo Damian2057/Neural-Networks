@@ -1,5 +1,7 @@
 package Neu.Network.model.components;
 
+import Neu.Network.global.GlobalVariables;
+import Neu.Network.model.dao.StatisticGenerator;
 import Neu.Network.model.flower.Iris;
 import java.io.Serializable;
 import java.util.*;
@@ -136,8 +138,8 @@ public class NeuralNetwork implements Serializable {
             if(dataOrder.isEmpty()) {
                 dataOrder = getSequencesData(data,method);
             }
-            if(i % 100 == 0) {
-                //StatisticGenerator.saveEpochStats(GlobalConfiguration.epochsToCollect,5.569);
+            if(i % GlobalVariables.epochsToCollect == 0) {
+               // StatisticGenerator.saveEpochErrorStats(i,calculateError());
             }
             train(dataOrder.pollFirst(),momentumFactor);
         }
@@ -153,16 +155,16 @@ public class NeuralNetwork implements Serializable {
             if(dataOrder.isEmpty()) {
                 dataOrder = getSequencesData(data,method);
             }
-            if(iterator % 100 == 0) {
-                //StatisticGenerator.saveEpochStats(GlobalConfiguration.epochsToCollect,5.569);
+            if(iterator % GlobalVariables.epochsToCollect == 0) {
+                // StatisticGenerator.saveEpochErrorStats(i,calculateError());
             }
             train(dataOrder.pollFirst(),momentumFactor);
             iterator++;
         }
     }
 
-    private void calculateError() {
-
+    private double calculateError() {
+        return 0.0;
     }
 
     public int getEpochs() {
