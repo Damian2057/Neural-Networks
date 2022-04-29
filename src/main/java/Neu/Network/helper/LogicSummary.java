@@ -24,63 +24,36 @@ public class LogicSummary {
      * 1 - 0 1 0 0
      * 2 - 0 0 1 0
      */
-
+        //WRZUCAC najwiekszy klasifikator 0.99 0.9 0.9 0.9
+        //klasifikowac po pierwszej danie jako pierwszy typ, ktora bardziej pasuje do 1
+        //BLAD zaliczaj kiedy zle stwierdzi
+        //LOOCV
     public void summarize(@NotNull ArrayList<Double> result, Iris flower) {
 
-        if((result.get(0) > 0.8 && result.get(1) > 0.8 && result.get(2) > 0.8 && result.get(3) > 0.8)
-        || (result.get(0) < 0.8 && result.get(1) < 0.8 && result.get(2) < 0.8 && result.get(3) < 0.8)
-        || (result.get(0) < 0.8 && result.get(1) > 0.8 && result.get(2) > 0.8)
-        || (result.get(0) > 0.8 && result.get(1) < 0.8 && result.get(2) > 0.8)
-        || (result.get(0) > 0.8 && result.get(1) > 0.8 && result.get(2) < 0.8)) {
-            unidentified++;
-        } else if(result.get(0) > 0.8) {
+        if(result.get(0) > result.get(1) && result.get(0) > result.get(2)) {
             if(flower.getType() == 0) {
                 firstTypeTrue++;
             } else {
                 firstType++;
                 unidentified++;
             }
-        } else if(result.get(1) > 0.8) {
+        } else if(result.get(1) > result.get(0) && result.get(1) > result.get(2)) {
             if(flower.getType() == 1) {
                 secondTypeTrue++;
             } else {
                 secondType++;
                 unidentified++;
             }
-        } else if(result.get(2) > 0.8) {
+        } else if(result.get(2) > result.get(0) && result.get(2) > result.get(1))  {
             if(flower.getType() == 2) {
                 thirdTypeTrue++;
             } else {
                 thirdType++;
                 unidentified++;
             }
+        } else {
+            unidentified++;
         }
-
-//        if(flower.getType() == 0) {
-//            if(result.get(0) > 0.8 && result.get(1) < 0.5 && result.get(2) < 0.5 && result.get(3) < 0.5) {
-//                System.out.println("Flower type FIRST found as expected, The significant factor has been reached:" + result.get(0));
-//                firstType++;
-//            } else {
-//                System.out.println("The obtained data did not clearly identify the type of flower");
-//                unidentified++;
-//            }
-//        } else if(flower.getType() == 1) {
-//            if(result.get(0) < 0.5 && result.get(1) > 0.8 && result.get(2) < 0.5 && result.get(3) < 0.5) {
-//                System.out.println("Flower type SECOND found as expected, The significant factor has been reached:" + result.get(0));
-//                secondType++;
-//            } else {
-//                System.out.println("The obtained data did not clearly identify the type of flower");
-//                unidentified++;
-//            }
-//        } else {
-//            if(result.get(0) < 0.5 && result.get(1) < 0.5 && result.get(2) > 0.8 && result.get(3) < 0.5) {
-//                System.out.println("Flower type THIRD found as expected, The significant factor has been reached:" + result.get(0));
-//                thirdType++;
-//            } else {
-//                System.out.println("The obtained data did not clearly identify the type of flower");
-//                unidentified++;
-//            }
-//        }
     }
 
     private double precision() {
@@ -88,9 +61,8 @@ public class LogicSummary {
     }
 
     private double recall() {
-        double t = (firstTypeTrue+secondTypeTrue+thirdTypeTrue);
-        double u = (firstType+secondType+thirdType);
-        return t/(t+u);
+        return (firstTypeTrue+secondTypeTrue+thirdTypeTrue)
+                / ((firstTypeTrue+secondTypeTrue+thirdTypeTrue) + (firstType+secondType+thirdType));
     }
 
     private double fMeasure(double precision, double recall) {
