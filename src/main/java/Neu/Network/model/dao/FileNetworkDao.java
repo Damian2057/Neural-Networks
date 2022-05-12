@@ -3,7 +3,6 @@ package Neu.Network.model.dao;
 import Neu.Network.model.exceptions.dao.FileOperationException;
 import Neu.Network.model.exceptions.model.LogicException;
 import org.jetbrains.annotations.NotNull;
-
 import java.io.*;
 
 public class FileNetworkDao<T> implements Dao<T> {

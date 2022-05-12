@@ -24,10 +24,7 @@ public class LogicSummary {
      * 1 - 0 1 0 0
      * 2 - 0 0 1 0
      */
-        //WRZUCAC najwiekszy klasifikator 0.99 0.9 0.9 0.9
-        //klasifikowac po pierwszej danie jako pierwszy typ, ktora bardziej pasuje do 1
-        //BLAD zaliczaj kiedy zle stwierdzi
-        //LOOCV
+
     public void summarize(@NotNull ArrayList<Double> result, Iris flower) {
 
         if(result.get(0) > result.get(1) && result.get(0) > result.get(2)) {

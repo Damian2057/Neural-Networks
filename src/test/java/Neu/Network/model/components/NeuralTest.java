@@ -9,7 +9,7 @@ public class NeuralTest {
     public void weightTest() {
         for (int i = 0; i < 1000000; i++) {
             Layer neural = new Layer(1,1);
-            assertTrue(neural.getWeights()[0][0] >= -0.5 && neural.getWeights()[0][0] <= 0.5);
+            assertTrue(neural.getWeights()[0][0] >= -1 && neural.getWeights()[0][0] <= 1);
         }
     }
 

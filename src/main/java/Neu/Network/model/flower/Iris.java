@@ -1,7 +1,6 @@
 package Neu.Network.model.flower;
 
 import Neu.Network.model.exceptions.model.ShapeException;
-
 import java.io.Serializable;
 
 public class Iris implements Serializable {
