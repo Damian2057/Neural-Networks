@@ -19,6 +19,7 @@ public class NeuralNetwork implements Serializable {
     private final Layer prevOutPutNeurons;
     private final Layer hiddenBias;
     private final Layer outPutBias;
+
     private boolean bias;
 
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
@@ -63,7 +64,7 @@ public class NeuralNetwork implements Serializable {
         return outPut.toArray();
     }
 
-    public void train(Iris flower, double momentumFactor) {
+    public void train(Iris flower, double momentumFactor, int epochsNumber) {
         Layer inPut = Layer.toLayer(flower);
         Layer hidden = Layer.multiply(hiddenNeurons, inPut);
         hidden.add(hiddenBias);
@@ -79,8 +80,6 @@ public class NeuralNetwork implements Serializable {
         Layer gradient = output.dsigmoid();
         gradient.multiply(error);
         gradient.multiply(learningFactor);
-
-        //calculateError(error);
 
         Layer hidden_T = Layer.transpose(hidden);
         Layer who_delta =  Layer.multiply(gradient, hidden_T);
@@ -110,6 +109,11 @@ public class NeuralNetwork implements Serializable {
             hiddenNeurons.add(prev);
         }
         hiddenBias.add(h_gradient);
+
+        if(epochsNumber % GlobalVariables.epochsToCollect == 0) {
+            StatisticGenerator.saveEpochErrorStats("outputError",epochsNumber,calculateError(error.getWeights()));
+            StatisticGenerator.saveEpochErrorStats("hiddenError",epochsNumber,calculateError(hidden_errors.getWeights()));
+        }
     }
 
     public LinkedList<Iris> getSequencesData(ArrayList<Iris> data, boolean flag) {
@@ -138,11 +142,9 @@ public class NeuralNetwork implements Serializable {
             if(dataOrder.isEmpty()) {
                 dataOrder = getSequencesData(data,method);
             }
-            if(i % GlobalVariables.epochsToCollect == 0) {
-               // StatisticGenerator.saveEpochErrorStats(i,calculateError());
-            }
-            train(dataOrder.pollFirst(),momentumFactor);
+            train(dataOrder.pollFirst(),momentumFactor, i);
         }
+        saveWeights();
     }
 
     public void trainByAccurany(ArrayList<Iris> data, double accuracy, double momentumFactor, boolean method) {
@@ -158,13 +160,26 @@ public class NeuralNetwork implements Serializable {
             if(iterator % GlobalVariables.epochsToCollect == 0) {
                 // StatisticGenerator.saveEpochErrorStats(i,calculateError());
             }
-            train(dataOrder.pollFirst(),momentumFactor);
+            train(dataOrder.pollFirst(),momentumFactor,iterator);
             iterator++;
         }
     }
 
-    private double calculateError() {
-        return 0.0;
+    private void saveWeights() {
+        StatisticGenerator.saveWeight("HiddenNeurons", hiddenNeurons.getWeights());
+        StatisticGenerator.saveWeight("outPutNeurons", hiddenNeurons.getWeights());
+        StatisticGenerator.saveWeight("hiddenBias", hiddenBias.getWeights());
+        StatisticGenerator.saveWeight("outPutBias", outPutBias.getWeights());
+    }
+
+    private double calculateError(double[][] errors) {
+        double avg = 0.0;
+        for (int i = 0; i < errors.length; i++) {
+            for (int j = 0; j < errors[0].length; j++) {
+                avg += errors[i][j];
+            }
+        }
+        return avg;
     }
 
     public int getEpochs() {
