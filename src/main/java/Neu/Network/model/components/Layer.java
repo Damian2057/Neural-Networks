@@ -1,13 +1,15 @@
 package Neu.Network.model.components;
 
+import Neu.Network.model.exceptions.dao.CloneException;
 import Neu.Network.model.exceptions.model.ShapeException;
 import Neu.Network.model.flower.Iris;
 import Neu.Network.model.math.Sigmoid;
 import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
-public class Layer implements Serializable {
+public class Layer implements Serializable, Cloneable {
 
     private final int numberOfNeurons;
     private final int numberOfInputs;
@@ -23,13 +25,21 @@ public class Layer implements Serializable {
     private void initializeTheWeights() {
         for(int i = 0; i < numberOfNeurons; i++) {
             for(int j = 0; j < numberOfInputs; j++) {
-                double value  = Math.sin(java.lang.Math.random());
+                double value  = drawWeights();
                 if(value == 0) {
                     value = 0.01492;
                 }
-                this.weights[i][j] = value;
+                this.weights[i][j] = value/Math.sqrt(numberOfInputs);
             }
         }
+    }
+
+    private double drawWeights() {
+        int minValue = -100, maxValue = 100;
+        Random theRandom = new Random();
+        double theRandomValue = 0.0;
+        theRandomValue = minValue + (maxValue - minValue) * theRandom.nextDouble();
+        return Math.sin(theRandomValue);
     }
 
     public double[][] getWeights() {
@@ -56,6 +66,21 @@ public class Layer implements Serializable {
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();
+    }
+
+    @Override
+    public Layer clone() {
+        try {
+            Layer clone = (Layer) super.clone();
+            for(int i = 0; i < numberOfNeurons; i++) {
+                for(int j = 0; j < numberOfInputs; j++) {
+                    clone.getWeights()[i][j] = weights[i][j];
+                }
+            }
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new CloneException("Error creating clone");
+        }
     }
 
     public void add(int scalar) {

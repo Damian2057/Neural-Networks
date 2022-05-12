@@ -36,7 +36,7 @@ public class App {
             case 1 -> {
                 System.out.println("Enter learning factor:");
                 double learningFactor = Double.parseDouble(scanner.nextLine());
-                neuralNetwork = new NeuralNetwork(4,60,4, learningFactor);
+                neuralNetwork = new NeuralNetwork(4,6,4, learningFactor);
                 System.out.println("Do you want to reflect the bias:\nYes/No");
                 if(Objects.equals(scanner.nextLine(), "Yes")) {
                     neuralNetwork.setBias(true);
@@ -105,19 +105,19 @@ public class App {
                     switch (enterChoice) {
                         case "1" -> {
                             if(stopConditionFlag) {
-                                neuralNetwork.trainByEpochs(data, (int) errorEpochsLevel
+                                neuralNetwork.trainByEpochs(trainingData, (int) errorEpochsLevel
                                         ,momentumFactor,true);
                             } else {
-                                neuralNetwork.trainByAccurany(data,errorEpochsLevel,momentumFactor,true);
+                                neuralNetwork.trainByAccurany(trainingData,errorEpochsLevel,momentumFactor,true);
                             }
 
                         }
                         case "2" -> {
                             if(stopConditionFlag) {
-                                neuralNetwork.trainByEpochs(data, (int) errorEpochsLevel
+                                neuralNetwork.trainByEpochs(trainingData, (int) errorEpochsLevel
                                         ,momentumFactor,false);
                             } else {
-                                neuralNetwork.trainByAccurany(data,errorEpochsLevel,momentumFactor,false);
+                                neuralNetwork.trainByAccurany(trainingData,errorEpochsLevel,momentumFactor,false);
                             }
                         }
                         default -> {

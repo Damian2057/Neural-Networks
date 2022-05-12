@@ -1,13 +1,18 @@
 package Neu.Network.helper;
 
 import Neu.Network.model.flower.Iris;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class LogicSummary {
-    private int firstType = 0;
-    private int secondType = 0;
-    private int thirdType = 0;
-    private int unidentified = 0;
+    private double firstType = 0;
+    private double firstTypeTrue = 0;
+    private double secondType = 0;
+    private double secondTypeTrue = 0;
+    private double thirdType = 0;
+    private double thirdTypeTrue = 0;
+    private double unidentified = 0;
 
     /**
      * method summarizing the result
@@ -19,41 +24,45 @@ public class LogicSummary {
      * 1 - 0 1 0 0
      * 2 - 0 0 1 0
      */
+        //WRZUCAC najwiekszy klasifikator 0.99 0.9 0.9 0.9
+        //klasifikowac po pierwszej danie jako pierwszy typ, ktora bardziej pasuje do 1
+        //BLAD zaliczaj kiedy zle stwierdzi
+        //LOOCV
+    public void summarize(@NotNull ArrayList<Double> result, Iris flower) {
 
-    public void summarize(ArrayList<Double> result, Iris flower) {
-        if(flower.getType() == 0) {
-            if(result.get(0) > 0.8 && result.get(1) < 0.5 && result.get(2) < 0.5 && result.get(3) < 0.5) {
-                System.out.println("Flower type FIRST found as expected, The significant factor has been reached:" + result.get(0));
-                firstType++;
+        if(result.get(0) > result.get(1) && result.get(0) > result.get(2)) {
+            if(flower.getType() == 0) {
+                firstTypeTrue++;
             } else {
-                System.out.println("The obtained data did not clearly identify the type of flower");
+                firstType++;
                 unidentified++;
             }
-        } else if(flower.getType() == 1) {
-            if(result.get(0) < 0.5 && result.get(1) > 0.8 && result.get(2) < 0.5 && result.get(3) < 0.5) {
-                System.out.println("Flower type SECOND found as expected, The significant factor has been reached:" + result.get(0));
-                secondType++;
+        } else if(result.get(1) > result.get(0) && result.get(1) > result.get(2)) {
+            if(flower.getType() == 1) {
+                secondTypeTrue++;
             } else {
-                System.out.println("The obtained data did not clearly identify the type of flower");
+                secondType++;
+                unidentified++;
+            }
+        } else if(result.get(2) > result.get(0) && result.get(2) > result.get(1))  {
+            if(flower.getType() == 2) {
+                thirdTypeTrue++;
+            } else {
+                thirdType++;
                 unidentified++;
             }
         } else {
-            if(result.get(0) < 0.5 && result.get(1) < 0.5 && result.get(2) > 0.8 && result.get(3) < 0.5) {
-                System.out.println("Flower type THIRD found as expected, The significant factor has been reached:" + result.get(0));
-                thirdType++;
-            } else {
-                System.out.println("The obtained data did not clearly identify the type of flower");
-                unidentified++;
-            }
+            unidentified++;
         }
     }
 
     private double precision() {
-        return (firstType/50.0 + secondType/50.0 + thirdType/50.0);
+        return (firstTypeTrue+secondTypeTrue+thirdTypeTrue)/(firstTypeTrue+secondTypeTrue+thirdTypeTrue+unidentified);
     }
 
     private double recall() {
-        return (firstType/150.0 + secondType/150.0 + thirdType/150.0);
+        return (firstTypeTrue+secondTypeTrue+thirdTypeTrue)
+                / ((firstTypeTrue+secondTypeTrue+thirdTypeTrue) + (firstType+secondType+thirdType));
     }
 
     private double fMeasure(double precision, double recall) {
@@ -61,14 +70,14 @@ public class LogicSummary {
     }
 
     public void summarizeOfAllTypes() {
-        System.out.println("\nIdentified number of flowers of the first species: "+ firstType);
-        System.out.println("Identified number of flowers of the second species: " + secondType);
-        System.out.println("Identified number of flowers of the third species: " + thirdType);
+        System.out.println("\nIdentified number of flowers of the first species: "+ firstTypeTrue);
+        System.out.println("Identified number of flowers of the second species: " + secondTypeTrue);
+        System.out.println("Identified number of flowers of the third species: " + thirdTypeTrue);
         System.out.println("unidentified flowers: " + unidentified);
         double precision = precision();
         System.out.println("Precision: "+ precision);
         double recall = recall();
-        System.out.println("Recall: "+ precision);
+        System.out.println("Recall: "+ recall);
         System.out.println("F-Measure: " + fMeasure(precision,recall));
     }
 }
