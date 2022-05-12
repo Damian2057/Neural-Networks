@@ -176,7 +176,7 @@ public class NeuralNetwork implements Serializable {
         double avg = 0.0;
         for (int i = 0; i < errors.length; i++) {
             for (int j = 0; j < errors[0].length; j++) {
-                avg += errors[i][j];
+                avg += Math.abs(errors[i][j]);
             }
         }
         return avg;

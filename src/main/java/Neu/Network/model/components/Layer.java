@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Layer implements Serializable, Cloneable {
 
@@ -30,7 +29,7 @@ public class Layer implements Serializable, Cloneable {
                 if(value == 0) {
                     value = 0.01492;
                 }
-                this.weights[i][j] = value;
+                this.weights[i][j] = value/Math.sqrt(numberOfInputs);
             }
         }
     }
