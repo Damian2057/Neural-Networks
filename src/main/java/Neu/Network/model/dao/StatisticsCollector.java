@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 public class StatisticsCollector {
 
-    public static void saveError(String from ,ArrayList<Cord> error) {
+    public static void saveErrorFromWholeNetwork(String from , ArrayList<Cord> error) {
         try {
             String name = "Neurons_" + DataReader.getNumberOfHiddenNeurons() + "_" + from + ".csv";
-            File fout = new File("@../../statistics/" + name);
+            File fout = new File("@../../PythonCharts/statistics/" + name);
             FileOutputStream fos = new FileOutputStream(fout);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 
@@ -28,7 +28,7 @@ public class StatisticsCollector {
 
     public static void saveErrorOnSingleNeuron(String from, int neuron, int epoch, double error) {
         String name = "Neurons_" + DataReader.getNumberOfHiddenNeurons() + "_" + from + "_" + neuron + ".csv";
-        try(FileWriter fileWriter = new FileWriter("@../../statistics/" + name,true)) {
+        try(FileWriter fileWriter = new FileWriter("@../../PythonCharts/statistics/" + name,true)) {
             BufferedWriter bw = new BufferedWriter(fileWriter);
             bw.write(epoch + "," + Math.abs(error));
             bw.newLine();
@@ -41,7 +41,7 @@ public class StatisticsCollector {
     public static void saveWeight(String nameOfFile, double[][] weights) {
        try {
             String name = nameOfFile + getCurrentTime() + ".txt";
-            File fout = new File("@../../statistics/" + name);
+            File fout = new File("@../../PythonCharts/statistics/" + name);
             FileOutputStream fos = new FileOutputStream(fout);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 

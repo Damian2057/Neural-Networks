@@ -53,12 +53,14 @@ public class NeuralNetwork implements Serializable, Network {
         if(stopConditionFlag) {
             trainByEpochs(trainingData);
         } else {
-            trainByAccurany(trainingData);
+            trainByAccuracy(trainingData);
         }
         if(saveFlag) {
-            StatisticsCollector.saveError("ALL", errorList);
+            StatisticsCollector.saveErrorFromWholeNetwork("ALL", errorList);
         }
-
+        ChartGenerator chartGenerator = new ChartGenerator(String.valueOf(numberOfHiddenNeurons) ,errorList);
+        chartGenerator.pack();
+        chartGenerator.setVisible(true);
     }
 
     private void trainByEpochs(ArrayList<Iris> data) {
@@ -72,26 +74,13 @@ public class NeuralNetwork implements Serializable, Network {
             if(i % jumpEpoch == 0) {
                 printProgress(i);
                 if(saveFlag) {
-                    errorList.add(new Cord(i, calculatedError));
-                    for (int j = 0; j < hiddenErrors.getWeights().length; j++) {
-                        for (int k = 0; k < hiddenErrors.getWeights()[0].length; k++) {
-                            StatisticsCollector.saveErrorOnSingleNeuron("hidden", j, i, hiddenErrors.getWeights()[j][k]);
-                        }
-                    }
-                    for (int j = 0; j < outputError.getWeights().length; j++) {
-                        for (int k = 0; k < outputError.getWeights()[0].length; k++) {
-                            StatisticsCollector.saveErrorOnSingleNeuron("output", j, i, outputError.getWeights()[j][k]);
-                        }
-                    }
-                    }
+                    saveSingleNeurons(i);
+                }
             }
         }
-        ChartGenerator chartGenerator = new ChartGenerator(String.valueOf(numberOfHiddenNeurons) ,errorList);
-        chartGenerator.pack();
-        chartGenerator.setVisible(true);
     }
 
-    private void trainByAccurany(ArrayList<Iris> data) {
+    private void trainByAccuracy(ArrayList<Iris> data) {
         double prevError;
         int repeat = 0;
         int index = 0;
@@ -105,11 +94,9 @@ public class NeuralNetwork implements Serializable, Network {
             prevError = calculatedError;
             if(prevError < calculatedError) {
                 repeat++;
-            } else {
-                repeat = 0;
             }
 
-            if(repeat == 3) {
+            if(repeat > 1000 || index > 1000000) {
                 System.out.println("Successive iterations do not reduce the error.\n");
                 break;
             }
@@ -117,26 +104,13 @@ public class NeuralNetwork implements Serializable, Network {
             if(index % jumpEpoch == 0) {
                 printProgress(calculatedError);
                 if(saveFlag) {
-                    errorList.add(new Cord(index, calculatedError));
-                    for (int j = 0; j < hiddenErrors.getWeights().length; j++) {
-                        for (int k = 0; k < hiddenErrors.getWeights()[0].length; k++) {
-                            StatisticsCollector.saveErrorOnSingleNeuron("hidden", j, index, hiddenErrors.getWeights()[j][k]);
-                        }
-                    }
-                    for (int j = 0; j < outputError.getWeights().length; j++) {
-                        for (int k = 0; k < outputError.getWeights()[0].length; k++) {
-                            StatisticsCollector.saveErrorOnSingleNeuron("output", j, index, outputError.getWeights()[j][k]);
-                        }
-                    }
+                    saveSingleNeurons(index);
                 }
             }
 
             index++;
         }  while (accuracy < calculatedError);
         System.out.println("Number of iteration achieved: " + index);
-        ChartGenerator chartGenerator = new ChartGenerator(String.valueOf(numberOfHiddenNeurons) ,errorList);
-        chartGenerator.pack();
-        chartGenerator.setVisible(true);
     }
 
     private void train(Iris flower) {
@@ -297,7 +271,7 @@ public class NeuralNetwork implements Serializable, Network {
         this.bias = bias;
     }
 
-    public void printProgress(int i) {
+    private void printProgress(int i) {
         long newProgress = Math.round(( (double) i/epochs* 100.0));
         if(progress != newProgress) {
             progress = newProgress;
@@ -305,10 +279,24 @@ public class NeuralNetwork implements Serializable, Network {
         }
     }
 
-    public void printProgress(double sendError) {
+    private void printProgress(double sendError) {
         if(error != sendError) {
             error = sendError;
             System.out.println("Processing progress: " +  error);
+        }
+    }
+
+    private void saveSingleNeurons(int i) {
+        errorList.add(new Cord(i, calculatedError));
+        for (int j = 0; j < hiddenErrors.getWeights().length; j++) {
+            for (int k = 0; k < hiddenErrors.getWeights()[0].length; k++) {
+                StatisticsCollector.saveErrorOnSingleNeuron("hidden", j, i, hiddenErrors.getWeights()[j][k]);
+            }
+        }
+        for (int j = 0; j < outputError.getWeights().length; j++) {
+            for (int k = 0; k < outputError.getWeights()[0].length; k++) {
+                StatisticsCollector.saveErrorOnSingleNeuron("output", j, i, outputError.getWeights()[j][k]);
+            }
         }
     }
 
