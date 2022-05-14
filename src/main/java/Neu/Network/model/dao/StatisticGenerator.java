@@ -11,19 +11,30 @@ public class StatisticGenerator {
 
     public static void saveError(String from ,int neuron ,ArrayList<Cord> error) {
         try {
-            String name = "Neuron_" + from + neuron + "_"+ getCurrentTime()+".txt";
+            String name = "Neuron_" + from + neuron + ".txt";
             File fout = new File("@../../statistics/"+name);
             FileOutputStream fos = new FileOutputStream(fout);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 
-            for (int i = 0; i < error.size(); i++) {
-                bw.write(String.valueOf(error.get(i).getX()) + "," + String.valueOf(error.get(i).getY()));
+            for (Cord cord : error) {
+                bw.write(cord.getX() + "," + cord.getY());
                 bw.newLine();
             }
             bw.close();
         } catch (IOException e) {
             throw new FileOperationException("Error generating statistics neuron number: "
                     + neuron);
+        }
+    }
+
+    public static void addToNeuron(String from,int neuron, int epoch, double error) {
+        String name = "Neuron_" + from + neuron + ".txt";
+        try(FileWriter fileWriter = new FileWriter("@../../statistics/" + name,true)) {
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(epoch + "," + error);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -50,8 +61,6 @@ public class StatisticGenerator {
     public static String getCurrentTime() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_dd-HH-mm-ss");
         LocalDateTime now = LocalDateTime.now();
-        return dtf.format(now).toString();
+        return dtf.format(now);
     }
-
-    //TODO: collect data from testing
 }

@@ -37,7 +37,7 @@ public class Layer implements Serializable, Cloneable {
     private double drawWeights() {
         int minValue = -100, maxValue = 100;
         Random theRandom = new Random();
-        double theRandomValue = 0.0;
+        double theRandomValue;
         theRandomValue = minValue + (maxValue - minValue) * theRandom.nextDouble();
         return Math.sin(theRandomValue);
     }

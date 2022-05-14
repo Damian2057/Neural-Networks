@@ -3,13 +3,10 @@ package Neu.Network.model.dao;
 import Neu.Network.model.exceptions.dao.FileOperationException;
 import Neu.Network.model.flower.Iris;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
-
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 
@@ -39,11 +36,7 @@ public class DataReader {
             JSONObject jo = (JSONObject) obj;
             //var jump =  jo.get("epochJump");
             var fileSaveMode =  jo.get("fileSaveMode");
-            if(Objects.equals(fileSaveMode.toString(), "true")) {
-                return true;
-            } else {
-                return false;
-            }
+            return Objects.equals(fileSaveMode.toString(), "true");
         } catch (Exception e) {
             throw new FileOperationException("Error reading the configuration file");
         }

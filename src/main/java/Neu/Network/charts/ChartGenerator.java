@@ -19,8 +19,8 @@ public class ChartGenerator extends ApplicationFrame {
 
         final XYSeries originSeries = new XYSeries("f(x)");
 
-        for(int i = 0; i < error.size(); i++) {
-            originSeries.add(error.get(i).getX(),error.get(i).getY());
+        for (Cord cord : error) {
+            originSeries.add(cord.getX(), cord.getY());
         }
 
 

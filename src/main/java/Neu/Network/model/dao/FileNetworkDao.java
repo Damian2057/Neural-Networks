@@ -11,7 +11,7 @@ public class FileNetworkDao<T> implements Dao<T> {
 
     @Override
     public T read(String name) {
-        T temp = null;
+        T temp;
         try (FileInputStream inputFileStream = new FileInputStream(path+name);
              ObjectInputStream in = new ObjectInputStream(inputFileStream)) {
             temp = (T)in.readObject();
