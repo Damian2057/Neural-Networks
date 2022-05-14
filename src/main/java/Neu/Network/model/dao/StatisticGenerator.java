@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 public class StatisticGenerator {
 
-    public static void saveError(int neuron ,ArrayList<Cord> error) {
+    public static void saveError(String from ,int neuron ,ArrayList<Cord> error) {
         try {
-            String name = "Neuron_" + neuron + "_"+ getCurrentTime()+".txt";
+            String name = "Neuron_" + from + neuron + "_"+ getCurrentTime()+".txt";
             File fout = new File("@../../statistics/"+name);
             FileOutputStream fos = new FileOutputStream(fout);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));

@@ -4,7 +4,11 @@ import Neu.Network.charts.ChartGenerator;
 import Neu.Network.charts.Cord;
 import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.StatisticGenerator;
+import Neu.Network.model.exceptions.model.LogicException;
 import Neu.Network.model.flower.Iris;
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 
@@ -26,8 +30,8 @@ public class NeuralNetwork implements Serializable {
     private double accuracy = 0.0;
     private double momentumFactor = 0.0;
     private boolean typeOfSequence;
-    private ArrayList<Cord> errorList = new ArrayList<>();
-    private int jumpEpoch;
+    private final ArrayList<Cord> errorList = new ArrayList<>();
+    private final int jumpEpoch;
     private boolean saveFlag;
 
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
@@ -43,8 +47,8 @@ public class NeuralNetwork implements Serializable {
         try {
             jumpEpoch = DataReader.readEpochJump();
             saveFlag = DataReader.readFileSaveFlag();
-        } catch (Exception e) {
-            e.getMessage();
+        } catch (IOException | ParseException e) {
+            throw new LogicException("Configuration error");
         }
     }
 
@@ -54,6 +58,10 @@ public class NeuralNetwork implements Serializable {
         } else {
             trainByAccurany(trainingData);
         }
+        if(saveFlag) {
+            StatisticGenerator.saveError("ALL",-1, errorList);
+        }
+
     }
 
     public void trainByEpochs(ArrayList<Iris> data) {
@@ -195,7 +203,7 @@ public class NeuralNetwork implements Serializable {
         return outPut.toArray();
     }
 
-    private double calculateWholeNetworkError(double[][] outErrors, double[][] hiddenError) {
+    private void calculateWholeNetworkError(double[][] outErrors, double[][] hiddenError) {
         double avgFirst = 0.0;
         for (int i = 0; i < outErrors.length; i++) {
             for (int j = 0; j < outErrors[0].length; j++) {
@@ -213,10 +221,7 @@ public class NeuralNetwork implements Serializable {
 
         avgSecond = Math.sqrt(avgSecond / ((numberOfHiddenNeurons + numberOfOutPuts) * numberOfHiddenNeurons));
 
-        //avg = avg / (outErrors.length + hiddenError.length);
-
         this.calculatedError = (avgSecond + avgFirst);
-        return (avgSecond + avgFirst);
     }
 
     public void saveWeights() {
