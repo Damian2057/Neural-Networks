@@ -2,6 +2,7 @@ package Neu.Network.model.components;
 
 import Neu.Network.charts.ChartGenerator;
 import Neu.Network.charts.Cord;
+import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.StatisticGenerator;
 import Neu.Network.model.flower.Iris;
 import java.io.Serializable;
@@ -25,6 +26,9 @@ public class NeuralNetwork implements Serializable {
     private double accuracy = 0.0;
     private double momentumFactor = 0.0;
     private boolean typeOfSequence;
+    private ArrayList<Cord> errorList = new ArrayList<>();
+    private int jumpEpoch;
+    private boolean saveFlag;
 
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
         this.numberOfHiddenNeurons = numberOfHiddenNeurons;
@@ -36,6 +40,12 @@ public class NeuralNetwork implements Serializable {
         prevOutPutNeurons = outPutNeurons.clone();
         hiddenBias = new Layer(numberOfHiddenNeurons,1);
         outPutBias = new Layer(numberOfOutPuts,1);
+        try {
+            jumpEpoch = DataReader.readEpochJump();
+            saveFlag = DataReader.readFileSaveFlag();
+        } catch (Exception e) {
+            e.getMessage();
+        }
     }
 
     public void trainNetwork(ArrayList<Iris> trainingData) {
@@ -47,7 +57,6 @@ public class NeuralNetwork implements Serializable {
     }
 
     public void trainByEpochs(ArrayList<Iris> data) {
-        ArrayList<Cord> errorList = new ArrayList<>();
         for (int i = 0; i < epochs; i++) {
             if(typeOfSequence) {
                 Collections.shuffle(data);
@@ -55,7 +64,9 @@ public class NeuralNetwork implements Serializable {
             for (var sample : data) {
                 train(sample);
             }
-            errorList.add(new Cord(i,calculatedError));
+            if(i % jumpEpoch == 0) {
+                errorList.add(new Cord(i,calculatedError));
+            }
         }
         ChartGenerator chartGenerator = new ChartGenerator(String.valueOf(numberOfHiddenNeurons) ,errorList);
         chartGenerator.pack();
@@ -63,7 +74,6 @@ public class NeuralNetwork implements Serializable {
     }
 
     public void trainByAccurany(ArrayList<Iris> data) {
-        ArrayList<Cord> errorList = new ArrayList<>();
         double prevError;
         int repeat = 0;
         int index = 0;
@@ -85,7 +95,9 @@ public class NeuralNetwork implements Serializable {
                 System.out.println("Successive iterations do not reduce the error.\n");
                 break;
             }
-            errorList.add(new Cord(index,calculatedError));
+            if(index % jumpEpoch == 0) {
+                errorList.add(new Cord(index,calculatedError));
+            }
             index++;
         }  while (accuracy < calculatedError);
         System.out.println("Number of iteration achieved: " + index);
@@ -164,7 +176,7 @@ public class NeuralNetwork implements Serializable {
             hiddenBias.add(h_gradient);
         }
 
-        calculateError(outputError.getWeights(), hidden_errors.getWeights());
+        calculateWholeNetworkError(outputError.getWeights(), hidden_errors.getWeights());
     }
 
     public ArrayList<Double> calculate(Iris flower) {
@@ -183,7 +195,7 @@ public class NeuralNetwork implements Serializable {
         return outPut.toArray();
     }
 
-    private double calculateError(double[][] outErrors, double[][] hiddenError) {
+    private double calculateWholeNetworkError(double[][] outErrors, double[][] hiddenError) {
         double avgFirst = 0.0;
         for (int i = 0; i < outErrors.length; i++) {
             for (int j = 0; j < outErrors[0].length; j++) {

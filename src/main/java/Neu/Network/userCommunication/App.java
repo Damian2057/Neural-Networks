@@ -11,7 +11,6 @@ import java.util.*;
 public class App {
     public static void main(String[] args) {
         Scanner scanner= new Scanner(System.in);
-
         ArrayList<Iris> data;
         ArrayList<Iris> trainingData;
 

@@ -1,28 +1,30 @@
 package Neu.Network.model.dao;
 
+import Neu.Network.charts.Cord;
 import Neu.Network.model.exceptions.dao.FileOperationException;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class StatisticGenerator {
 
-    public static void saveEpochErrorStats(String fileName, int numberOfEpoch, double value) {
-      /*  try {
-            String name = "Science_" + fileName + "_"+ GlobalVariables.iterator+".txt";
-            GlobalVariables.iterator++;
+    public static void saveError(int neuron ,ArrayList<Cord> error) {
+        try {
+            String name = "Neuron_" + neuron + "_"+ getCurrentTime()+".txt";
             File fout = new File("@../../statistics/"+name);
             FileOutputStream fos = new FileOutputStream(fout);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 
-            bw.write(String.valueOf(numberOfEpoch));
-            bw.newLine();
-            bw.write(String.valueOf(value));
+            for (int i = 0; i < error.size(); i++) {
+                bw.write(String.valueOf(error.get(i).getX()) + "," + String.valueOf(error.get(i).getY()));
+                bw.newLine();
+            }
             bw.close();
         } catch (IOException e) {
-            throw new FileOperationException("Error generating statistics file number: "
-                    + GlobalVariables.iterator + "during the era: "+ numberOfEpoch + "value: "+ value);
-        }*/
+            throw new FileOperationException("Error generating statistics neuron number: "
+                    + neuron);
+        }
     }
 
     public static void saveWeight(String nameOfFile, double[][] weights) {
