@@ -14,11 +14,11 @@ public class App {
         ArrayList<Iris> data;
         ArrayList<Iris> trainingData;
 
-        try { //Upload data
+        try { //Download data
             data = DataReader.readData("data.csv");
             trainingData = DataReader.readData("trainingPartOfData.csv");
-            System.out.println("Collected "+data.size()+" portions of data.\n");
-            System.out.println("Collected "+trainingData.size()+" portions of data to train.\n");
+            System.out.println("Collected " + trainingData.size() + " portions of data to train.\n");
+            System.out.println("Collected " + data.size() + " portions of data.\n");
         } catch (Exception e) {
             System.out.println("Error occurred");
             return;
@@ -92,7 +92,6 @@ public class App {
                     System.out.println("Do take into account the momentum:\nYes/No");
                     if(Objects.equals(scanner.nextLine(), "Yes")) {
                         System.out.println("Enter the momentum factor:");
-                        neuralNetwork.setMomentumFlag(true);
                         neuralNetwork.setMomentumFactor(Double.parseDouble(scanner.nextLine()));
                     }
 
@@ -155,9 +154,7 @@ public class App {
                 case "No" -> {
 
                 }
-                case "Yes" -> {
-                    neuralNetwork.saveWeights();
-                }
+                case "Yes" -> neuralNetwork.saveWeights();
                 default -> System.out.println("Invalid option");
             }
         }

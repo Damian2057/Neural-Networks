@@ -11,8 +11,8 @@ public class StatisticsCollector {
 
     public static void saveError(String from ,ArrayList<Cord> error) {
         try {
-            String name = "Neurons_" + DataReader.getNumberOfHiddenNeurons() + "_" + from + ".txt";
-            File fout = new File("@../../statistics/"+name);
+            String name = "Neurons_" + DataReader.getNumberOfHiddenNeurons() + "_" + from + ".csv";
+            File fout = new File("@../../statistics/" + name);
             FileOutputStream fos = new FileOutputStream(fout);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 
@@ -27,19 +27,20 @@ public class StatisticsCollector {
     }
 
     public static void saveErrorOnSingleNeuron(String from, int neuron, int epoch, double error) {
-        String name = "Neurons_" + DataReader.getNumberOfHiddenNeurons() + "_" + from +"_"+ neuron +".txt";
+        String name = "Neurons_" + DataReader.getNumberOfHiddenNeurons() + "_" + from + "_" + neuron + ".csv";
         try(FileWriter fileWriter = new FileWriter("@../../statistics/" + name,true)) {
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(epoch + "," + error);
-
+            BufferedWriter bw = new BufferedWriter(fileWriter);
+            bw.write(epoch + "," + Math.abs(error));
+            bw.newLine();
+            bw.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new FileOperationException("Error generating statistics on "+ from + " in " + neuron);
         }
     }
 
     public static void saveWeight(String nameOfFile, double[][] weights) {
        try {
-            String name = nameOfFile + ".txt";
+            String name = nameOfFile + getCurrentTime() + ".txt";
             File fout = new File("@../../statistics/" + name);
             FileOutputStream fos = new FileOutputStream(fout);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
@@ -50,9 +51,9 @@ public class StatisticsCollector {
                 }
                 bw.newLine();
             }
+
             bw.close();
         } catch (IOException e) {
-           e.printStackTrace();
             throw new FileOperationException("Error during saving weights to  file number: ");
         }
     }
