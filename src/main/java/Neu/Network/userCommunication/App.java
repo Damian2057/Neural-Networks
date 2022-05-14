@@ -36,7 +36,7 @@ public class App {
             case 1 -> {
                 System.out.println("Enter learning factor:");
                 double learningFactor = Double.parseDouble(scanner.nextLine());
-                neuralNetwork = new NeuralNetwork(4,4,4, learningFactor);
+                neuralNetwork = new NeuralNetwork(4,6,4, learningFactor);
                 System.out.println("Do you want to reflect the bias:\nYes/No");
                 neuralNetwork.setBias(Objects.equals(scanner.nextLine(), "Yes"));
             }
@@ -117,12 +117,10 @@ public class App {
                     logicCalculator.summarizeOfAllTypes();
                 }
                 case 3 -> {
+                    //Exit
                     return;
                 }
-                default -> {
-                    System.out.println("Invalid option.");
-                    return;
-                }
+                default -> System.out.println("Invalid option.");
             }
             System.out.println("""
                                     
@@ -144,10 +142,21 @@ public class App {
                         System.out.println("Error occurred");
                     }
                 }
-                default -> {
-                    System.out.println("Invalid option, end of the program");
-                    return;
+                default -> System.out.println("Invalid option");
+            }
+            System.out.println("""
+                                    
+                    Do you want to save the weights to a file?:
+                    Yes/No""");
+            String printWeights = scanner.nextLine();
+            switch (printWeights) {
+                case "No" -> {
+
                 }
+                case "Yes" -> {
+                    neuralNetwork.saveWeights();
+                }
+                default -> System.out.println("Invalid option");
             }
         }
     }

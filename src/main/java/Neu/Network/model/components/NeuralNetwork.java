@@ -1,5 +1,7 @@
 package Neu.Network.model.components;
 
+import Neu.Network.charts.ChartGenerator;
+import Neu.Network.charts.Cord;
 import Neu.Network.model.dao.StatisticGenerator;
 import Neu.Network.model.flower.Iris;
 import java.io.Serializable;
@@ -20,10 +22,8 @@ public class NeuralNetwork implements Serializable {
     private boolean stopConditionFlag;
     private int epochs = 0;
     private double accuracy = 0.0;
-    private boolean momentumFlag;
     private double momentumFactor = 0.0;
     private boolean typeOfSequence;
-
 
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
         this.numberOfHiddenNeurons = numberOfHiddenNeurons;
@@ -45,6 +45,7 @@ public class NeuralNetwork implements Serializable {
     }
 
     public void trainByEpochs(ArrayList<Iris> data) {
+        ArrayList<Cord> errorList = new ArrayList<>();
         for (int i = 0; i < epochs; i++) {
             if(typeOfSequence) {
                 Collections.shuffle(data);
@@ -52,11 +53,15 @@ public class NeuralNetwork implements Serializable {
             for (var sample : data) {
                 train(sample);
             }
+            errorList.add(new Cord(i,calculatedError));
         }
-        saveWeights();
+        ChartGenerator chartGenerator = new ChartGenerator(String.valueOf(numberOfHiddenNeurons) ,errorList);
+        chartGenerator.pack();
+        chartGenerator.setVisible(true);
     }
 
     public void trainByAccurany(ArrayList<Iris> data) {
+        ArrayList<Cord> errorList = new ArrayList<>();
         double prevError;
         int repeat = 0;
         int index = 0;
@@ -78,10 +83,13 @@ public class NeuralNetwork implements Serializable {
                 System.out.println("Successive iterations do not reduce the error.\n");
                 break;
             }
+            errorList.add(new Cord(index,calculatedError));
             index++;
         }  while (accuracy < calculatedError);
         System.out.println("Number of iteration achieved: " + index);
-        saveWeights();
+        ChartGenerator chartGenerator = new ChartGenerator(String.valueOf(numberOfHiddenNeurons) ,errorList);
+        chartGenerator.pack();
+        chartGenerator.setVisible(true);
     }
 
     public void train(Iris flower) {
@@ -155,7 +163,6 @@ public class NeuralNetwork implements Serializable {
         }
 
         calculateError(outputError.getWeights(), hidden_errors.getWeights());
-
     }
 
     public ArrayList<Double> calculate(Iris flower) {
@@ -183,14 +190,17 @@ public class NeuralNetwork implements Serializable {
         }
         for (int i = 0; i < hiddenError.length; i++) {
             for (int j = 0; j < hiddenError[0].length; j++) {
-                avg += hiddenError[i][j];
+                avg += Math.abs(hiddenError[i][j]);
             }
         }
+
+        avg = avg / (outErrors.length + hiddenError.length);
+
         this.calculatedError = avg;
         return avg;
     }
 
-    private void saveWeights() {
+    public void saveWeights() {
         StatisticGenerator.saveWeight("HiddenNeurons" + StatisticGenerator.getCurrentTime()
                 , hiddenNeurons.getWeights());
         StatisticGenerator.saveWeight("outPutNeurons" + StatisticGenerator.getCurrentTime()
@@ -222,7 +232,6 @@ public class NeuralNetwork implements Serializable {
     }
 
     public void setMomentumFlag(boolean momentumFlag) {
-        this.momentumFlag = momentumFlag;
     }
 
     public void setMomentumFactor(double momentumFactor) {
