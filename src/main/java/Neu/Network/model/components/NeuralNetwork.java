@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 
-public class NeuralNetwork implements Serializable {
+public class NeuralNetwork implements Serializable, Network {
+
     private final int numberOfHiddenNeurons;
     private final int numberOfOutPuts;
     private final double learningFactor;
@@ -22,7 +23,6 @@ public class NeuralNetwork implements Serializable {
     private final Layer hiddenBias;
     private final Layer outPutBias;
     private double calculatedError = 0.0;
-
     private boolean bias;
     private boolean stopConditionFlag;
     private int epochs = 0;
@@ -51,6 +51,7 @@ public class NeuralNetwork implements Serializable {
         }
     }
 
+    @Override
     public void trainNetwork(ArrayList<Iris> trainingData) {
         if(stopConditionFlag) {
             trainByEpochs(trainingData);
@@ -186,6 +187,7 @@ public class NeuralNetwork implements Serializable {
         calculateWholeNetworkError(outputError.getWeights(), hidden_errors.getWeights());
     }
 
+    @Override
     public ArrayList<Double> calculate(Iris flower) {
         Layer inPut = Layer.toLayer(flower);
         Layer hiddenOutPut = Layer.multiply(hiddenNeurons,inPut);
