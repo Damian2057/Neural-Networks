@@ -36,7 +36,7 @@ public class App {
             case 1 -> {
                 System.out.println("Enter learning factor:");
                 double learningFactor = Double.parseDouble(scanner.nextLine());
-                neuralNetwork = new NeuralNetwork(4,2,4, learningFactor);
+                neuralNetwork = new NeuralNetwork(4,3,4, learningFactor);
                 System.out.println("Do you want to reflect the bias:\nYes/No");
                 if(Objects.equals(scanner.nextLine(), "Yes")) {
                     neuralNetwork.setBias(true);
@@ -79,16 +79,14 @@ public class App {
                     System.out.println("Stop condition:\n[1]. number of epochs\n[2]. error level");
                     String stopCondition = scanner.nextLine();
                     System.out.println("Enter value: ");
-                    double errorEpochsLevel;
-                    boolean stopConditionFlag;
                     switch (stopCondition) {
                         case "1" -> {
-                            errorEpochsLevel = Double.parseDouble(scanner.nextLine());
-                            stopConditionFlag = true;
+                            neuralNetwork.setStopConditionFlag(true);
+                            neuralNetwork.setEpochs(Integer.parseInt(scanner.nextLine()));
                         }
                         case "2" -> {
-                            errorEpochsLevel = Double.parseDouble(scanner.nextLine());
-                            stopConditionFlag = false;
+                            neuralNetwork.setStopConditionFlag(false);
+                            neuralNetwork.setAccuracy(Double.parseDouble(scanner.nextLine()));
                         }
                         default -> throw new IllegalStateException("Unexpected value: " + stopCondition);
                     }
@@ -97,34 +95,26 @@ public class App {
                     double momentumFactor = 0;
                     if(Objects.equals(scanner.nextLine(), "Yes")) {
                         System.out.println("Enter the momentum factor:");
-                        momentumFactor = Double.parseDouble(scanner.nextLine());
+                        neuralNetwork.setMomentumFlag(true);
+                        neuralNetwork.setMomentumFactor(Double.parseDouble(scanner.nextLine()));
                     }
 
                     System.out.println("Enter the method of entering the data:\n[1]. Random\n[2]. Sequentially");
                     String enterChoice = scanner.nextLine();
                     switch (enterChoice) {
                         case "1" -> {
-                            if(stopConditionFlag) {
-                                neuralNetwork.trainByEpochs(trainingData, (int) errorEpochsLevel
-                                        ,momentumFactor,true);
-                            } else {
-                                neuralNetwork.trainByAccurany(trainingData,errorEpochsLevel,momentumFactor,true);
-                            }
+                            neuralNetwork.setTypeOfSequence(true);
 
                         }
                         case "2" -> {
-                            if(stopConditionFlag) {
-                                neuralNetwork.trainByEpochs(trainingData, (int) errorEpochsLevel
-                                        ,momentumFactor,false);
-                            } else {
-                                neuralNetwork.trainByAccurany(trainingData,errorEpochsLevel,momentumFactor,false);
-                            }
+                            neuralNetwork.setTypeOfSequence(false);
                         }
                         default -> {
                             System.out.println("Invalid option.");
                             return;
                         }
                     }
+                    neuralNetwork.trainNetwork(trainingData);
                 }
                 case 2 -> {
                     SummaryCalculator logicCalculator = new SummaryCalculator();

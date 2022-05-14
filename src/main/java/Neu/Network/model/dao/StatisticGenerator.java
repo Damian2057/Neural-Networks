@@ -1,13 +1,12 @@
 package Neu.Network.model.dao;
 
-import Neu.Network.global.GlobalVariables;
 import Neu.Network.model.exceptions.dao.FileOperationException;
 import java.io.*;
 
 public class StatisticGenerator {
 
     public static void saveEpochErrorStats(String fileName, int numberOfEpoch, double value) {
-        try {
+      /*  try {
             String name = "Science_" + fileName + "_"+ GlobalVariables.iterator+".txt";
             GlobalVariables.iterator++;
             File fout = new File("@../../statistics/"+name);
@@ -21,11 +20,11 @@ public class StatisticGenerator {
         } catch (IOException e) {
             throw new FileOperationException("Error generating statistics file number: "
                     + GlobalVariables.iterator + "during the era: "+ numberOfEpoch + "value: "+ value);
-        }
+        }*/
     }
 
     public static void saveWeight(String nameOfFile, double[][] weights) {
-        try {
+      /* try {
             String name = nameOfFile + ".txt";
             File fout = new File("@../../statistics/" + name);
             FileOutputStream fos = new FileOutputStream(fout);
@@ -40,7 +39,7 @@ public class StatisticGenerator {
             bw.close();
         } catch (IOException e) {
             throw new FileOperationException("Error during saving weights to  file number: ");
-        }
+        }*/
     }
 
     //TODO: collect data from testing
