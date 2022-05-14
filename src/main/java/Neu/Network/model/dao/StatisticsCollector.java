@@ -7,11 +7,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class StatisticGenerator {
+public class StatisticsCollector {
 
-    public static void saveError(String from ,int neuron ,ArrayList<Cord> error) {
+    public static void saveError(String from ,ArrayList<Cord> error) {
         try {
-            String name = "Neuron_" + from + neuron + ".txt";
+            String name = "Neurons_" + DataReader.getNumberOfHiddenNeurons() + "_" + from + ".txt";
             File fout = new File("@../../statistics/"+name);
             FileOutputStream fos = new FileOutputStream(fout);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
@@ -22,13 +22,12 @@ public class StatisticGenerator {
             }
             bw.close();
         } catch (IOException e) {
-            throw new FileOperationException("Error generating statistics neuron number: "
-                    + neuron);
+            throw new FileOperationException("Error generating statistics");
         }
     }
 
     public static void saveErrorOnSingleNeuron(String from, int neuron, int epoch, double error) {
-        String name = "Neuron_" + from + neuron + ".txt";
+        String name = "Neurons_" + DataReader.getNumberOfHiddenNeurons() + "_" + from +"_"+ neuron +".txt";
         try(FileWriter fileWriter = new FileWriter("@../../statistics/" + name,true)) {
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(epoch + "," + error);

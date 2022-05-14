@@ -3,11 +3,9 @@ package Neu.Network.model.components;
 import Neu.Network.charts.ChartGenerator;
 import Neu.Network.charts.Cord;
 import Neu.Network.model.dao.DataReader;
-import Neu.Network.model.dao.StatisticGenerator;
-import Neu.Network.model.exceptions.model.LogicException;
+import Neu.Network.model.dao.StatisticsCollector;
 import Neu.Network.model.flower.Iris;
-import org.json.simple.parser.ParseException;
-import java.io.IOException;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -55,7 +53,7 @@ public class NeuralNetwork implements Serializable, Network {
             trainByAccurany(trainingData);
         }
         if(saveFlag) {
-            StatisticGenerator.saveError("ALL",-1, errorList);
+            StatisticsCollector.saveError("ALL", errorList);
         }
 
     }
@@ -222,13 +220,13 @@ public class NeuralNetwork implements Serializable, Network {
     }
 
     public void saveWeights() {
-        StatisticGenerator.saveWeight("HiddenNeurons" + StatisticGenerator.getCurrentTime()
+        StatisticsCollector.saveWeight("HiddenNeurons" + StatisticsCollector.getCurrentTime()
                 , hiddenNeurons.getWeights());
-        StatisticGenerator.saveWeight("outPutNeurons" + StatisticGenerator.getCurrentTime()
+        StatisticsCollector.saveWeight("outPutNeurons" + StatisticsCollector.getCurrentTime()
                 , hiddenNeurons.getWeights());
-        StatisticGenerator.saveWeight("hiddenBias" + StatisticGenerator.getCurrentTime()
+        StatisticsCollector.saveWeight("hiddenBias" + StatisticsCollector.getCurrentTime()
                 , hiddenBias.getWeights());
-        StatisticGenerator.saveWeight("outPutBias" + StatisticGenerator.getCurrentTime()
+        StatisticsCollector.saveWeight("outPutBias" + StatisticsCollector.getCurrentTime()
                 , outPutBias.getWeights());
     }
 
