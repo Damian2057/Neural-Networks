@@ -43,12 +43,8 @@ public class NeuralNetwork implements Serializable, Network {
         prevOutPutNeurons = outPutNeurons.clone();
         hiddenBias = new Layer(numberOfHiddenNeurons,1);
         outPutBias = new Layer(numberOfOutPuts,1);
-        try {
-            jumpEpoch = DataReader.readEpochJump();
-            saveFlag = DataReader.readFileSaveFlag();
-        } catch (IOException | ParseException e) {
-            throw new LogicException("Configuration error");
-        }
+        jumpEpoch = DataReader.getJump();
+        saveFlag = DataReader.getFileSaveFlag();
     }
 
     @Override

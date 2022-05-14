@@ -27,7 +27,7 @@ public class StatisticGenerator {
         }
     }
 
-    public static void addToNeuron(String from,int neuron, int epoch, double error) {
+    public static void saveErrorOnSingleNeuron(String from, int neuron, int epoch, double error) {
         String name = "Neuron_" + from + neuron + ".txt";
         try(FileWriter fileWriter = new FileWriter("@../../statistics/" + name,true)) {
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);

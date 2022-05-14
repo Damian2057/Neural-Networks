@@ -4,7 +4,6 @@ import Neu.Network.model.exceptions.dao.FileOperationException;
 import Neu.Network.model.flower.Iris;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import org.json.simple.JSONObject;
@@ -30,7 +29,7 @@ public class DataReader {
         }
     }
 
-    public static boolean readFileSaveFlag() {
+    public static boolean getFileSaveFlag() {
         try {
             Object obj = new JSONParser().parse(new FileReader("config.json"));
             JSONObject jo = (JSONObject) obj;
@@ -41,12 +40,24 @@ public class DataReader {
             throw new FileOperationException("Error reading the configuration file");
         }
     }
-    public static int readEpochJump() throws IOException, ParseException {
+
+    public static int getJump() {
         try {
             Object obj = new JSONParser().parse(new FileReader("config.json"));
             JSONObject jo = (JSONObject) obj;
             var jump =  jo.get("epochJump");
             return Integer.parseInt(jump.toString());
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
+
+    public static int getNumberOfHiddenNeurons() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var number =  jo.get("numberOfHiddenNeurons");
+            return Integer.parseInt(number.toString());
         } catch (Exception e) {
             throw new FileOperationException("Error reading the configuration file");
         }
