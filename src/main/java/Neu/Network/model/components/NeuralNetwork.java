@@ -7,7 +7,6 @@ import Neu.Network.model.dao.StatisticGenerator;
 import Neu.Network.model.exceptions.model.LogicException;
 import Neu.Network.model.flower.Iris;
 import org.json.simple.parser.ParseException;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
@@ -32,7 +31,7 @@ public class NeuralNetwork implements Serializable {
     private boolean typeOfSequence;
     private final ArrayList<Cord> errorList = new ArrayList<>();
     private final int jumpEpoch;
-    private boolean saveFlag;
+    private final boolean saveFlag;
 
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
         this.numberOfHiddenNeurons = numberOfHiddenNeurons;
@@ -64,7 +63,7 @@ public class NeuralNetwork implements Serializable {
 
     }
 
-    public void trainByEpochs(ArrayList<Iris> data) {
+    private void trainByEpochs(ArrayList<Iris> data) {
         for (int i = 0; i < epochs; i++) {
             if(typeOfSequence) {
                 Collections.shuffle(data);
@@ -81,7 +80,7 @@ public class NeuralNetwork implements Serializable {
         chartGenerator.setVisible(true);
     }
 
-    public void trainByAccurany(ArrayList<Iris> data) {
+    private void trainByAccurany(ArrayList<Iris> data) {
         double prevError;
         int repeat = 0;
         int index = 0;
@@ -114,7 +113,7 @@ public class NeuralNetwork implements Serializable {
         chartGenerator.setVisible(true);
     }
 
-    public void train(Iris flower) {
+    private void train(Iris flower) {
         Layer inPut = Layer.toLayer(flower);
         //generating the Hidden Layer Output
         Layer hidden = Layer.multiply(hiddenNeurons, inPut);
