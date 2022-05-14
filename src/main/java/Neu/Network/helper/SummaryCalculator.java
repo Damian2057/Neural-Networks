@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class LogicSummary {
+public class SummaryCalculator {
     private double firstType = 0;
     private double firstTypeTrue = 0;
     private double secondType = 0;

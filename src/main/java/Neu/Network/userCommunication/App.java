@@ -1,6 +1,6 @@
 package Neu.Network.userCommunication;
 
-import Neu.Network.helper.LogicSummary;
+import Neu.Network.helper.SummaryCalculator;
 import Neu.Network.model.components.NeuralNetwork;
 import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.FileNetworkDao;
@@ -36,7 +36,7 @@ public class App {
             case 1 -> {
                 System.out.println("Enter learning factor:");
                 double learningFactor = Double.parseDouble(scanner.nextLine());
-                neuralNetwork = new NeuralNetwork(4,6,4, learningFactor);
+                neuralNetwork = new NeuralNetwork(4,2,4, learningFactor);
                 System.out.println("Do you want to reflect the bias:\nYes/No");
                 if(Objects.equals(scanner.nextLine(), "Yes")) {
                     neuralNetwork.setBias(true);
@@ -127,7 +127,7 @@ public class App {
                     }
                 }
                 case 2 -> {
-                    LogicSummary logicCalculator = new LogicSummary();
+                    SummaryCalculator logicCalculator = new SummaryCalculator();
                     for (var sample : data) {
                         ArrayList<Double> result = neuralNetwork.calculate(sample);
                         logicCalculator.summarize(result,sample);
