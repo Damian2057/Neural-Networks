@@ -57,10 +57,10 @@ public class NeuralNetwork implements Serializable {
     }
 
     public void trainByAccurany(ArrayList<Iris> data) {
-        double prevError = 0.0;
+        double prevError;
         int repeat = 0;
         int index = 0;
-        while (accuracy > calculatedError) {
+        do {
             if(typeOfSequence) {
                 Collections.shuffle(data);
             }
@@ -75,12 +75,12 @@ public class NeuralNetwork implements Serializable {
             }
 
             if(repeat == 3) {
-                System.out.println("Successive iterations do not reduce the error.\n" +
-                        "Number of iteration achieved: " + index);
+                System.out.println("Successive iterations do not reduce the error.\n");
                 break;
             }
             index++;
-        }
+        }  while (accuracy < calculatedError);
+        System.out.println("Number of iteration achieved: " + index);
         saveWeights();
     }
 

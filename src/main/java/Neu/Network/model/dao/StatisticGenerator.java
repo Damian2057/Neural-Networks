@@ -40,14 +40,15 @@ public class StatisticGenerator {
             }
             bw.close();
         } catch (IOException e) {
+           e.printStackTrace();
             throw new FileOperationException("Error during saving weights to  file number: ");
         }
     }
 
     public static String getCurrentTime() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_dd-HH-mm-ss");
         LocalDateTime now = LocalDateTime.now();
-        return dtf.format(now);
+        return dtf.format(now).toString();
     }
 
     //TODO: collect data from testing
