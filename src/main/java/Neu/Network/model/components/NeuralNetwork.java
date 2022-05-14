@@ -9,6 +9,7 @@ import java.util.*;
 
 public class NeuralNetwork implements Serializable {
     private final int numberOfHiddenNeurons;
+    private final int numberOfOutPuts;
     private final double learningFactor;
     private final Layer hiddenNeurons;
     private final Layer prevHiddenNeurons;
@@ -27,6 +28,7 @@ public class NeuralNetwork implements Serializable {
 
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
         this.numberOfHiddenNeurons = numberOfHiddenNeurons;
+        this.numberOfOutPuts = numberOfOutPuts;
         this.learningFactor = learningFactor;
         hiddenNeurons = new Layer(numberOfHiddenNeurons, numberOfInPuts);
         prevHiddenNeurons = hiddenNeurons.clone();
@@ -182,22 +184,27 @@ public class NeuralNetwork implements Serializable {
     }
 
     private double calculateError(double[][] outErrors, double[][] hiddenError) {
-        double avg = 0.0;
+        double avgFirst = 0.0;
         for (int i = 0; i < outErrors.length; i++) {
             for (int j = 0; j < outErrors[0].length; j++) {
-                avg += Math.abs(outErrors[i][j]);
+                avgFirst += Math.abs(outErrors[i][j]) * Math.abs(outErrors[i][j]);
             }
         }
+        avgFirst = Math.sqrt(avgFirst / ((numberOfHiddenNeurons + numberOfOutPuts) * numberOfOutPuts));
+
+        double avgSecond = 0.0;
         for (int i = 0; i < hiddenError.length; i++) {
             for (int j = 0; j < hiddenError[0].length; j++) {
-                avg += Math.abs(hiddenError[i][j]);
+                avgSecond += Math.abs(hiddenError[i][j]) * Math.abs(hiddenError[i][j]);
             }
         }
 
-        avg = avg / (outErrors.length + hiddenError.length);
+        avgSecond = Math.sqrt(avgSecond / ((numberOfHiddenNeurons + numberOfOutPuts) * numberOfHiddenNeurons));
 
-        this.calculatedError = avg;
-        return avg;
+        //avg = avg / (outErrors.length + hiddenError.length);
+
+        this.calculatedError = (avgSecond + avgFirst);
+        return (avgSecond + avgFirst);
     }
 
     public void saveWeights() {
