@@ -1,6 +1,6 @@
 package Neu.Network.userCommunication;
 
-import Neu.Network.helper.SummaryCalculator;
+import Neu.Network.summary.SummaryCalculator;
 import Neu.Network.model.components.NeuralNetwork;
 import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.FileNetworkDao;
@@ -31,18 +31,14 @@ public class App {
                 [2]. Load the saved network""");
         int networkChoice = Integer.parseInt(scanner.nextLine());
 
-        NeuralNetwork neuralNetwork = null;
+        NeuralNetwork neuralNetwork;
         switch (networkChoice) {
             case 1 -> {
                 System.out.println("Enter learning factor:");
                 double learningFactor = Double.parseDouble(scanner.nextLine());
-                neuralNetwork = new NeuralNetwork(4,3,4, learningFactor);
+                neuralNetwork = new NeuralNetwork(4,4,4, learningFactor);
                 System.out.println("Do you want to reflect the bias:\nYes/No");
-                if(Objects.equals(scanner.nextLine(), "Yes")) {
-                    neuralNetwork.setBias(true);
-                } else {
-                    neuralNetwork.setBias(false);
-                }
+                neuralNetwork.setBias(Objects.equals(scanner.nextLine(), "Yes"));
             }
             case 2 -> {
                 try(FileNetworkDao<NeuralNetwork> fileManager = new FileNetworkDao<>()) {
@@ -92,7 +88,6 @@ public class App {
                     }
 
                     System.out.println("Do take into account the momentum:\nYes/No");
-                    double momentumFactor = 0;
                     if(Objects.equals(scanner.nextLine(), "Yes")) {
                         System.out.println("Enter the momentum factor:");
                         neuralNetwork.setMomentumFlag(true);
@@ -102,18 +97,14 @@ public class App {
                     System.out.println("Enter the method of entering the data:\n[1]. Random\n[2]. Sequentially");
                     String enterChoice = scanner.nextLine();
                     switch (enterChoice) {
-                        case "1" -> {
-                            neuralNetwork.setTypeOfSequence(true);
-
-                        }
-                        case "2" -> {
-                            neuralNetwork.setTypeOfSequence(false);
-                        }
+                        case "1" -> neuralNetwork.setTypeOfSequence(true);
+                        case "2" -> neuralNetwork.setTypeOfSequence(false);
                         default -> {
                             System.out.println("Invalid option.");
                             return;
                         }
                     }
+                    neuralNetwork.showInformation();
                     neuralNetwork.trainNetwork(trainingData);
                 }
                 case 2 -> {
@@ -134,8 +125,9 @@ public class App {
                 }
             }
             System.out.println("""
-                \nDo you want to save the network to a file?:
-                Yes/No""");
+                                    
+                    Do you want to save the network to a file?:
+                    Yes/No""");
             String saveChoice = scanner.nextLine();
             switch (saveChoice) {
                 case "No" -> {

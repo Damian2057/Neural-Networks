@@ -1,4 +1,4 @@
-package Neu.Network.helper;
+package Neu.Network.summary;
 
 import Neu.Network.model.flower.Iris;
 import org.jetbrains.annotations.NotNull;
