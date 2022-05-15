@@ -36,7 +36,6 @@ public class App {
                 System.out.println("Enter learning factor:");
                 double learningFactor = Double.parseDouble(scanner.nextLine());
                 neuralNetwork = new NeuralNetwork(4
-                        ,DataReader.getNumberOfHiddenLayers()
                         ,DataReader.getNumberOfHiddenNeurons()
                         ,4
                         , learningFactor);

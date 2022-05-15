@@ -62,15 +62,4 @@ public class DataReader {
             throw new FileOperationException("Error reading the configuration file");
         }
     }
-
-    public static int getNumberOfHiddenLayers() {
-        try {
-            Object obj = new JSONParser().parse(new FileReader("config.json"));
-            JSONObject jo = (JSONObject) obj;
-            var number =  jo.get("numberOfHiddenLayers");
-            return Integer.parseInt(number.toString());
-        } catch (Exception e) {
-            throw new FileOperationException("Error reading the configuration file");
-        }
-    }
 }
