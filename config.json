@@ -1,5 +1,6 @@
 {
   "numberOfHiddenNeurons": 4,
+  "numberOfHiddenLayers": 4,
   "epochJump": 100,
-  "fileSaveMode": true
+  "fileSaveMode": false
 }

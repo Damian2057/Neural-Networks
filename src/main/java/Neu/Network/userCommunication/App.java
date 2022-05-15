@@ -37,6 +37,7 @@ public class App {
                 double learningFactor = Double.parseDouble(scanner.nextLine());
                 neuralNetwork = new NeuralNetwork(4
                         ,DataReader.getNumberOfHiddenNeurons()
+                        ,DataReader.getNumberOfHiddenLayers()
                         ,4
                         , learningFactor);
                 System.out.println("Do you want to reflect the bias:\nYes/No");
