@@ -1,15 +1,30 @@
 import matplotlib.pyplot as plt
 from numpy import genfromtxt
+import os
 
-data = genfromtxt('statistics/Neurons_4_output_3.csv', delimiter=",")
-data2 = genfromtxt('statistics/Neurons_4_hidden_0.csv', delimiter=",")
 
-epoch = data[:,0]
-error = data[:,1]
+def generatechart(filename):
+    data = genfromtxt("statistics/"+filename, delimiter=",")
+    epoch = data[:, 0]
+    error = data[:, 1]
+    plt.plot(epoch, error)
+    plt.title(filename)
+    plt.xlabel('Epoch')
+    plt.ylabel('Error')
+    plt.show()
 
-plt.plot(epoch, error)
-plt.plot(data2[:,0], data2[:,1])
-plt.title('Neurons Network')
-plt.xlabel('Epoch')
-plt.ylabel('Error')
-plt.show()
+def generateFromData():
+    for x in os.listdir("statistics"):
+        if x.__contains__('ALL'):
+            data = genfromtxt("statistics/"+x, delimiter=",")
+            plt.plot(data[:, 0], data[:, 1])
+    plt.title('Sum')
+    plt.xlabel('Epoch')
+    plt.ylabel('Error')
+    plt.show()
+
+for x in os.listdir("statistics"):
+    if x.endswith(".csv"):
+        generatechart(x)
+
+generateFromData()
