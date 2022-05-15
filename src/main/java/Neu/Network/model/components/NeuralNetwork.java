@@ -34,6 +34,7 @@ public class NeuralNetwork implements Serializable, Network {
     private final boolean saveFlag;
     private long progress;
     private double error;
+    private final LayerContainer layerContainer;
 
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenLayers, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
         this.numberOfHiddenNeurons = numberOfHiddenNeurons;
@@ -48,6 +49,7 @@ public class NeuralNetwork implements Serializable, Network {
         outPutBias = new Layer(numberOfOutPuts,1);
         jumpEpoch = DataReader.getJump();
         saveFlag = DataReader.getFileSaveFlag();
+        layerContainer = new LayerContainer(numberOfHiddenNeurons,numberOfHiddenLayers,numberOfInPuts);
     }
 
     @Override
@@ -196,6 +198,7 @@ public class NeuralNetwork implements Serializable, Network {
             hiddenOutPut.add(hiddenBias);
         }
         hiddenOutPut.sigmoid();
+        // Layer hiddenOutPut = layerContainer.calculate(inPut);
 
         Layer outPut = Layer.multiply(outPutNeurons,hiddenOutPut);
         if(bias) {
@@ -271,6 +274,7 @@ public class NeuralNetwork implements Serializable, Network {
 
     public void setBias(boolean bias) {
         this.bias = bias;
+        layerContainer.setBias(bias);
     }
 
     private void printProgress(int i) {

@@ -128,7 +128,7 @@ public class Layer implements Serializable, Cloneable {
             temp.getWeights()[0][0] = 0;
             temp.getWeights()[1][0] = 0;
             temp.getWeights()[2][0] = 1;
-            temp.getWeights()[3][0] = 0;
+           // temp.getWeights()[3][0] = 0;
         }
         return temp;
     }
@@ -167,12 +167,12 @@ public class Layer implements Serializable, Cloneable {
 
     public static Layer multiply(@NotNull Layer a, @NotNull Layer b) {
         Layer temp = new Layer(a.getNumberOfNeurons() ,b.getNumberOfInputs());
-        for(int i = 0; i < temp.getNumberOfNeurons() ;i++)
+        for(int i = 0; i < temp.getNumberOfNeurons(); i++)
         {
             for(int j = 0; j < temp.getNumberOfInputs(); j++)
             {
                 double sum = 0;
-                for(int k = 0; k < a.getNumberOfInputs() ;k++)
+                for(int k = 0; k < a.getNumberOfInputs(); k++)
                 {
                     sum += a.getWeights()[i][k] * b.getWeights()[k][j];
                 }
