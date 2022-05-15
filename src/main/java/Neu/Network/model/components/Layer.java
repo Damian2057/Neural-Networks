@@ -1,5 +1,6 @@
 package Neu.Network.model.components;
 
+import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.exceptions.dao.CloneException;
 import Neu.Network.model.exceptions.model.ShapeException;
 import Neu.Network.model.flower.Iris;
@@ -111,9 +112,13 @@ public class Layer implements Serializable, Cloneable {
         return temp;
     }
 
-    public static Layer expectedTarget(@NotNull Iris flower) {
-        Layer temp = new Layer(4,1);
-        if(flower.getType() == 0) {
+    public static Layer expectedTarget(@NotNull Iris flower, int outPut) {
+        Layer temp = new Layer(outPut,1);
+        for (int i = 0; i < outPut; i++) {
+            temp.getWeights()[i][0] = flower.getPattern()[i][0];
+        }
+
+        /*if(flower.getType() == 0) {
             temp.getWeights()[0][0] = 1;
             temp.getWeights()[1][0] = 0;
             temp.getWeights()[2][0] = 0;
@@ -128,7 +133,7 @@ public class Layer implements Serializable, Cloneable {
             temp.getWeights()[1][0] = 0;
             temp.getWeights()[2][0] = 1;
             temp.getWeights()[3][0] = 0;
-        }
+        }*/
         return temp;
     }
 

@@ -10,6 +10,7 @@ public class Iris implements Serializable {
     private final double petalWidth;
     private final int type;
     private final double[] matrixFigure = new double[5];
+    private final double[][] pattern = new double[4][1];
 
     public Iris(String sepalLength, String sepalWidth, String petalLength, String petalWidth, String type) {
         this.sepalLength = Double.parseDouble(sepalLength);
@@ -18,6 +19,7 @@ public class Iris implements Serializable {
         this.petalWidth = Double.parseDouble(petalWidth);
         this.type = Integer.parseInt(type);
         initIris();
+        initPattern();
     }
 
     public double getSepalLength() {
@@ -40,7 +42,7 @@ public class Iris implements Serializable {
         return type;
     }
 
-    public void initIris() {
+    private void initIris() {
         matrixFigure[0] = getPetalWidth();
         matrixFigure[1] = getPetalLength();
         matrixFigure[2] = getSepalWidth();
@@ -48,10 +50,33 @@ public class Iris implements Serializable {
         matrixFigure[4] = getType();
     }
 
+    private void initPattern() {
+        if(getType() == 0) {
+            pattern[0][0] = 1;
+            pattern[1][0] = 0;
+            pattern[2][0] = 0;
+            pattern[3][0] = 0;
+        } else if(getType() == 1) {
+            pattern[0][0] = 0;
+            pattern[1][0] = 1;
+            pattern[2][0] = 0;
+            pattern[3][0] = 0;
+        } else {
+            pattern[0][0] = 0;
+            pattern[1][0] = 0;
+            pattern[2][0] = 1;
+            pattern[3][0] = 0;
+        }
+    }
+
     public double getFeatures(int number) {
         if(number > matrixFigure.length) {
             throw new ShapeException("An index outside the characteristics of the flower");
         }
         return matrixFigure[number];
+    }
+
+    public double[][] getPattern() {
+        return pattern;
     }
 }

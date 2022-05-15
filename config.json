@@ -1,4 +1,6 @@
 {
+  "numberOfInPuts": 4,
+  "numberOfOutPuts": 4,
   "numberOfHiddenNeurons": 4,
   "epochJump": 100,
   "fileSaveMode": true

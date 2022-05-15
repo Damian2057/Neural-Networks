@@ -35,9 +35,9 @@ public class App {
             case 1 -> {
                 System.out.println("Enter learning factor:");
                 double learningFactor = Double.parseDouble(scanner.nextLine());
-                neuralNetwork = new NeuralNetwork(4
+                neuralNetwork = new NeuralNetwork(DataReader.getNumberOfInPuts()
                         ,DataReader.getNumberOfHiddenNeurons()
-                        ,4
+                        ,DataReader.getNumberOfOutPuts()
                         , learningFactor);
                 System.out.println("Do you want to reflect the bias:\nYes/No");
                 neuralNetwork.setBias(Objects.equals(scanner.nextLine(), "Yes"));

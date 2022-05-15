@@ -62,4 +62,26 @@ public class DataReader {
             throw new FileOperationException("Error reading the configuration file");
         }
     }
+
+    public static int getNumberOfInPuts() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var number =  jo.get("numberOfInPuts");
+            return Integer.parseInt(number.toString());
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
+
+    public static int getNumberOfOutPuts() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var number =  jo.get("numberOfOutPuts");
+            return Integer.parseInt(number.toString());
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
 }

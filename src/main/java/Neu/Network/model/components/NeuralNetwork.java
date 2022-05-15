@@ -131,7 +131,7 @@ public class NeuralNetwork implements Serializable, Network {
         output.sigmoid();
 
         //get Layer with expected pattern
-        Layer target = Layer.expectedTarget(flower);
+        Layer target = Layer.expectedTarget(flower,numberOfOutPuts);
 
         //calculate outputError
         //outputError = result(target Layer) - output
