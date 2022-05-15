@@ -2,6 +2,7 @@
   "numberOfInPuts": 4,
   "numberOfOutPuts": 4,
   "numberOfHiddenNeurons": 4,
+  "numberOfHiddenLayers": 2,
   "epochJump": 100,
   "fileSaveMode": true
 }
