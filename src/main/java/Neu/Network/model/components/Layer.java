@@ -103,8 +103,7 @@ public class Layer implements Serializable, Cloneable {
         }
     }
 
-    public static Layer toLayer(@NotNull Iris flower)
-    {
+    public static Layer toLayer(@NotNull Iris flower) {
         Layer temp = new Layer(4,1);
         for (int i = 0; i < 4; i++) {
             temp.getWeights()[i][0] = flower.getFeatures(i);
@@ -128,7 +127,7 @@ public class Layer implements Serializable, Cloneable {
             temp.getWeights()[0][0] = 0;
             temp.getWeights()[1][0] = 0;
             temp.getWeights()[2][0] = 1;
-           // temp.getWeights()[3][0] = 0;
+            temp.getWeights()[3][0] = 0;
         }
         return temp;
     }
@@ -155,10 +154,8 @@ public class Layer implements Serializable, Cloneable {
 
     public static Layer transpose(@NotNull Layer a) {
         Layer temp = new Layer(a.getNumberOfInputs(), a.getNumberOfNeurons());
-        for(int i = 0; i < a.getNumberOfNeurons(); i++)
-        {
-            for(int j = 0; j < a.getNumberOfInputs(); j++)
-            {
+        for(int i = 0; i < a.getNumberOfNeurons(); i++) {
+            for(int j = 0; j < a.getNumberOfInputs(); j++) {
                 temp.getWeights()[j][i] = a.getWeights()[i][j];
             }
         }
@@ -167,13 +164,10 @@ public class Layer implements Serializable, Cloneable {
 
     public static Layer multiply(@NotNull Layer a, @NotNull Layer b) {
         Layer temp = new Layer(a.getNumberOfNeurons() ,b.getNumberOfInputs());
-        for(int i = 0; i < temp.getNumberOfNeurons(); i++)
-        {
-            for(int j = 0; j < temp.getNumberOfInputs(); j++)
-            {
+        for(int i = 0; i < temp.getNumberOfNeurons(); i++) {
+            for(int j = 0; j < temp.getNumberOfInputs(); j++) {
                 double sum = 0;
-                for(int k = 0; k < a.getNumberOfInputs(); k++)
-                {
+                for(int k = 0; k < a.getNumberOfInputs(); k++) {
                     sum += a.getWeights()[i][k] * b.getWeights()[k][j];
                 }
                 temp.getWeights()[i][j] = sum;
@@ -183,28 +177,23 @@ public class Layer implements Serializable, Cloneable {
     }
 
     public void multiply(@NotNull Layer a) {
-        for(int i = 0; i < a.getNumberOfNeurons(); i++)
-        {
-            for(int j = 0; j < a.getNumberOfInputs(); j++)
-            {
+        for(int i = 0; i < a.getNumberOfNeurons(); i++) {
+            for(int j = 0; j < a.getNumberOfInputs(); j++) {
                 this.weights[i][j] *= a.getWeights()[i][j];
             }
         }
     }
 
     public void multiply(double a) {
-        for(int i = 0; i < getNumberOfNeurons(); i++)
-        {
-            for(int j = 0; j < getNumberOfInputs(); j++)
-            {
+        for(int i = 0; i < getNumberOfNeurons(); i++) {
+            for(int j = 0; j < getNumberOfInputs(); j++) {
                 this.weights[i][j] *= a;
             }
         }
     }
 
     public void sigmoid() {
-        for(int i = 0; i < getNumberOfNeurons(); i++)
-        {
+        for(int i = 0; i < getNumberOfNeurons(); i++) {
             for(int j = 0; j < getNumberOfInputs(); j++)
                 this.weights[i][j] = Sigmoid.sigmoid(this.weights[i][j]);
         }
@@ -213,8 +202,7 @@ public class Layer implements Serializable, Cloneable {
 
     public Layer dsigmoid() {
         Layer temp = new Layer(getNumberOfNeurons(), getNumberOfInputs());
-        for(int i = 0; i < getNumberOfNeurons(); i++)
-        {
+        for(int i = 0; i < getNumberOfNeurons(); i++) {
             for(int j = 0;j < getNumberOfInputs(); j++)
                 temp.weights[i][j] = Sigmoid.dsigmoid(this.weights[i][j]);
         }
