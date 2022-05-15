@@ -114,7 +114,6 @@ public class App {
                     for (var sample : data) {
                         ArrayList<Double> result = neuralNetwork.calculate(sample);
                         logicCalculator.summarize(result,sample);
-                        System.out.println(result);
                     }
                     logicCalculator.summarizeOfAllTypes();
                 }
