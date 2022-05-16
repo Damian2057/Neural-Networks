@@ -11,13 +11,12 @@ import java.util.*;
 public class NeuralNetwork implements Serializable, Network {
 
     private final int numberOfHiddenNeurons;
-    private final int numberOfHiddenLayers;
     private final int numberOfOutPuts;
     private final double learningFactor;
     private final Layer hiddenNeurons;
-    private final Layer prevHiddenNeurons;
+    private Layer prevHiddenNeurons;
     private final Layer outPutNeurons;
-    private final Layer prevOutPutNeurons;
+    private Layer prevOutPutNeurons;
     private final Layer hiddenBias;
     private final Layer outPutBias;
     private Layer hiddenErrors;
@@ -35,9 +34,8 @@ public class NeuralNetwork implements Serializable, Network {
     private long progress;
     private double error;
 
-    public NeuralNetwork(int numberOfInPuts, int numberOfHiddenLayers, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
+    public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
         this.numberOfHiddenNeurons = numberOfHiddenNeurons;
-        this.numberOfHiddenLayers = numberOfHiddenLayers;
         this.numberOfOutPuts = numberOfOutPuts;
         this.learningFactor = learningFactor;
         hiddenNeurons = new Layer(numberOfHiddenNeurons, numberOfInPuts);
@@ -116,6 +114,10 @@ public class NeuralNetwork implements Serializable, Network {
     }
 
     private void train(Iris flower) {
+
+        prevOutPutNeurons = outPutNeurons;
+        prevHiddenNeurons = hiddenNeurons;
+
         Layer inPut = Layer.toLayer(flower);
         //generating the Hidden Layer Output
         Layer hidden = Layer.multiply(hiddenNeurons, inPut);
@@ -306,7 +308,6 @@ public class NeuralNetwork implements Serializable, Network {
         if(epochs > 0 ) {
             System.out.println("==================================================="
                     + "\nNumber of hidden Neurons: " + numberOfHiddenNeurons
-                    + "\nNumber of hidden Layers: " + numberOfHiddenLayers
                     + "\nLearning factor: " + getLearningFactor()
                     + "\nBias status: " + bias
                     + "\nMomentum factor: " + getMomentumFactor()
@@ -315,7 +316,6 @@ public class NeuralNetwork implements Serializable, Network {
         } else {
             System.out.println("==================================================="
                     + "\nNumber of hidden Neurons: " + numberOfHiddenNeurons
-                    + "\nNumber of hidden Layers: " + numberOfHiddenLayers
                     + "\nLearning factor: " + getLearningFactor()
                     + "\nBias status: " + bias
                     + "\nMomentum factor: " + getMomentumFactor()

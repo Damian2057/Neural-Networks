@@ -36,7 +36,6 @@ public class App {
                 System.out.println("Enter learning factor:");
                 double learningFactor = Double.parseDouble(scanner.nextLine());
                 neuralNetwork = new NeuralNetwork(DataReader.getNumberOfInPuts()
-                        ,DataReader.getNumberOfHiddenLayers()
                         ,DataReader.getNumberOfHiddenNeurons()
                         ,DataReader.getNumberOfOutPuts()
                         , learningFactor);
@@ -69,7 +68,8 @@ public class App {
                 Select an operating mode:
                 [1]. Learning mode.
                 [2]. Test mode.
-                [3]. Exit.""");
+                [3]. Network Information.
+                [4]. Exit.""");
             int modeChoice = Integer.parseInt(scanner.nextLine());
 
             switch (modeChoice) {
@@ -118,6 +118,9 @@ public class App {
                     logicCalculator.summarizeOfAllTypes();
                 }
                 case 3 -> {
+                    neuralNetwork.showInformation();
+                }
+                case 4 -> {
                     //Exit
                     return;
                 }

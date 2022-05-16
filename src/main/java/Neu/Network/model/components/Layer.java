@@ -29,7 +29,7 @@ public class Layer implements Serializable, Cloneable {
                 if(value == 0) {
                     value = 0.01492;
                 }
-                this.weights[i][j] = value/Math.sqrt(numberOfInputs);
+                this.weights[i][j] = value / Math.sqrt(numberOfInputs);
             }
         }
     }
