@@ -29,7 +29,7 @@ public class Layer implements Serializable, Cloneable {
                 if(value == 0) {
                     value = 0.01492;
                 }
-                this.weights[i][j] = value/Math.sqrt(numberOfInputs);
+                this.weights[i][j] = value / Math.sqrt(numberOfInputs);
             }
         }
     }
@@ -111,23 +111,10 @@ public class Layer implements Serializable, Cloneable {
         return temp;
     }
 
-    public static Layer expectedTarget(@NotNull Iris flower) {
-        Layer temp = new Layer(4,1);
-        if(flower.getType() == 0) {
-            temp.getWeights()[0][0] = 1;
-            temp.getWeights()[1][0] = 0;
-            temp.getWeights()[2][0] = 0;
-            temp.getWeights()[3][0] = 0;
-        } else if(flower.getType() == 1) {
-            temp.getWeights()[0][0] = 0;
-            temp.getWeights()[1][0] = 1;
-            temp.getWeights()[2][0] = 0;
-            temp.getWeights()[3][0] = 0;
-        } else {
-            temp.getWeights()[0][0] = 0;
-            temp.getWeights()[1][0] = 0;
-            temp.getWeights()[2][0] = 1;
-            temp.getWeights()[3][0] = 0;
+    public static Layer expectedTarget(@NotNull Iris flower, int outPut) {
+        Layer temp = new Layer(outPut,1);
+        for (int i = 0; i < outPut; i++) {
+            temp.getWeights()[i][0] = flower.getPattern()[i][0];
         }
         return temp;
     }

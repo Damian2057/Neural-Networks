@@ -1,6 +1,8 @@
 package Neu.Network.charts;
 
-public class Cord {
+import java.io.Serializable;
+
+public class Cord implements Serializable {
     private final double x;
     private final double y;
 
