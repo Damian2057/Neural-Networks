@@ -2,17 +2,18 @@ package Neu.Network.summary;
 
 import Neu.Network.model.flower.Iris;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SummaryCalculator {
-    private double firstType = 0;
-    private double firstTypeTrue = 0;
-    private double secondType = 0;
-    private double secondTypeTrue = 0;
-    private double thirdType = 0;
-    private double thirdTypeTrue = 0;
-    private double unidentified = 0;
+
+    private double truePositives = 0.0;
+    private double trueNegatives = 0.0;
+    private double falsePositives = 0.0;
+    private double falseNegatives = 0.0;
+    private double firstType = 0.0;
+    private double secondType = 0.0;
+    private double thirdType = 0.0;
 
     /**
      * method summarizing the result
@@ -27,39 +28,40 @@ public class SummaryCalculator {
 
     public void summarize(@NotNull ArrayList<Double> result, Iris flower) {
 
-        if(result.get(0) > result.get(1) && result.get(0) > result.get(2)) {
-            if(flower.getType() == 0) {
-                firstTypeTrue++;
+        int networkResult = result.indexOf(Collections.max(result));
+        int trueType = flower.getType();
+
+        int[] type = new int[3];
+        int[] actual = new int[3];
+
+        type[networkResult] = 1;
+        actual[trueType] = 1;
+
+        for (int i = 0; i < type.length; i++) {
+            if(type[i] == 1) {
+                if(type[i] == actual[i]) truePositives++;
+                else if(type[i] != actual[i]) trueNegatives++;
             } else {
-                firstType++;
-                unidentified++;
+                if(actual[i] == 1) falsePositives++;
+                else if(actual[i] != 1) falseNegatives++;
             }
-        } else if(result.get(1) > result.get(0) && result.get(1) > result.get(2)) {
-            if(flower.getType() == 1) {
-                secondTypeTrue++;
-            } else {
-                secondType++;
-                unidentified++;
-            }
-        } else if(result.get(2) > result.get(0) && result.get(2) > result.get(1))  {
-            if(flower.getType() == 2) {
-                thirdTypeTrue++;
-            } else {
-                thirdType++;
-                unidentified++;
-            }
+        }
+
+        if(networkResult == 0) {
+            firstType++;
+        } else if(networkResult == 1) {
+            secondType++;
         } else {
-            unidentified++;
+            thirdType++;
         }
     }
 
     private double precision() {
-        return (firstTypeTrue+secondTypeTrue+thirdTypeTrue)/(firstTypeTrue+secondTypeTrue+thirdTypeTrue+unidentified);
+        return (truePositives)/(truePositives + falsePositives);
     }
 
     private double recall() {
-        return (firstTypeTrue+secondTypeTrue+thirdTypeTrue)
-                / ((firstTypeTrue+secondTypeTrue+thirdTypeTrue) + (firstType+secondType+thirdType));
+        return truePositives /(truePositives + falseNegatives);
     }
 
     private double fMeasure(double precision, double recall) {
@@ -67,10 +69,9 @@ public class SummaryCalculator {
     }
 
     public void summarizeOfAllTypes() {
-        System.out.println("\nIdentified number of flowers of the first species: "+ firstTypeTrue);
-        System.out.println("Identified number of flowers of the second species: " + secondTypeTrue);
-        System.out.println("Identified number of flowers of the third species: " + thirdTypeTrue);
-        System.out.println("unidentified flowers: " + unidentified);
+        System.out.println("\nIdentified number of flowers of the first species: "+ firstType);
+        System.out.println("Identified number of flowers of the second species: " + secondType);
+        System.out.println("Identified number of flowers of the third species: " + thirdType);
         double precision = precision();
         System.out.println("Precision: "+ precision);
         double recall = recall();
