@@ -57,10 +57,10 @@ public class NeuralNetwork implements Serializable, Network {
         }
         if(saveFlag) {
             StatisticsCollector.saveErrorFromWholeNetwork("ALL", errorList);
+            ChartGenerator chartGenerator = new ChartGenerator(String.valueOf(numberOfHiddenNeurons) ,errorList);
+            chartGenerator.pack();
+            chartGenerator.setVisible(true);
         }
-        ChartGenerator chartGenerator = new ChartGenerator(String.valueOf(numberOfHiddenNeurons) ,errorList);
-        chartGenerator.pack();
-        chartGenerator.setVisible(true);
     }
 
     private void trainByEpochs(ArrayList<Iris> data) {

@@ -117,11 +117,8 @@ public class App {
                     }
                     logicCalculator.summarizeOfAllTypes();
                 }
-                case 3 -> {
-                    neuralNetwork.showInformation();
-                }
-                case 4 -> {
-                    //Exit
+                case 3 -> neuralNetwork.showInformation();
+                case 4 -> { //Exit
                     return;
                 }
                 default -> System.out.println("Invalid option.");
