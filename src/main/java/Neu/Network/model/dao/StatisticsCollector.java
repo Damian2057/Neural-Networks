@@ -40,7 +40,7 @@ public class StatisticsCollector {
 
     public static void saveWeight(String nameOfFile, double[][] weights) {
        try {
-            String name = nameOfFile + getCurrentTime() + ".txt";
+            String name = nameOfFile + getCurrentTime() + ".csv";
             File fout = new File("@../../PythonCharts/statistics/" + name);
             FileOutputStream fos = new FileOutputStream(fout);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));

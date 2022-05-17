@@ -230,7 +230,7 @@ public class NeuralNetwork implements Serializable, Network {
 
     public void saveWeights() {
         StatisticsCollector.saveWeight("HiddenNeurons", hiddenNeurons.getWeights());
-        StatisticsCollector.saveWeight("outPutNeurons", hiddenNeurons.getWeights());
+        StatisticsCollector.saveWeight("outPutNeurons", outPutNeurons.getWeights());
         StatisticsCollector.saveWeight("hiddenBias", hiddenBias.getWeights());
         StatisticsCollector.saveWeight("outPutBias", outPutBias.getWeights());
     }
