@@ -5,6 +5,7 @@ The user in the config.json file can define:
 - number of exits
 - number of hidden neurons
 - operating mode (whether to save statistics)
+
 In the program, the user can choose:
 - learning rate 
 - bias 
