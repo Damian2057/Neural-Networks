@@ -33,6 +33,7 @@ public class NeuralNetwork implements Serializable, Network {
     private final boolean saveFlag;
     private long progress;
     private double error;
+    private final int epochShow = DataReader.getEpochToShow();
 
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
         this.numberOfHiddenNeurons = numberOfHiddenNeurons;
@@ -69,7 +70,7 @@ public class NeuralNetwork implements Serializable, Network {
                 Collections.shuffle(data);
             }
             for (var sample : data) {
-                train(sample);
+                train(sample, i);
             }
             if(i % jumpEpoch == 0) {
                 printProgress(i);
@@ -89,7 +90,7 @@ public class NeuralNetwork implements Serializable, Network {
                 Collections.shuffle(data);
             }
             for (var sample : data) {
-                train(sample);
+                train(sample, index);
             }
             prevError = calculatedError;
             if(prevError < calculatedError) {
@@ -113,7 +114,7 @@ public class NeuralNetwork implements Serializable, Network {
         System.out.println("Number of iteration achieved: " + index);
     }
 
-    private void train(Iris flower) {
+    private void train(Iris flower, int iterator) {
 
         prevOutPutNeurons = outPutNeurons;
         prevHiddenNeurons = hiddenNeurons;
@@ -136,6 +137,10 @@ public class NeuralNetwork implements Serializable, Network {
 
         //get Layer with expected pattern
         Layer target = Layer.expectedTarget(flower,numberOfOutPuts);
+
+        if(iterator % epochShow == 0) {
+            System.out.println(Arrays.deepToString(target.getVector()) + " " + Arrays.deepToString(output.getVector()));
+        }
 
         //calculate outputError
         //outputError = result(target Layer) - output
@@ -187,7 +192,7 @@ public class NeuralNetwork implements Serializable, Network {
             hiddenBias.add(h_gradient);
         }
 
-        calculateWholeNetworkError(outputError.getWeights(), hiddenErrors.getWeights());
+        calculateWholeNetworkError(outputError.getVector(), hiddenErrors.getVector());
     }
 
     @Override
@@ -211,28 +216,33 @@ public class NeuralNetwork implements Serializable, Network {
         double avgFirst = 0.0;
         for (int i = 0; i < outErrors.length; i++) {
             for (int j = 0; j < outErrors[0].length; j++) {
-                avgFirst += Math.abs(outErrors[i][j]) * Math.abs(outErrors[i][j]);
-            }
-        }
-        avgFirst = Math.sqrt(avgFirst / ((numberOfHiddenNeurons + numberOfOutPuts) * numberOfOutPuts));
-
-        double avgSecond = 0.0;
-        for (int i = 0; i < hiddenError.length; i++) {
-            for (int j = 0; j < hiddenError[0].length; j++) {
-                avgSecond += Math.abs(hiddenError[i][j]) * Math.abs(hiddenError[i][j]);
+                avgFirst += outErrors[i][j] * outErrors[i][j];
             }
         }
 
-        avgSecond = Math.sqrt(avgSecond / ((numberOfHiddenNeurons + numberOfOutPuts) * numberOfHiddenNeurons));
+        this.calculatedError += avgFirst;
+    }
 
-        this.calculatedError = (avgSecond + avgFirst);
+    private void saveSingleNeurons(int i) {
+        errorList.add(new Cord(i, Math.sqrt(calculatedError/150.0)/numberOfOutPuts));
+        for (int j = 0; j < hiddenErrors.getVector().length; j++) {
+            for (int k = 0; k < hiddenErrors.getVector()[0].length; k++) {
+                StatisticsCollector.saveErrorOnSingleNeuron("hidden", j, i, hiddenErrors.getVector()[j][k]);
+            }
+        }
+        for (int j = 0; j < outputError.getVector().length; j++) {
+            for (int k = 0; k < outputError.getVector()[0].length; k++) {
+                StatisticsCollector.saveErrorOnSingleNeuron("output", j, i, outputError.getVector()[j][k]);
+            }
+        }
+        calculatedError = 0.0;
     }
 
     public void saveWeights() {
-        StatisticsCollector.saveWeight("HiddenNeurons", hiddenNeurons.getWeights());
-        StatisticsCollector.saveWeight("outPutNeurons", outPutNeurons.getWeights());
-        StatisticsCollector.saveWeight("hiddenBias", hiddenBias.getWeights());
-        StatisticsCollector.saveWeight("outPutBias", outPutBias.getWeights());
+        StatisticsCollector.saveWeight("HiddenNeurons", hiddenNeurons.getVector());
+        StatisticsCollector.saveWeight("outPutNeurons", outPutNeurons.getVector());
+        StatisticsCollector.saveWeight("hiddenBias", hiddenBias.getVector());
+        StatisticsCollector.saveWeight("outPutBias", outPutBias.getVector());
     }
 
     public int getEpochs() {
@@ -287,20 +297,6 @@ public class NeuralNetwork implements Serializable, Network {
         if(error != sendError) {
             error = sendError;
             System.out.println("Processing progress: " +  error);
-        }
-    }
-
-    private void saveSingleNeurons(int i) {
-        errorList.add(new Cord(i, calculatedError));
-        for (int j = 0; j < hiddenErrors.getWeights().length; j++) {
-            for (int k = 0; k < hiddenErrors.getWeights()[0].length; k++) {
-                StatisticsCollector.saveErrorOnSingleNeuron("hidden", j, i, hiddenErrors.getWeights()[j][k]);
-            }
-        }
-        for (int j = 0; j < outputError.getWeights().length; j++) {
-            for (int k = 0; k < outputError.getWeights()[0].length; k++) {
-                StatisticsCollector.saveErrorOnSingleNeuron("output", j, i, outputError.getWeights()[j][k]);
-            }
         }
     }
 

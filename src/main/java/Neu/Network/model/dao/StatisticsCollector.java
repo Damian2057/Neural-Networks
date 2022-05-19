@@ -63,4 +63,16 @@ public class StatisticsCollector {
         LocalDateTime now = LocalDateTime.now();
         return dtf.format(now);
     }
+
+    public static void ClearStats() {
+        File folder = new File("@../../PythonCharts/statistics/");
+        File[] listOfFiles = folder.listFiles();
+
+        assert listOfFiles != null;
+        for (File file : listOfFiles) {
+            if (file.isFile()) {
+                file.delete();
+            }
+        }
+    }
 }

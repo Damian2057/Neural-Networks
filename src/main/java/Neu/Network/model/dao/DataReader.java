@@ -51,6 +51,17 @@ public class DataReader {
         }
     }
 
+    public static int getEpochToShow() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var jump =  jo.get("epochToShow");
+            return Integer.parseInt(jump.toString());
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
+
     public static int getNumberOfHiddenNeurons() {
         try {
             Object obj = new JSONParser().parse(new FileReader("config.json"));
@@ -79,6 +90,50 @@ public class DataReader {
             JSONObject jo = (JSONObject) obj;
             var number =  jo.get("numberOfOutPuts");
             return Integer.parseInt(number.toString());
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
+
+    public static double getLearningFactor() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var number =  jo.get("learningFactor");
+            return Double.parseDouble(number.toString());
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
+
+    public static boolean getBiasMode() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var fileSaveMode =  jo.get("BiasStatus");
+            return Objects.equals(fileSaveMode.toString(), "true");
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
+
+    public static boolean getMomentumMode() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var fileSaveMode =  jo.get("BiasStatus");
+            return Objects.equals(fileSaveMode.toString(), "true");
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
+
+    public static boolean GetDeleteMode() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var fileSaveMode =  jo.get("fileDeleteMode");
+            return Objects.equals(fileSaveMode.toString(), "true");
         } catch (Exception e) {
             throw new FileOperationException("Error reading the configuration file");
         }

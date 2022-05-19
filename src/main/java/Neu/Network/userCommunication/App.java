@@ -1,5 +1,6 @@
 package Neu.Network.userCommunication;
 
+import Neu.Network.model.dao.StatisticsCollector;
 import Neu.Network.summary.SummaryCalculator;
 import Neu.Network.model.components.NeuralNetwork;
 import Neu.Network.model.dao.DataReader;
@@ -10,6 +11,11 @@ import java.util.*;
 
 public class App {
     public static void main(String[] args) {
+
+        if(DataReader.GetDeleteMode()) {
+            StatisticsCollector.ClearStats();
+        }
+
         Scanner scanner= new Scanner(System.in);
         ArrayList<Iris> data;
         ArrayList<Iris> trainingData;
@@ -33,14 +39,11 @@ public class App {
         NeuralNetwork neuralNetwork;
         switch (networkChoice) {
             case 1 -> {
-                System.out.println("Enter learning factor:");
-                double learningFactor = Double.parseDouble(scanner.nextLine());
                 neuralNetwork = new NeuralNetwork(DataReader.getNumberOfInPuts()
                         ,DataReader.getNumberOfHiddenNeurons()
                         ,DataReader.getNumberOfOutPuts()
-                        , learningFactor);
-                System.out.println("Do you want to reflect the bias:\nYes/No");
-                neuralNetwork.setBias(Objects.equals(scanner.nextLine(), "Yes"));
+                        , DataReader.getLearningFactor());
+                neuralNetwork.setBias(DataReader.getBiasMode());
             }
             case 2 -> {
                 try(FileNetworkDao<NeuralNetwork> fileManager = new FileNetworkDao<>()) {
@@ -90,8 +93,7 @@ public class App {
                         default -> throw new IllegalStateException("Unexpected value: " + stopCondition);
                     }
 
-                    System.out.println("Do take into account the momentum:\nYes/No");
-                    if(Objects.equals(scanner.nextLine(), "Yes")) {
+                    if(DataReader.getMomentumMode()) {
                         System.out.println("Enter the momentum factor:");
                         neuralNetwork.setMomentumFactor(Double.parseDouble(scanner.nextLine()));
                     }

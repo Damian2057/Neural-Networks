@@ -42,7 +42,7 @@ public class Layer implements Serializable, Cloneable {
         return Math.sin(theRandomValue);
     }
 
-    public double[][] getWeights() {
+    public double[][] getVector() {
         return weights;
     }
 
@@ -74,7 +74,7 @@ public class Layer implements Serializable, Cloneable {
             Layer clone = (Layer) super.clone();
             for(int i = 0; i < numberOfNeurons; i++) {
                 for(int j = 0; j < numberOfInputs; j++) {
-                    clone.getWeights()[i][j] = weights[i][j];
+                    clone.getVector()[i][j] = weights[i][j];
                 }
             }
             return clone;
@@ -98,7 +98,7 @@ public class Layer implements Serializable, Cloneable {
 
         for(int i = 0; i < numberOfNeurons; i++) {
             for(int j = 0; j < numberOfInputs; j++) {
-                this.weights[i][j] += layer.getWeights()[i][j];
+                this.weights[i][j] += layer.getVector()[i][j];
             }
         }
     }
@@ -106,7 +106,7 @@ public class Layer implements Serializable, Cloneable {
     public static Layer toLayer(@NotNull Iris flower) {
         Layer temp = new Layer(4,1);
         for (int i = 0; i < 4; i++) {
-            temp.getWeights()[i][0] = flower.getFeatures(i);
+            temp.getVector()[i][0] = flower.getFeatures(i);
         }
         return temp;
     }
@@ -114,7 +114,7 @@ public class Layer implements Serializable, Cloneable {
     public static Layer expectedTarget(@NotNull Iris flower, int outPut) {
         Layer temp = new Layer(outPut,1);
         for (int i = 0; i < outPut; i++) {
-            temp.getWeights()[i][0] = flower.getPattern()[i][0];
+            temp.getVector()[i][0] = flower.getPattern()[i][0];
         }
         return temp;
     }
@@ -133,7 +133,7 @@ public class Layer implements Serializable, Cloneable {
         Layer temp = new Layer(a.getNumberOfNeurons(), a.getNumberOfInputs());
         for (int i = 0; i < a.getNumberOfNeurons(); i++) {
             for (int j = 0; j < a.getNumberOfInputs(); j++) {
-                temp.getWeights()[i][j] = a.getWeights()[i][j] - b.getWeights()[i][j];
+                temp.getVector()[i][j] = a.getVector()[i][j] - b.getVector()[i][j];
             }
         }
         return temp;
@@ -143,7 +143,7 @@ public class Layer implements Serializable, Cloneable {
         Layer temp = new Layer(a.getNumberOfInputs(), a.getNumberOfNeurons());
         for(int i = 0; i < a.getNumberOfNeurons(); i++) {
             for(int j = 0; j < a.getNumberOfInputs(); j++) {
-                temp.getWeights()[j][i] = a.getWeights()[i][j];
+                temp.getVector()[j][i] = a.getVector()[i][j];
             }
         }
         return temp;
@@ -155,9 +155,9 @@ public class Layer implements Serializable, Cloneable {
             for(int j = 0; j < temp.getNumberOfInputs(); j++) {
                 double sum = 0;
                 for(int k = 0; k < a.getNumberOfInputs(); k++) {
-                    sum += a.getWeights()[i][k] * b.getWeights()[k][j];
+                    sum += a.getVector()[i][k] * b.getVector()[k][j];
                 }
-                temp.getWeights()[i][j] = sum;
+                temp.getVector()[i][j] = sum;
             }
         }
         return temp;
@@ -166,7 +166,7 @@ public class Layer implements Serializable, Cloneable {
     public void multiply(@NotNull Layer a) {
         for(int i = 0; i < a.getNumberOfNeurons(); i++) {
             for(int j = 0; j < a.getNumberOfInputs(); j++) {
-                this.weights[i][j] *= a.getWeights()[i][j];
+                this.weights[i][j] *= a.getVector()[i][j];
             }
         }
     }
