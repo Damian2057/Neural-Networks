@@ -1,5 +1,5 @@
 {
-  "learningFactor": 0.3,
+  "learningFactor": 0.01,
   "BiasStatus": false,
   "MomentumStatus": false,
 

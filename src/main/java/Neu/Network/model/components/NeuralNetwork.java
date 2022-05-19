@@ -69,6 +69,9 @@ public class NeuralNetwork implements Serializable, Network {
             if(typeOfSequence) {
                 Collections.shuffle(data);
             }
+            if(i % showDisplay == 0) {
+                System.out.println("Epoch: " + i);
+            }
             for (var sample : data) {
                 train(sample, i);
             }
