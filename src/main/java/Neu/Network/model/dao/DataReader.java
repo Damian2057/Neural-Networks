@@ -51,11 +51,11 @@ public class DataReader {
         }
     }
 
-    public static int getEpochToShow() {
+    public static int getJumpOnDisplay() {
         try {
             Object obj = new JSONParser().parse(new FileReader("config.json"));
             JSONObject jo = (JSONObject) obj;
-            var jump =  jo.get("epochToShow");
+            var jump =  jo.get("jumpOnDisplay");
             return Integer.parseInt(jump.toString());
         } catch (Exception e) {
             throw new FileOperationException("Error reading the configuration file");

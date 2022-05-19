@@ -9,9 +9,8 @@
   "numberOfHiddenNeurons": 4,
 
 
-
   "epochJump": 1,
-  "epochToShow": 2000,
+  "jumpOnDisplay": 2000,
   "fileSaveMode": true,
   "fileDeleteMode": true
 }

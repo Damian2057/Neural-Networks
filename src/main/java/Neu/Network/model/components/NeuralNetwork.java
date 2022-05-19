@@ -33,7 +33,7 @@ public class NeuralNetwork implements Serializable, Network {
     private final boolean saveFlag;
     private long progress;
     private double error;
-    private final int epochShow = DataReader.getEpochToShow();
+    private final int showDisplay = DataReader.getJumpOnDisplay();
 
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
         this.numberOfHiddenNeurons = numberOfHiddenNeurons;
@@ -138,7 +138,7 @@ public class NeuralNetwork implements Serializable, Network {
         //get Layer with expected pattern
         Layer target = Layer.expectedTarget(flower,numberOfOutPuts);
 
-        if(iterator % epochShow == 0) {
+        if(iterator % showDisplay == 0) {
             System.out.println(Arrays.deepToString(target.getVector()) + " " + Arrays.deepToString(output.getVector()));
         }
 
