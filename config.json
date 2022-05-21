@@ -1,7 +1,7 @@
 {
-  "learningFactor": 0.01,
-  "BiasStatus": false,
-  "MomentumStatus": false,
+  "learningFactor": 0.3,
+  "biasStatus": false,
+  "momentumStatus": false,
 
 
   "numberOfInPuts": 4,

@@ -110,7 +110,7 @@ public class DataReader {
         try {
             Object obj = new JSONParser().parse(new FileReader("config.json"));
             JSONObject jo = (JSONObject) obj;
-            var fileSaveMode =  jo.get("BiasStatus");
+            var fileSaveMode =  jo.get("biasStatus");
             return Objects.equals(fileSaveMode.toString(), "true");
         } catch (Exception e) {
             throw new FileOperationException("Error reading the configuration file");
@@ -121,7 +121,7 @@ public class DataReader {
         try {
             Object obj = new JSONParser().parse(new FileReader("config.json"));
             JSONObject jo = (JSONObject) obj;
-            var fileSaveMode =  jo.get("BiasStatus");
+            var fileSaveMode =  jo.get("momentumStatus");
             return Objects.equals(fileSaveMode.toString(), "true");
         } catch (Exception e) {
             throw new FileOperationException("Error reading the configuration file");
