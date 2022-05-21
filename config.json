@@ -1,12 +1,12 @@
 {
-  "learningFactor": 0.3,
+  "learningFactor": 0.6,
   "biasStatus": false,
   "momentumStatus": false,
 
 
   "numberOfInPuts": 4,
-  "numberOfOutPuts": 3,
-  "numberOfHiddenNeurons": 4,
+  "numberOfOutPuts": 4,
+  "numberOfHiddenNeurons": 2,
 
 
   "epochJump": 1,

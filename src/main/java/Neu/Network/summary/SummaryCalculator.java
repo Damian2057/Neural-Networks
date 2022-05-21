@@ -1,6 +1,6 @@
 package Neu.Network.summary;
 
-import Neu.Network.model.flower.Iris;
+import Neu.Network.model.flower.EncoderData;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,10 +26,10 @@ public class SummaryCalculator {
      * 2 - 0 0 1 0
      */
 
-    public void summarize(@NotNull ArrayList<Double> result, Iris flower) {
+    public void summarize(@NotNull ArrayList<Double> result, EncoderData flower) {
 
         int networkResult = result.indexOf(Collections.max(result));
-        int trueType = flower.getType();
+        int trueType = flower.indexOfMax();
 
         int[] type = new int[3];
         int[] actual = new int[3];

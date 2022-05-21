@@ -4,7 +4,7 @@ import Neu.Network.charts.ChartGenerator;
 import Neu.Network.charts.Cord;
 import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.StatisticsCollector;
-import Neu.Network.model.flower.Iris;
+import Neu.Network.model.flower.EncoderData;
 import java.io.Serializable;
 import java.util.*;
 
@@ -51,7 +51,7 @@ public class NeuralNetwork implements Serializable, Network {
     }
 
     @Override
-    public void trainNetwork(ArrayList<Iris> trainingData) {
+    public void trainNetwork(ArrayList<EncoderData> trainingData) {
         dataSize = trainingData.size();
         if(stopConditionFlag) {
             trainByEpochs(trainingData);
@@ -66,7 +66,7 @@ public class NeuralNetwork implements Serializable, Network {
         }
     }
 
-    private void trainByEpochs(ArrayList<Iris> data) {
+    private void trainByEpochs(ArrayList<EncoderData> data) {
         for (int i = 0; i < epochs; i++) {
             if(typeOfSequence) {
                 Collections.shuffle(data);
@@ -87,7 +87,7 @@ public class NeuralNetwork implements Serializable, Network {
         }
     }
 
-    private void trainByAccuracy(ArrayList<Iris> data) {
+    private void trainByAccuracy(ArrayList<EncoderData> data) {
         double prevError;
         int repeat = 0;
         int index = 0;
@@ -120,7 +120,7 @@ public class NeuralNetwork implements Serializable, Network {
         System.out.println("Number of iteration achieved: " + index);
     }
 
-    private void train(Iris flower, int iterator) {
+    private void train(EncoderData flower, int iterator) {
 
         prevOutPutNeurons = outPutNeurons;
         prevHiddenNeurons = hiddenNeurons;
@@ -199,7 +199,7 @@ public class NeuralNetwork implements Serializable, Network {
     }
 
     @Override
-    public ArrayList<Double> calculate(Iris flower) {
+    public ArrayList<Double> calculate(EncoderData flower) {
         Layer inPut = Layer.toLayer(flower);
         Layer hiddenOutPut = Layer.multiply(hiddenNeurons,inPut);
         if(bias) {

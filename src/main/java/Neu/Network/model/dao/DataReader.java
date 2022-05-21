@@ -1,7 +1,7 @@
 package Neu.Network.model.dao;
 
 import Neu.Network.model.exceptions.dao.FileOperationException;
-import Neu.Network.model.flower.Iris;
+import Neu.Network.model.flower.EncoderData;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -13,14 +13,14 @@ public class DataReader {
 
     private static final String path = "@../../Data/";
 
-    public static ArrayList<Iris> readData(String fileName) {
+    public static ArrayList<EncoderData> readData(String fileName) {
         try {
-            ArrayList<Iris> temp = new ArrayList<>();
+            ArrayList<EncoderData> temp = new ArrayList<>();
             BufferedReader csvReader = new BufferedReader(new FileReader(path+fileName));
             String row;
             while ((row = csvReader.readLine()) != null) {
                 String[] data = row.split(",");
-                temp.add(new Iris(data[0],data[1],data[2],data[3],data[4]));
+                temp.add(new EncoderData(data[0],data[1],data[2],data[3]));
             }
             csvReader.close();
             return temp;

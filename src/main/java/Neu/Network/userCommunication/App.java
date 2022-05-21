@@ -6,7 +6,7 @@ import Neu.Network.model.components.NeuralNetwork;
 import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.FileNetworkDao;
 import Neu.Network.model.exceptions.model.LogicException;
-import Neu.Network.model.flower.Iris;
+import Neu.Network.model.flower.EncoderData;
 import java.util.*;
 
 public class App {
@@ -17,8 +17,8 @@ public class App {
         }
 
         Scanner scanner= new Scanner(System.in);
-        ArrayList<Iris> data;
-        ArrayList<Iris> trainingData;
+        ArrayList<EncoderData> data;
+        ArrayList<EncoderData> trainingData;
 
         try { //Download data
             data = DataReader.readData("data.csv");

@@ -2,7 +2,7 @@ package Neu.Network.model.components;
 
 import Neu.Network.model.exceptions.dao.CloneException;
 import Neu.Network.model.exceptions.model.ShapeException;
-import Neu.Network.model.flower.Iris;
+import Neu.Network.model.flower.EncoderData;
 import Neu.Network.model.math.Sigmoid;
 import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
@@ -107,7 +107,7 @@ public class Layer implements Serializable, Cloneable {
         }
     }
 
-    public static Layer toLayer(@NotNull Iris flower) {
+    public static Layer toLayer(@NotNull EncoderData flower) {
         Layer temp = new Layer(4,1);
         for (int i = 0; i < 4; i++) {
             temp.getVector()[i][0] = flower.getFeatures(i);
@@ -115,7 +115,7 @@ public class Layer implements Serializable, Cloneable {
         return temp;
     }
 
-    public static Layer expectedTarget(@NotNull Iris flower, int outPut) {
+    public static Layer expectedTarget(@NotNull EncoderData flower, int outPut) {
         Layer temp = new Layer(outPut,1);
         for (int i = 0; i < outPut; i++) {
             temp.getVector()[i][0] = flower.getPattern()[i][0];
