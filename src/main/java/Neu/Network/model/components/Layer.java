@@ -13,7 +13,7 @@ public class Layer implements Serializable, Cloneable {
 
     private final int numberOfNeurons;
     private final int numberOfInputs;
-    private final double[][] weights;
+    private double[][] weights;
 
     public Layer(int numberOfNeurons, int numberOfInputs) {
         this.numberOfNeurons = numberOfNeurons;
@@ -54,6 +54,10 @@ public class Layer implements Serializable, Cloneable {
         return numberOfInputs;
     }
 
+    public void setWeights(double[][] weights) {
+        this.weights = weights;
+    }
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -72,11 +76,11 @@ public class Layer implements Serializable, Cloneable {
     public Layer clone() {
         try {
             Layer clone = (Layer) super.clone();
-            for(int i = 0; i < numberOfNeurons; i++) {
-                for(int j = 0; j < numberOfInputs; j++) {
-                    clone.getVector()[i][j] = weights[i][j];
-                }
+            double[][] weightClone = new double[numberOfNeurons][numberOfInputs];
+            for (int i = 0; i < numberOfNeurons; i++) {
+                System.arraycopy(this.weights[i],0, weightClone[i],0,numberOfInputs);
             }
+            clone.setWeights(weightClone);
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new CloneException("Error creating clone");
@@ -137,6 +141,16 @@ public class Layer implements Serializable, Cloneable {
             }
         }
         return temp;
+    }
+
+    public static Layer calculateError(@NotNull Layer a, @NotNull Layer b) {
+        Layer result = new Layer(a.getNumberOfNeurons(), a.getNumberOfInputs());
+        for (int i = 0; i < a.getNumberOfNeurons(); i++) {
+            for (int j = 0; j < a.getNumberOfInputs(); j++) {
+                result.getVector()[i][j] = ((a.getVector()[i][j] - b.getVector()[i][j])*(a.getVector()[i][j] - b.getVector()[i][j]))/2.0;
+            }
+        }
+        return result;
     }
 
     public static Layer transpose(@NotNull Layer a) {

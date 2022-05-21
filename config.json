@@ -6,11 +6,11 @@
 
   "numberOfInPuts": 4,
   "numberOfOutPuts": 3,
-  "numberOfHiddenNeurons": 4,
+  "numberOfHiddenNeurons": 2,
 
 
   "epochJump": 1,
-  "jumpOnDisplay": 2000,
+  "jumpOnDisplay": 200,
   "fileSaveMode": true,
   "fileDeleteMode": true
 }

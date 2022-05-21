@@ -20,7 +20,7 @@ public class NeuralNetwork implements Serializable, Network {
     private final Layer hiddenBias;
     private final Layer outPutBias;
     private Layer hiddenErrors;
-    private Layer outputError;
+    private Layer totalError;
     private double calculatedError = 0.0;
     private boolean bias;
     private boolean stopConditionFlag;
@@ -34,6 +34,7 @@ public class NeuralNetwork implements Serializable, Network {
     private long progress;
     private double error;
     private final int showDisplay = DataReader.getJumpOnDisplay();
+    private double dataSize;
 
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
         this.numberOfHiddenNeurons = numberOfHiddenNeurons;
@@ -51,6 +52,7 @@ public class NeuralNetwork implements Serializable, Network {
 
     @Override
     public void trainNetwork(ArrayList<Iris> trainingData) {
+        dataSize = trainingData.size();
         if(stopConditionFlag) {
             trainByEpochs(trainingData);
         } else {
@@ -75,12 +77,15 @@ public class NeuralNetwork implements Serializable, Network {
             for (var sample : data) {
                 train(sample, i);
             }
+
             if(i % jumpEpoch == 0) {
                 printProgress(i);
                 if(saveFlag) {
                     saveRound(i);
                 }
             }
+
+            calculatedError = 0.0;
         }
     }
 
@@ -95,6 +100,9 @@ public class NeuralNetwork implements Serializable, Network {
             for (var sample : data) {
                 train(sample, index);
             }
+
+            calculatedError = 0.0;
+
             prevError = calculatedError;
             if(prevError < calculatedError) {
                 repeat++;
@@ -124,66 +132,76 @@ public class NeuralNetwork implements Serializable, Network {
 
         Layer inPut = Layer.toLayer(flower);
         //generating the Hidden Layer Output
-        Layer hidden = Layer.multiply(hiddenNeurons, inPut);
+        Layer netHidden = Layer.multiply(hiddenNeurons, inPut);
         if(bias) {
-            hidden.add(hiddenBias);
+            netHidden.add(hiddenBias);
         }
         //activation function
-        hidden.sigmoid();
+        Layer outHidden = netHidden.clone();
+        outHidden.sigmoid();
 
         //generating the output
-        Layer output = Layer.multiply(outPutNeurons,hidden);
+        Layer netOutPut = Layer.multiply(outPutNeurons,outHidden);
         if(bias) {
-            output.add(outPutBias);
+            netOutPut.add(outPutBias);
         }
-        output.sigmoid();
+        Layer outOutPut = netOutPut.clone();
+        outOutPut.sigmoid();
 
-        //get Layer with expected pattern
         Layer target = Layer.expectedTarget(flower,numberOfOutPuts);
-
         if(iterator % showDisplay == 0) {
-            System.out.println(Arrays.deepToString(target.getVector()) + " " + Arrays.deepToString(output.getVector()));
+            System.out.println(Arrays.deepToString(target.getVector()) + " " + Arrays.deepToString(outOutPut.getVector()));
         }
-
-        //calculate outputError
-        //outputError = result(target Layer) - output
-        outputError = Layer.substract(target, output);
-        calculateOutPutNetworkError(outputError.getVector());
+        totalError = Layer.calculateError(target, outOutPut);
+        calculateOutPutNetworkError(totalError.getVector());
 
 
+        Layer ggradient = Layer.substract(outOutPut, target);
+        Layer gggradient = outOutPut.dsigmoid();
+        ggradient.multiply(outHidden);
+        ggradient.multiply(gggradient);
+
+        ggradient.multiply(learningFactor);
+        outPutNeurons.add(ggradient);
+
+/*
         //calculate gradient
-        //cradient = outputs * (1 - outputs);
-        Layer gradient = output.dsigmoid();
-        gradient.multiply(outputError);
-        gradient.multiply(learningFactor);
+        //gradient = outputs * (1 - outputs);
+        Layer gradient = netOutPut.dsigmoid();
+        gradient.multiply(totalError);
+        //gradient.multiply(learningFactor);
 
         //calculate deltas
-        Layer hidden_T = Layer.transpose(hidden);
+        Layer hidden_T = Layer.transpose(netHidden);
         Layer who_delta =  Layer.multiply(gradient, hidden_T);
+        who_delta.multiply(learningFactor);
 
         //adjust the weights by deltas
-        outPutNeurons.add(who_delta);
+        outPutNeurons.add(who_delta);*/
         if(momentumFactor != 0) {
             Layer prev = Layer.substract(outPutNeurons,prevOutPutNeurons);
             prev.multiply(momentumFactor);
             outPutNeurons.add(prev);
         }
         if(bias) {
-            outPutBias.add(gradient);
+            outPutBias.add(ggradient);
         }
+
+
 
         //calculate the hidden layer errors
         Layer who_T = Layer.transpose(outPutNeurons);
-        hiddenErrors = Layer.multiply(who_T, outputError);
+        hiddenErrors = Layer.multiply(who_T, totalError);
 
         //calculate the hidden gradient
-        Layer h_gradient = hidden.dsigmoid();
+        Layer h_gradient = netHidden.dsigmoid();
         h_gradient.multiply(hiddenErrors);
-        h_gradient.multiply(learningFactor);
+        //h_gradient.multiply(learningFactor);
 
         //calcuate input => hidden deltas
         Layer i_T = Layer.transpose(inPut);
         Layer wih_delta = Layer.multiply(h_gradient, i_T);
+        wih_delta.multiply(learningFactor);
 
         //adjust the weights by deltas
         hiddenNeurons.add(wih_delta);
@@ -219,7 +237,7 @@ public class NeuralNetwork implements Serializable, Network {
         double avgFirst = 0.0;
         for (int i = 0; i < outErrors.length; i++) {
             for (int j = 0; j < outErrors[0].length; j++) {
-                avgFirst += outErrors[i][j] * outErrors[i][j]/numberOfOutPuts;
+                avgFirst += outErrors[i][j];
             }
         }
 
@@ -227,18 +245,17 @@ public class NeuralNetwork implements Serializable, Network {
     }
 
     private void saveRound(int i) {
-        errorList.add(new Cord(i, calculatedError));
+        errorList.add(new Cord(i, calculatedError/dataSize));
         for (int j = 0; j < hiddenErrors.getVector().length; j++) {
             for (int k = 0; k < hiddenErrors.getVector()[0].length; k++) {
                 StatisticsCollector.saveErrorOnSingleNeuron("hidden", j, i, hiddenErrors.getVector()[j][k]);
             }
         }
-        for (int j = 0; j < outputError.getVector().length; j++) {
-            for (int k = 0; k < outputError.getVector()[0].length; k++) {
-                StatisticsCollector.saveErrorOnSingleNeuron("output", j, i, outputError.getVector()[j][k]);
+        for (int j = 0; j < totalError.getVector().length; j++) {
+            for (int k = 0; k < totalError.getVector()[0].length; k++) {
+                StatisticsCollector.saveErrorOnSingleNeuron("output", j, i, totalError.getVector()[j][k]);
             }
         }
-        calculatedError = 0.0;
     }
 
     public void saveWeights() {
