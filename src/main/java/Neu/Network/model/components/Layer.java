@@ -13,13 +13,17 @@ public class Layer implements Serializable, Cloneable {
 
     private final int numberOfNeurons;
     private final int numberOfInputs;
-    private final double[][] weights;
+    private double[][] weights;
 
     public Layer(int numberOfNeurons, int numberOfInputs) {
         this.numberOfNeurons = numberOfNeurons;
         this.numberOfInputs = numberOfInputs;
         weights = new double[numberOfNeurons][numberOfInputs];
         initializeTheWeights();
+    }
+
+    public void setWeights(double[][] weights) {
+        this.weights = weights;
     }
 
     private void initializeTheWeights() {
@@ -72,11 +76,11 @@ public class Layer implements Serializable, Cloneable {
     public Layer clone() {
         try {
             Layer clone = (Layer) super.clone();
-            for(int i = 0; i < numberOfNeurons; i++) {
-                for(int j = 0; j < numberOfInputs; j++) {
-                    clone.getVector()[i][j] = weights[i][j];
-                }
+            double[][] weightClone = new double[numberOfNeurons][numberOfInputs];
+            for (int i = 0; i < numberOfNeurons; i++) {
+                System.arraycopy(this.weights[i],0, weightClone[i],0,numberOfInputs);
             }
+            clone.setWeights(weightClone);
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new CloneException("Error creating clone");
