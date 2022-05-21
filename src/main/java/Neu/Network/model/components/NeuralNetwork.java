@@ -227,7 +227,8 @@ public class NeuralNetwork implements Serializable, Network {
     }
 
     private void saveStatsOnNeuron(int i) {
-        errorList.add(new Cord(i, Math.sqrt(calculatedError/dataSize)/numberOfOutPuts));
+        errorList.add(new Cord(i, Math.sqrt(calculatedError)/dataSize));
+        calculatedError = 0.0;
         for (int j = 0; j < hiddenErrors.getVector().length; j++) {
             for (int k = 0; k < hiddenErrors.getVector()[0].length; k++) {
                 StatisticsCollector.saveErrorOnSingleNeuron("hidden", j, i, hiddenErrors.getVector()[j][k]);

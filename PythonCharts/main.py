@@ -11,6 +11,7 @@ def generatechart(filename):
     plt.title(filename)
     plt.xlabel('Epoch')
     plt.ylabel('Error')
+    # plt.ylim(ymin=0, ymax=0.1)
     plt.show()
 
 def generateFromData():
@@ -27,4 +28,4 @@ for x in os.listdir("statistics"):
     if x.endswith(".csv"):
         generatechart(x)
 
-generateFromData()
+# generateFromData()

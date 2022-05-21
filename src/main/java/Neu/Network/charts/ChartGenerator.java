@@ -3,6 +3,8 @@ package Neu.Network.charts;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -20,7 +22,7 @@ public class ChartGenerator extends ApplicationFrame {
         final XYSeries originSeries = new XYSeries("f(x)");
 
         for (Cord cord : error) {
-            originSeries.add(cord.getX(), cord.getY());
+            originSeries.add(cord.getX(), cord.getY()/3);
         }
 
 
@@ -38,6 +40,7 @@ public class ChartGenerator extends ApplicationFrame {
         );
 
         XYPlot plot = (XYPlot) chart.getPlot();
+
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesLinesVisible(0, true);
         renderer.setSeriesShapesVisible(0, false);
