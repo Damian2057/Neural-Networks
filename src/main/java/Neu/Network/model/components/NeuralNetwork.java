@@ -78,7 +78,7 @@ public class NeuralNetwork implements Serializable, Network {
             if(i % jumpEpoch == 0) {
                 printProgress(i);
                 if(saveFlag) {
-                    saveSingleNeurons(i);
+                    saveRound(i);
                 }
             }
         }
@@ -108,7 +108,7 @@ public class NeuralNetwork implements Serializable, Network {
             if(index % jumpEpoch == 0) {
                 printProgress(calculatedError);
                 if(saveFlag) {
-                    saveSingleNeurons(index);
+                    saveRound(index);
                 }
             }
 
@@ -148,6 +148,8 @@ public class NeuralNetwork implements Serializable, Network {
         //calculate outputError
         //outputError = result(target Layer) - output
         outputError = Layer.substract(target, output);
+        calculateOutPutNetworkError(outputError.getVector());
+
 
         //calculate gradient
         //cradient = outputs * (1 - outputs);
@@ -194,8 +196,6 @@ public class NeuralNetwork implements Serializable, Network {
         if(bias) {
             hiddenBias.add(h_gradient);
         }
-
-        calculateWholeNetworkError(outputError.getVector(), hiddenErrors.getVector());
     }
 
     @Override
@@ -215,19 +215,19 @@ public class NeuralNetwork implements Serializable, Network {
         return outPut.toArray();
     }
 
-    private void calculateWholeNetworkError(double[][] outErrors, double[][] hiddenError) {
+    private void calculateOutPutNetworkError(double[][] outErrors) {
         double avgFirst = 0.0;
         for (int i = 0; i < outErrors.length; i++) {
             for (int j = 0; j < outErrors[0].length; j++) {
-                avgFirst += outErrors[i][j] * outErrors[i][j];
+                avgFirst += outErrors[i][j] * outErrors[i][j]/numberOfOutPuts;
             }
         }
 
         this.calculatedError += avgFirst;
     }
 
-    private void saveSingleNeurons(int i) {
-        errorList.add(new Cord(i, Math.sqrt(calculatedError/150.0)/numberOfOutPuts));
+    private void saveRound(int i) {
+        errorList.add(new Cord(i, calculatedError));
         for (int j = 0; j < hiddenErrors.getVector().length; j++) {
             for (int k = 0; k < hiddenErrors.getVector()[0].length; k++) {
                 StatisticsCollector.saveErrorOnSingleNeuron("hidden", j, i, hiddenErrors.getVector()[j][k]);
