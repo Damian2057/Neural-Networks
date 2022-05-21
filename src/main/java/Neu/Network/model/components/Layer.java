@@ -147,7 +147,7 @@ public class Layer implements Serializable, Cloneable {
         Layer result = new Layer(a.getNumberOfNeurons(), a.getNumberOfInputs());
         for (int i = 0; i < a.getNumberOfNeurons(); i++) {
             for (int j = 0; j < a.getNumberOfInputs(); j++) {
-                result.getVector()[i][j] = ((a.getVector()[i][j] - b.getVector()[i][j])*(a.getVector()[i][j] - b.getVector()[i][j]))/2.0;
+                result.getVector()[i][j] = (a.getVector()[i][j] - b.getVector()[i][j]) * (a.getVector()[i][j] - b.getVector()[i][j])/2.0;
             }
         }
         return result;
@@ -177,6 +177,14 @@ public class Layer implements Serializable, Cloneable {
         return temp;
     }
 
+    public void multiplyHidden(Layer hidden) {
+        for (int i = 0; i < numberOfNeurons; i++) {
+            for (int j = 0; j < numberOfInputs; j++) {
+                this.weights[i][j] = hidden.getVector()[j][0];
+            }
+        }
+    }
+
     public void multiply(@NotNull Layer a) {
         for(int i = 0; i < a.getNumberOfNeurons(); i++) {
             for(int j = 0; j < a.getNumberOfInputs(); j++) {
@@ -189,6 +197,14 @@ public class Layer implements Serializable, Cloneable {
         for(int i = 0; i < getNumberOfNeurons(); i++) {
             for(int j = 0; j < getNumberOfInputs(); j++) {
                 this.weights[i][j] *= a;
+            }
+        }
+    }
+
+    public void multiplyBy(@NotNull Layer a) {
+        for(int i = 0; i < getNumberOfNeurons(); i++) {
+            for(int j = 0; j < getNumberOfInputs(); j++) {
+                this.weights[i][j] *= a.weights[j][0];
             }
         }
     }
@@ -208,5 +224,13 @@ public class Layer implements Serializable, Cloneable {
                 temp.weights[i][j] = Sigmoid.dsigmoid(this.weights[i][j]);
         }
         return temp;
+    }
+
+    public void copyValue(double partialTargetOut) {
+        for (int i = 0; i < numberOfNeurons; i++) {
+            for (int j = 0; j < numberOfInputs; j++) {
+                this.weights[i][j] = partialTargetOut;
+            }
+        }
     }
 }
