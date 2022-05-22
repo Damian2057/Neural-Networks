@@ -114,9 +114,10 @@ public class NeuralNetwork implements Serializable, Network {
                     saveStatsOnNeuron(index);
                 }
             }
+            calculatedError = 0.0;
 
             index++;
-        }  while (accuracy < calculatedError);
+        }  while (accuracy < prevError);
         System.out.println("Number of iteration achieved: " + index);
     }
 
