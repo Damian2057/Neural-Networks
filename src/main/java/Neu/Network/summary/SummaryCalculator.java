@@ -31,8 +31,8 @@ public class SummaryCalculator {
         int networkResult = result.indexOf(Collections.max(result));
         int trueType = flower.indexOfMax();
 
-        int[] type = new int[3];
-        int[] actual = new int[3];
+        int[] type = new int[4];
+        int[] actual = new int[4];
 
         type[networkResult] = 1;
         actual[trueType] = 1;

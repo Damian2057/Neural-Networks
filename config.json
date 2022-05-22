@@ -10,7 +10,7 @@
 
 
   "epochJump": 1,
-  "jumpOnDisplay": 500,
+  "jumpOnDisplay": 1,
   "fileSaveMode": true,
   "fileDeleteMode": true
 }
