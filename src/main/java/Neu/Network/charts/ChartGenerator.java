@@ -20,7 +20,6 @@ public class ChartGenerator extends ApplicationFrame {
         super("Network : ");
 
         final XYSeries originSeries = new XYSeries("f(x)");
-
         for (Cord cord : error) {
             originSeries.add(cord.getX(), cord.getY()/3);
         }

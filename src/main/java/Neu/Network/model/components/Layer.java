@@ -143,6 +143,17 @@ public class Layer implements Serializable, Cloneable {
         return temp;
     }
 
+    public static Layer calcError(Layer a, Layer b) {
+        Layer temp = new Layer(a.getNumberOfNeurons(), a.getNumberOfInputs());
+        for(int i = 0; i < a.getNumberOfNeurons(); i++) {
+            for(int j = 0; j < a.getNumberOfInputs(); j++) {
+                temp.weights[i][j] = (a.getVector()[i][j] - b.getVector()[i][j])
+                        * (a.getVector()[i][j] - b.getVector()[i][j]) / 2.0;
+            }
+        }
+        return temp;
+    }
+
     public static Layer transpose(@NotNull Layer a) {
         Layer temp = new Layer(a.getNumberOfInputs(), a.getNumberOfNeurons());
         for(int i = 0; i < a.getNumberOfNeurons(); i++) {

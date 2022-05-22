@@ -122,26 +122,22 @@ public class NeuralNetwork implements Serializable, Network {
 
     private void train(Iris flower, int iterator) {
 
-        prevOutPutNeurons = outPutNeurons;
-        prevHiddenNeurons = hiddenNeurons;
+        prevOutPutNeurons = outPutNeurons.clone();
+        prevHiddenNeurons = hiddenNeurons.clone();
 
         Layer inPut = Layer.toLayer(flower);
-        //generating the Hidden Layer Output
         Layer hidden = Layer.multiply(hiddenNeurons, inPut);
         if(bias) {
             hidden.add(hiddenBias);
         }
-        //activation function
         hidden.sigmoid();
 
-        //generating the output
         Layer output = Layer.multiply(outPutNeurons,hidden);
         if(bias) {
             output.add(outPutBias);
         }
         output.sigmoid();
 
-        //get Layer with expected pattern
         Layer target = Layer.expectedTarget(flower,numberOfOutPuts);
 
         printVectors(iterator,target,output);
