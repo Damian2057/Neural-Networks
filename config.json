@@ -1,5 +1,5 @@
 {
-  "learningFactor": 0.6,
+  "learningFactor": 0.3,
   "biasStatus": false,
   "momentumStatus": false,
 
@@ -10,7 +10,7 @@
 
 
   "epochJump": 1,
-  "jumpOnDisplay": 1,
+  "jumpOnDisplay": 10,
   "fileSaveMode": true,
   "fileDeleteMode": true
 }

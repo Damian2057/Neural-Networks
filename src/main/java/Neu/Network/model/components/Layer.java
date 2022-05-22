@@ -118,7 +118,7 @@ public class Layer implements Serializable, Cloneable {
     public static Layer expectedTarget(@NotNull EncoderData flower, int outPut) {
         Layer temp = new Layer(outPut,1);
         for (int i = 0; i < outPut; i++) {
-            temp.getVector()[i][0] = flower.getPattern()[i][0];
+            temp.getVector()[i][0] = flower.getMatrixFigure()[i];
         }
         return temp;
     }

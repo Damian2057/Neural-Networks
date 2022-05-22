@@ -117,7 +117,7 @@ public class NeuralNetwork implements Serializable, Network {
             calculatedError = 0.0;
 
             index++;
-        }  while (accuracy < calculatedError);
+        }  while (accuracy < prevError);
         System.out.println("Number of iteration achieved: " + index);
     }
 
@@ -219,7 +219,7 @@ public class NeuralNetwork implements Serializable, Network {
         double avgFirst = 0.0;
         for (int i = 0; i < outErrors.length; i++) {
             for (int j = 0; j < outErrors[0].length; j++) {
-                avgFirst += outErrors[i][j] * outErrors[i][j]/2.0;
+                avgFirst += outErrors[i][j];
             }
         }
 

@@ -8,8 +8,11 @@ public class EncoderData implements Serializable {
     private final double dataSecond;
     private final double dataThird;
     private final double dataFourth;
-    private final double[] matrixFigure = new double[5];
-    private final double[][] pattern = new double[4][1];
+    private final double[] matrixFigure = new double[4];
+
+    public double[] getMatrixFigure() {
+        return matrixFigure;
+    }
 
     public EncoderData(String sepalLength, String sepalWidth, String petalLength, String petalWidth) {
         this.dataOne = Double.parseDouble(sepalLength);
@@ -17,7 +20,6 @@ public class EncoderData implements Serializable {
         this.dataThird = Double.parseDouble(petalLength);
         this.dataFourth = Double.parseDouble(petalWidth);
         initIris();
-        initPattern();
     }
 
     public int indexOfMax() {
@@ -49,17 +51,10 @@ public class EncoderData implements Serializable {
     }
 
     private void initIris() {
-        matrixFigure[0] = getDataFourth();
-        matrixFigure[1] = getDataThird();
-        matrixFigure[2] = getDataSecond();
-        matrixFigure[3] = getDataOne();
-    }
-
-    private void initPattern() {
-            pattern[0][0] = 1;
-            pattern[1][0] = 0;
-            pattern[2][0] = 0;
-            pattern[3][0] = 0;
+        matrixFigure[0] = getDataOne();
+        matrixFigure[1] = getDataSecond();
+        matrixFigure[2] = getDataThird();
+        matrixFigure[3] = getDataFourth();
     }
 
     public double getFeatures(int number) {
@@ -67,9 +62,5 @@ public class EncoderData implements Serializable {
             throw new ShapeException("An index outside the characteristics of the flower");
         }
         return matrixFigure[number];
-    }
-
-    public double[][] getPattern() {
-        return pattern;
     }
 }
