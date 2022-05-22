@@ -1,16 +1,16 @@
 {
-  "learningFactor": 0.6,
-  "biasStatus": false,
-  "momentumStatus": false,
+  "learningFactor": 0.3,
+  "biasStatus": true,
+  "momentumStatus": true,
 
 
   "numberOfInPuts": 4,
   "numberOfOutPuts": 3,
-  "numberOfHiddenNeurons": 4,
+  "numberOfHiddenNeurons": 3,
 
 
-  "epochJump": 1,
-  "jumpOnDisplay": 500,
+  "epochJump": 10,
+  "jumpOnDisplay": 10,
   "fileSaveMode": true,
   "fileDeleteMode": true
 }

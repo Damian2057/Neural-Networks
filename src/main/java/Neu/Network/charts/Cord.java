@@ -1,5 +1,7 @@
 package Neu.Network.charts;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 public class Cord implements Serializable {

@@ -142,22 +142,22 @@ public class NeuralNetwork implements Serializable, Network {
 
         printVectors(iterator,target,output);
 
-        //calculate outputError
-        //outputError = result(target Layer) - output
-        outputError = Layer.substract(target, output);
+        outputError = Layer.calcError(target, output);
         calculateTotalError(outputError.getVector());
 
-        //calculate gradient
-        //cradient = outputs * (1 - outputs);
         Layer gradient = output.dsigmoid();
-        gradient.multiply(outputError);
 
-        //calculate deltas
+        Layer div = Layer.substract(target,output);
+        div.multiply(-1);
+        gradient.multiply(div);
+
+        Layer cloneOfGradient = gradient.clone();
+
         Layer hidden_T = Layer.transpose(hidden);
         Layer who_delta =  Layer.multiply(gradient, hidden_T);
         who_delta.multiply(learningFactor);
+        who_delta.multiply(-1);
 
-        //adjust the weights by deltas
         outPutNeurons.add(who_delta);
         if(momentumFactor != 0) {
             Layer prev = Layer.substract(outPutNeurons,prevOutPutNeurons);
@@ -165,12 +165,13 @@ public class NeuralNetwork implements Serializable, Network {
             outPutNeurons.add(prev);
         }
         if(bias) {
+            gradient.multiply(-1);
             outPutBias.add(gradient);
         }
 
         //calculate the hidden layer errors
-        Layer who_T = Layer.transpose(outPutNeurons);
-        hiddenErrors = Layer.multiply(who_T, gradient);
+        Layer who_T = Layer.transpose(prevOutPutNeurons);
+        hiddenErrors = Layer.multiply(who_T, cloneOfGradient);
 
         //calculate the hidden gradient
         Layer h_gradient = hidden.dsigmoid();
@@ -180,6 +181,7 @@ public class NeuralNetwork implements Serializable, Network {
         Layer i_T = Layer.transpose(inPut);
         Layer wih_delta = Layer.multiply(h_gradient, i_T);
         wih_delta.multiply(learningFactor);
+        wih_delta.multiply(-1);
 
         //adjust the weights by deltas
         hiddenNeurons.add(wih_delta);
@@ -190,6 +192,7 @@ public class NeuralNetwork implements Serializable, Network {
         }
 
         if(bias) {
+            h_gradient.multiply(-1);
             hiddenBias.add(h_gradient);
         }
     }
@@ -215,7 +218,7 @@ public class NeuralNetwork implements Serializable, Network {
         double avgFirst = 0.0;
         for (int i = 0; i < outErrors.length; i++) {
             for (int j = 0; j < outErrors[0].length; j++) {
-                avgFirst += outErrors[i][j] * outErrors[i][j]/2.0;
+                avgFirst += outErrors[i][j];
             }
         }
 
@@ -223,7 +226,7 @@ public class NeuralNetwork implements Serializable, Network {
     }
 
     private void saveStatsOnNeuron(int i) {
-        errorList.add(new Cord(i, Math.sqrt(calculatedError)/dataSize));
+        errorList.add(new Cord(i, calculatedError/dataSize));
         calculatedError = 0.0;
         for (int j = 0; j < hiddenErrors.getVector().length; j++) {
             for (int k = 0; k < hiddenErrors.getVector()[0].length; k++) {

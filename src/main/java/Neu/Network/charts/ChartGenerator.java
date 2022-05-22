@@ -11,7 +11,8 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.ui.ApplicationFrame;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import java.util.ArrayList;
+
+import java.util.*;
 
 public class ChartGenerator extends ApplicationFrame {
 
@@ -21,9 +22,8 @@ public class ChartGenerator extends ApplicationFrame {
 
         final XYSeries originSeries = new XYSeries("f(x)");
         for (Cord cord : error) {
-            originSeries.add(cord.getX(), cord.getY()/3);
+            originSeries.add(cord.getX(), cord.getY());
         }
-
 
         final XYSeriesCollection data = new XYSeriesCollection(originSeries);
 
