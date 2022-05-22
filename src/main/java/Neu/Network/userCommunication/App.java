@@ -1,6 +1,7 @@
 package Neu.Network.userCommunication;
 
 import Neu.Network.model.dao.StatisticsCollector;
+import Neu.Network.model.exceptions.argument.ArgumentException;
 import Neu.Network.summary.SummaryCalculator;
 import Neu.Network.model.components.NeuralNetwork;
 import Neu.Network.model.dao.DataReader;
@@ -12,6 +13,7 @@ import java.util.*;
 public class App {
     public static void main(String[] args) {
 
+        DataReader.CreateDirectories();
         if(DataReader.GetDeleteMode()) {
             StatisticsCollector.ClearStats();
         }
@@ -30,22 +32,18 @@ public class App {
             return;
         }
 
-        System.out.println("""
-                Network options:
-                [1]. Create a new network
-                [2]. Load the saved network""");
-        int networkChoice = Integer.parseInt(scanner.nextLine());
+        if(DataReader.getCreateNewNetworkMode() && DataReader.getLoadPrevNetworkMode()) {
+            throw new ArgumentException("invalid data in the config file");
+        }
 
-        NeuralNetwork neuralNetwork;
-        switch (networkChoice) {
-            case 1 -> {
+        NeuralNetwork neuralNetwork = null;
+            if(DataReader.getCreateNewNetworkMode()) {
                 neuralNetwork = new NeuralNetwork(DataReader.getNumberOfInPuts()
                         ,DataReader.getNumberOfHiddenNeurons()
                         ,DataReader.getNumberOfOutPuts()
                         , DataReader.getLearningFactor());
                 neuralNetwork.setBias(DataReader.getBiasMode());
-            }
-            case 2 -> {
+            } else {
                 try(FileNetworkDao<NeuralNetwork> fileManager = new FileNetworkDao<>()) {
                     String selectedFile;
                     fileManager.readNamesOfFilesInDirectory();
@@ -53,18 +51,11 @@ public class App {
                     neuralNetwork = fileManager.read(selectedFile);
                     System.out.println("Network loaded!");
                     neuralNetwork.showInformation();
-                } catch (LogicException e) {
+                } catch (Exception e) {
                     System.out.println(e.getMessage());
-                    return;
-                } catch (Exception ignored) {
                     return;
                 }
             }
-            default -> {
-                System.out.println("Invalid option");
-                return;
-            }
-        }
 
         while (true) {
             System.out.println("""
@@ -80,22 +71,20 @@ public class App {
                     System.out.println("Select the options based on which you want to create the network:\n");
                     System.out.println("Stop condition:\n[1]. number of epochs\n[2]. error level");
                     String stopCondition = scanner.nextLine();
-                    System.out.println("Enter value: ");
                     switch (stopCondition) {
                         case "1" -> {
                             neuralNetwork.setStopConditionFlag(true);
-                            neuralNetwork.setEpochs(Integer.parseInt(scanner.nextLine()));
+                            neuralNetwork.setEpochs(DataReader.getNumberOfEpochs());
                         }
                         case "2" -> {
                             neuralNetwork.setStopConditionFlag(false);
-                            neuralNetwork.setAccuracy(Double.parseDouble(scanner.nextLine()));
+                            neuralNetwork.setAccuracy(DataReader.getAccuracy());
                         }
                         default -> throw new IllegalStateException("Unexpected value: " + stopCondition);
                     }
 
                     if(DataReader.getMomentumMode()) {
-                        System.out.println("Enter the momentum factor:");
-                        neuralNetwork.setMomentumFactor(Double.parseDouble(scanner.nextLine()));
+                        neuralNetwork.setMomentumFactor(DataReader.getMomentumValue());
                     }
 
                     System.out.println("Enter the method of entering the data:\n[1]. Random\n[2]. Sequentially");

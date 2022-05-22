@@ -1,7 +1,14 @@
 {
+  "loadPrevNetwork": false,
+  "createNewNetwork": true,
+  "numberOfEpochs": 200,
+  "accuracy": 0.001,
+
   "learningFactor": 0.3,
   "biasStatus": true,
   "momentumStatus": true,
+  "momentumValue": 0.6,
+
 
 
   "numberOfInPuts": 4,
@@ -9,7 +16,7 @@
   "numberOfHiddenNeurons": 3,
 
 
-  "epochJump": 10,
+  "epochJump": 1,
   "jumpOnDisplay": 500,
   "fileSaveMode": true,
   "fileDeleteMode": true

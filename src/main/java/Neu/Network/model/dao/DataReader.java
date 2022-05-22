@@ -3,6 +3,7 @@ package Neu.Network.model.dao;
 import Neu.Network.model.exceptions.dao.FileOperationException;
 import Neu.Network.model.flower.Iris;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -40,6 +41,25 @@ public class DataReader {
         }
     }
 
+    public static void CreateDirectories() {
+        try {
+            File theData = new File("@../../Data");
+            if (!theData.exists()){
+                theData.mkdirs();
+            }
+            File theArchives = new File("@../../archives");
+            if (!theArchives.exists()){
+                theArchives.mkdirs();
+            }
+            File theStats = new File("@../../PythonCharts/statistics");
+            if (!theStats.exists()){
+                theStats.mkdirs();
+            }
+        } catch (Exception e) {
+            throw new FileOperationException("error while creating paths");
+        }
+    }
+
     public static int getJump() {
         try {
             Object obj = new JSONParser().parse(new FileReader("config.json"));
@@ -57,6 +77,39 @@ public class DataReader {
             JSONObject jo = (JSONObject) obj;
             var jump =  jo.get("jumpOnDisplay");
             return Integer.parseInt(jump.toString());
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
+
+    public static int getNumberOfEpochs() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var jump =  jo.get("numberOfEpochs");
+            return Integer.parseInt(jump.toString());
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
+
+    public static boolean getCreateNewNetworkMode() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var fileSaveMode =  jo.get("createNewNetwork");
+            return Objects.equals(fileSaveMode.toString(), "true");
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
+
+    public static boolean getLoadPrevNetworkMode() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var fileSaveMode =  jo.get("loadPrevNetwork");
+            return Objects.equals(fileSaveMode.toString(), "true");
         } catch (Exception e) {
             throw new FileOperationException("Error reading the configuration file");
         }
@@ -100,6 +153,28 @@ public class DataReader {
             Object obj = new JSONParser().parse(new FileReader("config.json"));
             JSONObject jo = (JSONObject) obj;
             var number =  jo.get("learningFactor");
+            return Double.parseDouble(number.toString());
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
+
+    public static double getAccuracy() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var number =  jo.get("accuracy");
+            return Double.parseDouble(number.toString());
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
+
+    public static double getMomentumValue() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var number =  jo.get("momentumValue");
             return Double.parseDouble(number.toString());
         } catch (Exception e) {
             throw new FileOperationException("Error reading the configuration file");
