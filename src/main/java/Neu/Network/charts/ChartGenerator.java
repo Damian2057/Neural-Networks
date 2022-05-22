@@ -44,8 +44,6 @@ public class ChartGenerator extends ApplicationFrame {
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesLinesVisible(0, true);
         renderer.setSeriesShapesVisible(0, false);
-        renderer.setSeriesLinesVisible(1, true);
-        renderer.setSeriesShapesVisible(1, false);
         plot.setRenderer(renderer);
 
         final ChartPanel chartPanel = new ChartPanel(chart);
