@@ -127,32 +127,32 @@ public class NeuralNetwork implements Serializable, Network {
         prevHiddenNeurons = hiddenNeurons.clone();
 
         Layer inPut = Layer.toLayer(flower);
-        Layer hidden = Layer.multiply(hiddenNeurons, inPut);
+        Layer hidden = Layer.multiply(hiddenNeurons, inPut); //HiddenNet
         if(bias) {
             hidden.add(hiddenBias);
         }
-        hidden.sigmoid();
+        hidden.sigmoid(); //HiddenOut
 
-        Layer output = Layer.multiply(outPutNeurons,hidden);
+        Layer output = Layer.multiply(outPutNeurons,hidden); //OutNet
         if(bias) {
             output.add(outPutBias);
         }
-        output.sigmoid();
+        output.sigmoid(); //OutOut
 
         Layer target = Layer.expectedTarget(flower,numberOfOutPuts);
 
         printVectors(iterator,target,output);
 
-        outputError = Layer.calcError(target, output);
+        outputError = Layer.calcError(target, output); //E = 0.5*(t-o)^2
         calculateTotalError(outputError.getVector());
 
-        Layer gradient = output.dsigmoid();
+        Layer gradient = output.dsigmoid(); //output * (1-output)
 
-        Layer div = Layer.substract(target,output);
-        div.multiply(-1);
-        gradient.multiply(div);
+        Layer targetDivOut = Layer.substract(target,output);   //
+        targetDivOut.multiply(-1);                          //-(target-out)
+        gradient.multiply(targetDivOut);
 
-        Layer cloneOfGradient = gradient.clone();
+        Layer eTotalNetOut = gradient.clone();
 
         Layer hidden_T = Layer.transpose(hidden);
         Layer who_delta =  Layer.multiply(gradient, hidden_T);
@@ -172,7 +172,7 @@ public class NeuralNetwork implements Serializable, Network {
 
         //calculate the hidden layer errors
         Layer who_T = Layer.transpose(prevOutPutNeurons);
-        hiddenErrors = Layer.multiply(who_T, cloneOfGradient);
+        hiddenErrors = Layer.multiply(who_T, eTotalNetOut);
 
         //calculate the hidden gradient
         Layer h_gradient = hidden.dsigmoid();

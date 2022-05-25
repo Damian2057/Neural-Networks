@@ -7,13 +7,12 @@ import java.util.Collections;
 
 public class SummaryCalculator {
 
-    private double truePositives = 0.0;
-    private double trueNegatives = 0.0;
-    private double falsePositives = 0.0;
-    private double falseNegatives = 0.0;
     private double firstType = 0.0;
     private double secondType = 0.0;
     private double thirdType = 0.0;
+    private ConfusionMatrix zeroSpecies = new ConfusionMatrix(0);
+    private ConfusionMatrix firstSpecies = new ConfusionMatrix(1);
+    private ConfusionMatrix secondSpecies = new ConfusionMatrix(2);
 
     /**
      * method summarizing the result
@@ -37,15 +36,9 @@ public class SummaryCalculator {
         type[networkResult] = 1;
         actual[trueType] = 1;
 
-        for (int i = 0; i < type.length; i++) {
-            if(type[i] == 1) {
-                if(type[i] == actual[i]) truePositives++;
-                else if(type[i] != actual[i]) trueNegatives++;
-            } else {
-                if(actual[i] == 1) falsePositives++;
-                else if(actual[i] != 1) falseNegatives++;
-            }
-        }
+        zeroSpecies.classificationLogic(networkResult,trueType);
+        firstSpecies.classificationLogic(networkResult,trueType);
+        secondSpecies.classificationLogic(networkResult,trueType);
 
         if(networkResult == 0) {
             firstType++;
@@ -56,26 +49,12 @@ public class SummaryCalculator {
         }
     }
 
-    private double precision() {
-        return (truePositives)/(truePositives + falsePositives);
-    }
-
-    private double recall() {
-        return truePositives /(truePositives + falseNegatives);
-    }
-
-    private double fMeasure(double precision, double recall) {
-        return 2*precision*recall/(precision+recall);
-    }
-
     public void summarizeOfAllTypes() {
         System.out.println("\nIdentified number of flowers of the first species: "+ firstType);
         System.out.println("Identified number of flowers of the second species: " + secondType);
         System.out.println("Identified number of flowers of the third species: " + thirdType);
-        double precision = precision();
-        System.out.println("Precision: "+ precision);
-        double recall = recall();
-        System.out.println("Recall: "+ recall);
-        System.out.println("F-Measure: " + fMeasure(precision,recall));
+        zeroSpecies.getInformation();
+        firstSpecies.getInformation();
+        secondSpecies.getInformation();
     }
 }
