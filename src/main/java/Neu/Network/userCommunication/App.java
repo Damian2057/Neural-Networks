@@ -6,7 +6,6 @@ import Neu.Network.summary.SummaryCalculator;
 import Neu.Network.model.components.NeuralNetwork;
 import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.FileNetworkDao;
-import Neu.Network.model.exceptions.model.LogicException;
 import Neu.Network.model.flower.Iris;
 import java.util.*;
 
@@ -36,7 +35,7 @@ public class App {
             throw new ArgumentException("invalid data in the config file");
         }
 
-        NeuralNetwork neuralNetwork = null;
+        NeuralNetwork neuralNetwork;
             if(DataReader.getCreateNewNetworkMode()) {
                 neuralNetwork = new NeuralNetwork(DataReader.getNumberOfInPuts()
                         ,DataReader.getNumberOfHiddenNeurons()

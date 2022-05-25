@@ -10,9 +10,9 @@ public class SummaryCalculator {
     private double firstType = 0.0;
     private double secondType = 0.0;
     private double thirdType = 0.0;
-    private ConfusionMatrix zeroSpecies = new ConfusionMatrix(0);
-    private ConfusionMatrix firstSpecies = new ConfusionMatrix(1);
-    private ConfusionMatrix secondSpecies = new ConfusionMatrix(2);
+    private final ConfusionMatrix zeroSpecies = new ConfusionMatrix(0);
+    private final ConfusionMatrix firstSpecies = new ConfusionMatrix(1);
+    private final ConfusionMatrix secondSpecies = new ConfusionMatrix(2);
 
     /**
      * method summarizing the result
@@ -29,12 +29,6 @@ public class SummaryCalculator {
 
         int networkResult = result.indexOf(Collections.max(result));
         int trueType = flower.getType();
-
-        int[] type = new int[3];
-        int[] actual = new int[3];
-
-        type[networkResult] = 1;
-        actual[trueType] = 1;
 
         zeroSpecies.classificationLogic(networkResult,trueType);
         firstSpecies.classificationLogic(networkResult,trueType);

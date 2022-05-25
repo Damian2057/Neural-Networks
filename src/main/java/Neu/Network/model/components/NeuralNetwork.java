@@ -21,7 +21,7 @@ public class NeuralNetwork implements Serializable, Network {
     private final Layer outPutBias;
     private Layer hiddenErrors;
     private Layer outputError;
-    private double calculatedError = 0.0;
+    private double sumFromAllData = 0.0;
     private boolean bias;
     private boolean stopConditionFlag;
     private int epochs = 0;
@@ -83,7 +83,7 @@ public class NeuralNetwork implements Serializable, Network {
                     saveStatsOnNeuron(i);
                 }
             }
-            calculatedError = 0.0;
+            sumFromAllData = 0.0;
         }
     }
 
@@ -98,8 +98,8 @@ public class NeuralNetwork implements Serializable, Network {
             for (var sample : data) {
                 train(sample, index);
             }
-            prevError = calculatedError;
-            if(prevError < calculatedError) {
+            prevError = sumFromAllData;
+            if(prevError < sumFromAllData) {
                 repeat++;
             }
 
@@ -109,12 +109,12 @@ public class NeuralNetwork implements Serializable, Network {
             }
 
             if(index % jumpEpoch == 0) {
-                printProgress(calculatedError);
+                printProgress(sumFromAllData);
                 if(saveFlag) {
                     saveStatsOnNeuron(index);
                 }
             }
-            calculatedError = 0.0;
+            sumFromAllData = 0.0;
 
             index++;
         }  while (accuracy < prevError);
@@ -216,19 +216,19 @@ public class NeuralNetwork implements Serializable, Network {
     }
 
     private void calculateTotalError(double[][] outErrors) {
-        double avgFirst = 0.0;
+        double sum = 0.0;
         for (int i = 0; i < outErrors.length; i++) {
             for (int j = 0; j < outErrors[0].length; j++) {
-                avgFirst += outErrors[i][j];
+                sum += outErrors[i][j];
             }
         }
 
-        this.calculatedError += avgFirst;
+        this.sumFromAllData += sum;
     }
 
     private void saveStatsOnNeuron(int i) {
-        errorList.add(new Cord(i, calculatedError/dataSize));
-        calculatedError = 0.0;
+        errorList.add(new Cord(i, sumFromAllData /dataSize));
+        sumFromAllData = 0.0;
         for (int j = 0; j < hiddenErrors.getVector().length; j++) {
             for (int k = 0; k < hiddenErrors.getVector()[0].length; k++) {
                 StatisticsCollector.saveErrorOnSingleNeuron("hidden", j, i, hiddenErrors.getVector()[j][k]);

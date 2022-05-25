@@ -39,8 +39,6 @@ public class ConfusionMatrix {
         if (!predictionCondition && !actualCondition) this.falseNegatives++;
     }
 
-
-
     public void getInformation() {
         System.out.println("==================================================="
                 + "\nSpecies: " + flowerSpecies
