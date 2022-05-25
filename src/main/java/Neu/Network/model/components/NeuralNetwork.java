@@ -231,12 +231,12 @@ public class NeuralNetwork implements Serializable, Network {
         sumFromAllData = 0.0;
         for (int j = 0; j < hiddenErrors.getVector().length; j++) {
             for (int k = 0; k < hiddenErrors.getVector()[0].length; k++) {
-                StatisticsCollector.saveErrorOnSingleNeuron("hidden", j, i, hiddenErrors.getVector()[j][k]);
+                StatisticsCollector.saveErrorOnSingleNeuron("hidden", j, i, hiddenErrors.getVector()[j][k]/dataSize);
             }
         }
         for (int j = 0; j < outputError.getVector().length; j++) {
             for (int k = 0; k < outputError.getVector()[0].length; k++) {
-                StatisticsCollector.saveErrorOnSingleNeuron("output", j, i, outputError.getVector()[j][k]);
+                StatisticsCollector.saveErrorOnSingleNeuron("output", j, i, outputError.getVector()[j][k]/dataSize);
             }
         }
     }

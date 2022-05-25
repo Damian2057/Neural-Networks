@@ -1,22 +1,22 @@
 {
   "loadPrevNetwork": false,
   "createNewNetwork": true,
-  "numberOfEpochs": 500,
+  "numberOfEpochs": 200,
   "accuracy": 0.001,
 
-  "learningFactor": 0.5,
+  "learningFactor": 0.9,
   "biasStatus": true,
-  "momentumStatus": false,
-  "momentumValue": 0.9,
+  "momentumStatus": true,
+  "momentumValue": 0.0,
 
 
 
   "numberOfInPuts": 4,
   "numberOfOutPuts": 3,
-  "numberOfHiddenNeurons": 2,
+  "numberOfHiddenNeurons": 4,
 
 
-  "epochJump": 1,
+  "epochJump": 2,
   "jumpOnDisplay": 500,
   "fileSaveMode": true,
   "fileDeleteMode": true
