@@ -1,7 +1,6 @@
 package Neu.Network.model.dao;
 
 import Neu.Network.model.exceptions.dao.FileOperationException;
-
 import java.io.File;
 
 public class DirectoryManager {
@@ -11,8 +10,7 @@ public class DirectoryManager {
         ClearStats("@../../Data/SelectedData");
     }
 
-
-    public static void ClearStats(String path) {
+    private static void ClearStats(String path) {
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
 
@@ -26,24 +24,24 @@ public class DirectoryManager {
 
     public static void CreateDirectories() {
         try {
-            File theData = new File("@../../Data");
+            CreateSingleDirectory("@../../Data");
+            CreateSingleDirectory("@../../archives");
+            CreateSingleDirectory("@../../PythonCharts/statistics");
+            CreateSingleDirectory("@../../Data/SelectedData");
+        } catch (Exception e) {
+            throw new FileOperationException("error while creating paths");
+        }
+    }
+
+    private static void CreateSingleDirectory(String path) {
+        try {
+            File theData = new File(path);
             if (!theData.exists()){
                 theData.mkdirs();
-            }
-            File theArchives = new File("@../../archives");
-            if (!theArchives.exists()){
-                theArchives.mkdirs();
-            }
-            File theStats = new File("@../../PythonCharts/statistics");
-            if (!theStats.exists()){
-                theStats.mkdirs();
-            }
-            File theSelectedData = new File("@../../Data/SelectedData");
-            if (!theSelectedData.exists()){
-                theSelectedData.mkdirs();
             }
         } catch (Exception e) {
             throw new FileOperationException("error while creating paths");
         }
     }
+
 }

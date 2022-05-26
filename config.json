@@ -9,12 +9,12 @@
   "momentumStatus": true,
   "momentumValue": 0.0,
 
-
-
   "numberOfInPuts": 4,
   "numberOfOutPuts": 3,
   "numberOfHiddenNeurons": 4,
 
+  "validationSet": true,
+  "divisionOfSet": [60,20,20],
 
   "epochJump": 2,
   "jumpOnDisplay": 500,

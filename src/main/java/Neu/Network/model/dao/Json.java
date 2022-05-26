@@ -31,6 +31,17 @@ public class Json {
         }
     }
 
+    public static boolean getValidationSetFlag() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var fileSaveMode =  jo.get("validationSet");
+            return Objects.equals(fileSaveMode.toString(), "true");
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
+
     public static int getJumpOnDisplay() {
         try {
             Object obj = new JSONParser().parse(new FileReader("config.json"));
