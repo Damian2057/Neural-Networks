@@ -2,22 +2,19 @@ package Neu.Network.model.dao;
 
 import Neu.Network.model.exceptions.dao.FileOperationException;
 import Neu.Network.model.flower.Iris;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Objects;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.*;
 
 public class DataOperation {
 
-    private static final String path = "@../../Data/";
+    private static final String readPath = "@../../Data/";
+    private static final String savePath = "@../../Data/SelectedData/";
 
     public static ArrayList<Iris> readData(String fileName) {
         try {
             ArrayList<Iris> temp = new ArrayList<>();
-            BufferedReader csvReader = new BufferedReader(new FileReader(path+fileName));
+            BufferedReader csvReader = new BufferedReader(new FileReader(readPath +fileName));
             String row;
             while ((row = csvReader.readLine()) != null) {
                 String[] data = row.split(",");
@@ -32,10 +29,18 @@ public class DataOperation {
 
     public static void writeData(String fileName, ArrayList<Iris> data) {
         try {
+            File fout = new File(savePath + fileName + ".csv");
+            FileOutputStream fos = new FileOutputStream(fout);
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 
+            for (Iris datum : data) {
+                bw.write(datum.getSepalWidth() + ","); //TODO: Save IRIS
+                bw.newLine();
+            }
 
-        } catch (Exception e) {
-            throw new FileOperationException("Error saving the file");
+            bw.close();
+        } catch (IOException e) {
+            throw new FileOperationException("Error during saving weights to  file number: ");
         }
     }
 }

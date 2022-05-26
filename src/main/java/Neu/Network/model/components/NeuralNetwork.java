@@ -34,9 +34,10 @@ public class NeuralNetwork implements Serializable, Network {
     private long progress;
     private double error;
     private final int showDisplay = Json.getJumpOnDisplay();
+    private final boolean validationFlag = Json.getValidationSetFlag();
     private double dataSize;
 
-    public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
+    public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts, double learningFactor) {
         this.numberOfHiddenNeurons = numberOfHiddenNeurons;
         this.numberOfOutPuts = numberOfOutPuts;
         this.learningFactor = learningFactor;
