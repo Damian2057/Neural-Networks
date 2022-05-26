@@ -20,7 +20,7 @@ public class ConfusionMatrix {
     }
 
     public double recall() {
-        return this.truePositives /(this.truePositives + this.falseNegatives);
+        return this.truePositives /(this.truePositives + this.trueNegatives);
     }
 
     public double fMeasure(double precision, double recall) {
