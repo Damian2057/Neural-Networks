@@ -10,7 +10,7 @@ import java.util.Objects;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 
-public class DataReader {
+public class DataOperation {
 
     private static final String path = "@../../Data/";
 
@@ -27,6 +27,15 @@ public class DataReader {
             return temp;
         } catch (Exception e) {
             throw new FileOperationException("Error while downloading data to the program");
+        }
+    }
+
+    public static void writeData(String fileName, ArrayList<Iris> data) {
+        try {
+
+
+        } catch (Exception e) {
+            throw new FileOperationException("Error saving the file");
         }
     }
 }

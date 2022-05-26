@@ -2,7 +2,6 @@ package Neu.Network.model.components;
 
 import Neu.Network.charts.ChartGenerator;
 import Neu.Network.charts.Cord;
-import Neu.Network.model.dao.DataReader;
 import Neu.Network.model.dao.Json;
 import Neu.Network.model.dao.StatisticsCollector;
 import Neu.Network.model.flower.Iris;

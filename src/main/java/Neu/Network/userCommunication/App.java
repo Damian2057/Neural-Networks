@@ -20,8 +20,8 @@ public class App {
         ArrayList<Iris> trainingData;
 
         try { //Download data
-            data = DataReader.readData("data.csv");
-            trainingData = DataReader.readData("trainingPartOfData.csv");
+            data = DataOperation.readData("data.csv");
+            trainingData = DataOperation.readData("trainingPartOfData.csv");
             System.out.println("Collected " + trainingData.size() + " portions of data to train.\n");
             System.out.println("Collected " + data.size() + " portions of data.\n");
         } catch (Exception e) {

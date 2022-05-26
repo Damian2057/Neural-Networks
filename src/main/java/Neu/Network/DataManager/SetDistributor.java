@@ -1,6 +1,6 @@
 package Neu.Network.DataManager;
 
-import Neu.Network.model.dao.DataReader;
+import Neu.Network.model.dao.DataOperation;
 import Neu.Network.model.flower.Iris;
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ public class SetDistributor {
 
 
     public SetDistributor(ArrayList<Integer> percentageSet) {
-        this.allData = DataReader.readData("data.csv");
+        this.allData = DataOperation.readData("data.csv");
         splitSet(percentageSet);
     }
 
