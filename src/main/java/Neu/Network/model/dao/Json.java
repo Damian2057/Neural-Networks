@@ -1,9 +1,9 @@
 package Neu.Network.model.dao;
 
 import Neu.Network.model.exceptions.dao.FileOperationException;
+import com.google.gson.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import java.io.FileReader;
 import java.util.Objects;
 
@@ -42,13 +42,13 @@ public class Json {
         }
     }
 
-    public static int getPercentageSet() {
+    public static int[] getPercentageSet() {
         try {
-            Object obj = new JSONParser().parse(new FileReader("config.json"));
-            JSONObject jo = (JSONObject) obj;
-            var jump =  jo.get("divisionOfSet");
-            //TODO: read list from JSON
-            return Integer.parseInt(jump.toString());
+            JsonObject jsonObject = new Gson().fromJson(new FileReader("config.json"), JsonObject.class);
+            JsonArray jsonArray = jsonObject.getAsJsonArray("divisionOfSet");
+
+            int[] dataSet = new Gson().fromJson(jsonArray, int[].class);
+            return dataSet;
         } catch (Exception e) {
             throw new FileOperationException("Error reading the configuration file");
         }

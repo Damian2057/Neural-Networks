@@ -9,7 +9,6 @@ import java.util.*;
 
 public class App {
     public static void main(String[] args) {
-
         DirectoryManager.CreateDirectories();
         if(Json.GetDeleteMode()) {
             DirectoryManager.ClearDirectories();
