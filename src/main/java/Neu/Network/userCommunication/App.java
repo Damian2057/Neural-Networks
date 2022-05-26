@@ -1,20 +1,18 @@
 package Neu.Network.userCommunication;
 
-import Neu.Network.model.dao.StatisticsCollector;
+import Neu.Network.model.dao.*;
 import Neu.Network.model.exceptions.argument.ArgumentException;
 import Neu.Network.summary.SummaryCalculator;
 import Neu.Network.model.components.NeuralNetwork;
-import Neu.Network.model.dao.DataReader;
-import Neu.Network.model.dao.FileNetworkDao;
 import Neu.Network.model.flower.Iris;
 import java.util.*;
 
 public class App {
     public static void main(String[] args) {
 
-        DataReader.CreateDirectories();
-        if(DataReader.GetDeleteMode()) {
-            StatisticsCollector.ClearStats();
+        DirectoryManager.CreateDirectories();
+        if(Json.GetDeleteMode()) {
+            DirectoryManager.ClearDirectories();
         }
 
         Scanner scanner= new Scanner(System.in);
@@ -31,17 +29,17 @@ public class App {
             return;
         }
 
-        if(DataReader.getCreateNewNetworkMode() && DataReader.getLoadPrevNetworkMode()) {
+        if(Json.getCreateNewNetworkMode() && Json.getLoadPrevNetworkMode()) {
             throw new ArgumentException("invalid data in the config file");
         }
 
         NeuralNetwork neuralNetwork;
-            if(DataReader.getCreateNewNetworkMode()) {
-                neuralNetwork = new NeuralNetwork(DataReader.getNumberOfInPuts()
-                        ,DataReader.getNumberOfHiddenNeurons()
-                        ,DataReader.getNumberOfOutPuts()
-                        , DataReader.getLearningFactor());
-                neuralNetwork.setBias(DataReader.getBiasMode());
+            if(Json.getCreateNewNetworkMode()) {
+                neuralNetwork = new NeuralNetwork(Json.getNumberOfInPuts()
+                        ,Json.getNumberOfHiddenNeurons()
+                        ,Json.getNumberOfOutPuts()
+                        , Json.getLearningFactor());
+                neuralNetwork.setBias(Json.getBiasMode());
             } else {
                 try(FileNetworkDao<NeuralNetwork> fileManager = new FileNetworkDao<>()) {
                     String selectedFile;
@@ -73,17 +71,17 @@ public class App {
                     switch (stopCondition) {
                         case "1" -> {
                             neuralNetwork.setStopConditionFlag(true);
-                            neuralNetwork.setEpochs(DataReader.getNumberOfEpochs());
+                            neuralNetwork.setEpochs(Json.getNumberOfEpochs());
                         }
                         case "2" -> {
                             neuralNetwork.setStopConditionFlag(false);
-                            neuralNetwork.setAccuracy(DataReader.getAccuracy());
+                            neuralNetwork.setAccuracy(Json.getAccuracy());
                         }
                         default -> throw new IllegalStateException("Unexpected value: " + stopCondition);
                     }
 
-                    if(DataReader.getMomentumMode()) {
-                        neuralNetwork.setMomentumFactor(DataReader.getMomentumValue());
+                    if(Json.getMomentumMode()) {
+                        neuralNetwork.setMomentumFactor(Json.getMomentumValue());
                     }
 
                     System.out.println("Enter the method of entering the data:\n[1]. Random\n[2]. Sequentially");

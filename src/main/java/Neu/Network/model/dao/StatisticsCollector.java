@@ -11,7 +11,7 @@ public class StatisticsCollector {
 
     public static void saveErrorFromWholeNetwork(String from , ArrayList<Cord> error) {
         try {
-            String name = "Neurons_" + DataReader.getNumberOfHiddenNeurons() + "_" + from + ".csv";
+            String name = "Neurons_" + Json.getNumberOfHiddenNeurons() + "_" + from + ".csv";
             File fout = new File("@../../PythonCharts/statistics/" + name);
             FileOutputStream fos = new FileOutputStream(fout);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
@@ -27,7 +27,7 @@ public class StatisticsCollector {
     }
 
     public static void saveErrorOnSingleNeuron(String from, int neuron, int epoch, double error) {
-        String name = "Neurons_" + DataReader.getNumberOfHiddenNeurons() + "_" + from + "_" + neuron + ".csv";
+        String name = "Neurons_" + Json.getNumberOfHiddenNeurons() + "_" + from + "_" + neuron + ".csv";
         try(FileWriter fileWriter = new FileWriter("@../../PythonCharts/statistics/" + name,true)) {
             BufferedWriter bw = new BufferedWriter(fileWriter);
             bw.write(epoch + "," + Math.abs(error));
@@ -62,17 +62,5 @@ public class StatisticsCollector {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_dd-HH-mm-ss");
         LocalDateTime now = LocalDateTime.now();
         return dtf.format(now);
-    }
-
-    public static void ClearStats() {
-        File folder = new File("@../../PythonCharts/statistics/");
-        File[] listOfFiles = folder.listFiles();
-
-        assert listOfFiles != null;
-        for (File file : listOfFiles) {
-            if (file.isFile()) {
-                file.delete();
-            }
-        }
     }
 }

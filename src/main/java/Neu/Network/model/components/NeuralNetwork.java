@@ -3,6 +3,7 @@ package Neu.Network.model.components;
 import Neu.Network.charts.ChartGenerator;
 import Neu.Network.charts.Cord;
 import Neu.Network.model.dao.DataReader;
+import Neu.Network.model.dao.Json;
 import Neu.Network.model.dao.StatisticsCollector;
 import Neu.Network.model.flower.Iris;
 import java.io.Serializable;
@@ -33,7 +34,7 @@ public class NeuralNetwork implements Serializable, Network {
     private final boolean saveFlag;
     private long progress;
     private double error;
-    private final int showDisplay = DataReader.getJumpOnDisplay();
+    private final int showDisplay = Json.getJumpOnDisplay();
     private double dataSize;
 
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts ,double learningFactor) {
@@ -46,8 +47,8 @@ public class NeuralNetwork implements Serializable, Network {
         prevOutPutNeurons = outPutNeurons.clone();
         hiddenBias = new Layer(numberOfHiddenNeurons,1);
         outPutBias = new Layer(numberOfOutPuts,1);
-        jumpEpoch = DataReader.getJump();
-        saveFlag = DataReader.getFileSaveFlag();
+        jumpEpoch = Json.getJump();
+        saveFlag = Json.getFileSaveFlag();
     }
 
     @Override
