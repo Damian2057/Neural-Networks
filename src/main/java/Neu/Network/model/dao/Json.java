@@ -42,6 +42,18 @@ public class Json {
         }
     }
 
+    public static int getPercentageSet() {
+        try {
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            JSONObject jo = (JSONObject) obj;
+            var jump =  jo.get("divisionOfSet");
+            //TODO: read list from JSON
+            return Integer.parseInt(jump.toString());
+        } catch (Exception e) {
+            throw new FileOperationException("Error reading the configuration file");
+        }
+    }
+
     public static int getJumpOnDisplay() {
         try {
             Object obj = new JSONParser().parse(new FileReader("config.json"));

@@ -30,7 +30,7 @@ public class StatisticsCollector {
         String name = "Neurons_" + Json.getNumberOfHiddenNeurons() + "_" + from + "_" + neuron + ".csv";
         try(FileWriter fileWriter = new FileWriter("@../../PythonCharts/statistics/" + name,true)) {
             BufferedWriter bw = new BufferedWriter(fileWriter);
-            bw.write(epoch + "," + Math.abs(error));
+            bw.write(epoch + "," + error);
             bw.newLine();
             bw.close();
         } catch (IOException e) {
@@ -47,7 +47,7 @@ public class StatisticsCollector {
 
             for (int i = 0; i < weights.length; i++) {
                 for (int j = 0; j < weights[0].length; j++) {
-                    bw.write(weights[i][j] + " ");
+                    bw.write(weights[i][j] + ",");
                 }
                 bw.newLine();
             }
