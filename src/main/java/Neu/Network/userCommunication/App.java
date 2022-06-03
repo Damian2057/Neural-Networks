@@ -5,7 +5,6 @@ import Neu.Network.model.dao.*;
 import Neu.Network.model.exceptions.argument.ArgumentException;
 import Neu.Network.summary.SummaryCalculator;
 import Neu.Network.model.components.NeuralNetwork;
-
 import java.util.*;
 
 public class App {
@@ -88,7 +87,7 @@ public class App {
                             }
                         }
                         neuralNetwork.showInformation();
-                        neuralNetwork.trainNetwork(setDistributor.getTrainingData());
+                        neuralNetwork.trainNetwork(setDistributor.getTrainingData(), setDistributor.getValidationData());
                     }
                     case 2 -> {
                         SummaryCalculator logicCalculator = new SummaryCalculator();

@@ -52,7 +52,7 @@ public class NeuralNetwork implements Serializable, Network {
     }
 
     @Override
-    public void trainNetwork(ArrayList<Iris> trainingData) {
+    public void trainNetwork(ArrayList<Iris> trainingData, ArrayList<Iris> validationData) {
         dataSize = trainingData.size();
         if(stopConditionFlag) {
             trainByEpochs(trainingData);

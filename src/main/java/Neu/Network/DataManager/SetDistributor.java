@@ -1,7 +1,6 @@
 package Neu.Network.DataManager;
 
 import Neu.Network.model.dao.DataOperation;
-import Neu.Network.model.dao.StatisticsCollector;
 import Neu.Network.model.exceptions.argument.ArgumentException;
 import Neu.Network.model.flower.Iris;
 import com.google.gson.annotations.SerializedName;
