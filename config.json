@@ -1,12 +1,12 @@
 {
   "loadPrevNetwork": false,
   "createNewNetwork": true,
-  "numberOfEpochs": 200,
-  "accuracy": 0.001,
+  "numberOfEpochs": 6000,
+  "accuracy": 0.3,
 
-  "learningFactor": 0.03,
+  "learningFactor": 0.01,
   "biasStatus": true,
-  "momentumStatus": true,
+  "momentumStatus": false,
   "momentumValue": 0.0,
 
   "numberOfInPuts": 4,

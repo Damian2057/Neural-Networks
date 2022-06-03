@@ -60,55 +60,59 @@ public class App {
                 [2]. Test mode.
                 [3]. Network Information.
                 [4]. Exit.""");
-            int modeChoice = Integer.parseInt(scanner.nextLine());
+            try {
+                int modeChoice = Integer.parseInt(scanner.nextLine());
 
-            switch (modeChoice) {
-                case 1 -> {
-                    System.out.println("Select the options based on which you want to create the network:\n");
-                    System.out.println("Stop condition:\n[1]. number of epochs\n[2]. error level");
-                    String stopCondition = scanner.nextLine();
-                    switch (stopCondition) {
-                        case "1" -> {
-                            neuralNetwork.setStopConditionFlag(true);
-                            neuralNetwork.setEpochs(Json.getNumberOfEpochs());
+                switch (modeChoice) {
+                    case 1 -> {
+                        System.out.println("Select the options based on which you want to create the network:\n");
+                        System.out.println("Stop condition:\n[1]. number of epochs\n[2]. error level");
+                        String stopCondition = scanner.nextLine();
+                        switch (stopCondition) {
+                            case "1" -> {
+                                neuralNetwork.setStopConditionFlag(true);
+                                neuralNetwork.setEpochs(Json.getNumberOfEpochs());
+                            }
+                            case "2" -> {
+                                neuralNetwork.setStopConditionFlag(false);
+                                neuralNetwork.setAccuracy(Json.getAccuracy());
+                            }
+                            default -> throw new IllegalStateException("Unexpected value: " + stopCondition);
                         }
-                        case "2" -> {
-                            neuralNetwork.setStopConditionFlag(false);
-                            neuralNetwork.setAccuracy(Json.getAccuracy());
-                        }
-                        default -> throw new IllegalStateException("Unexpected value: " + stopCondition);
-                    }
 
-                    if(Json.getMomentumMode()) {
-                        neuralNetwork.setMomentumFactor(Json.getMomentumValue());
-                    }
-
-                    System.out.println("Enter the method of entering the data:\n[1]. Random\n[2]. Sequentially");
-                    String enterChoice = scanner.nextLine();
-                    switch (enterChoice) {
-                        case "1" -> neuralNetwork.setTypeOfSequence(true);
-                        case "2" -> neuralNetwork.setTypeOfSequence(false);
-                        default -> {
-                            System.out.println("Invalid option.");
-                            return;
+                        if (Json.getMomentumMode()) {
+                            neuralNetwork.setMomentumFactor(Json.getMomentumValue());
                         }
+
+                        System.out.println("Enter the method of entering the data:\n[1]. Random\n[2]. Sequentially");
+                        String enterChoice = scanner.nextLine();
+                        switch (enterChoice) {
+                            case "1" -> neuralNetwork.setTypeOfSequence(true);
+                            case "2" -> neuralNetwork.setTypeOfSequence(false);
+                            default -> {
+                                System.out.println("Invalid option.");
+                                return;
+                            }
+                        }
+                        neuralNetwork.showInformation();
+                        neuralNetwork.trainNetwork(trainingData);
                     }
-                    neuralNetwork.showInformation();
-                    neuralNetwork.trainNetwork(trainingData);
-                }
-                case 2 -> {
-                    SummaryCalculator logicCalculator = new SummaryCalculator();
-                    for (var sample : data) {
-                        ArrayList<Double> result = neuralNetwork.calculate(sample);
-                        logicCalculator.summarize(result,sample);
+                    case 2 -> {
+                        SummaryCalculator logicCalculator = new SummaryCalculator();
+                        for (var sample : data) {
+                            ArrayList<Double> result = neuralNetwork.calculate(sample);
+                            logicCalculator.summarize(result, sample);
+                        }
+                        logicCalculator.summarizeOfAllTypes();
                     }
-                    logicCalculator.summarizeOfAllTypes();
+                    case 3 -> neuralNetwork.showInformation();
+                    case 4 -> { //Exit
+                        return;
+                    }
+                    default -> System.out.println("Invalid option.");
                 }
-                case 3 -> neuralNetwork.showInformation();
-                case 4 -> { //Exit
-                    return;
-                }
-                default -> System.out.println("Invalid option.");
+            } catch (Exception ignored) {
+
             }
             System.out.println("""
                                     
@@ -132,18 +136,7 @@ public class App {
                 }
                 default -> System.out.println("Invalid option");
             }
-            System.out.println("""
-                                    
-                    Do you want to save the weights to a file?:
-                    Yes/No""");
-            String printWeights = scanner.nextLine();
-            switch (printWeights) {
-                case "No" -> {
-
-                }
-                case "Yes" -> neuralNetwork.saveWeights();
-                default -> System.out.println("Invalid option");
-            }
+            neuralNetwork.saveWeights();
         }
     }
 }

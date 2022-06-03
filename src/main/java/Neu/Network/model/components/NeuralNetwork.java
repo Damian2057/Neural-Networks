@@ -72,9 +72,6 @@ public class NeuralNetwork implements Serializable, Network {
             if(typeOfSequence) {
                 Collections.shuffle(data);
             }
-            if(i % showDisplay == 0) {
-                System.out.println("Epoch: " + i);
-            }
             for (var sample : data) {
                 train(sample, i);
             }
@@ -142,7 +139,7 @@ public class NeuralNetwork implements Serializable, Network {
 
         Layer target = Layer.expectedTarget(flower,numberOfOutPuts);
 
-        printVectors(iterator,target,output);
+        saveTargetOutPutVectors(iterator,target,output);
 
         outputError = Layer.calcError(target, output); //E = 0.5*(t-o)^2
         calculateTotalError(outputError.getVector());
@@ -304,9 +301,10 @@ public class NeuralNetwork implements Serializable, Network {
         }
     }
 
-    private void printVectors(int index, Layer target, Layer outOutPut) {
+    private void saveTargetOutPutVectors(int index, Layer target, Layer outOutPut) {
         if(index % showDisplay == 0) {
-            System.out.println(Arrays.deepToString(target.getVector()) + " " + Arrays.deepToString(outOutPut.getVector()));
+            //save
+            StatisticsCollector.targetOutputSample(index, target, outOutPut);
         }
     }
 

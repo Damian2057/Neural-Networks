@@ -8,6 +8,19 @@ public class DirectoryManager {
     public static void ClearDirectories() {
         ClearStats("@../../PythonCharts/statistics/");
         ClearStats("@../../Data/SelectedData");
+        ClearStats("@../../outputData");
+    }
+
+    public static void CreateDirectories() {
+        try {
+            CreateSingleDirectory("@../../Data");
+            CreateSingleDirectory("@../../archives");
+            CreateSingleDirectory("@../../PythonCharts/statistics");
+            CreateSingleDirectory("@../../Data/SelectedData");
+            CreateSingleDirectory("@../../outputData");
+        } catch (Exception e) {
+            throw new FileOperationException("error during creating paths");
+        }
     }
 
     private static void ClearStats(String path) {
@@ -22,17 +35,6 @@ public class DirectoryManager {
         }
     }
 
-    public static void CreateDirectories() {
-        try {
-            CreateSingleDirectory("@../../Data");
-            CreateSingleDirectory("@../../archives");
-            CreateSingleDirectory("@../../PythonCharts/statistics");
-            CreateSingleDirectory("@../../Data/SelectedData");
-        } catch (Exception e) {
-            throw new FileOperationException("error while creating paths");
-        }
-    }
-
     private static void CreateSingleDirectory(String path) {
         try {
             File theData = new File(path);
@@ -40,7 +42,7 @@ public class DirectoryManager {
                 theData.mkdirs();
             }
         } catch (Exception e) {
-            throw new FileOperationException("error while creating paths");
+            throw new FileOperationException("error during creating paths");
         }
     }
 

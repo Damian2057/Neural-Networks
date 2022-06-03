@@ -1,11 +1,13 @@
 package Neu.Network.model.dao;
 
 import Neu.Network.charts.Cord;
+import Neu.Network.model.components.Layer;
 import Neu.Network.model.exceptions.dao.FileOperationException;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class StatisticsCollector {
 
@@ -41,7 +43,7 @@ public class StatisticsCollector {
     public static void saveWeight(String nameOfFile, double[][] weights) {
        try {
             String name = nameOfFile + getCurrentTime() + ".csv";
-            File fout = new File("@../../PythonCharts/statistics/" + name);
+            File fout = new File("@../../outputData/" + name);
             FileOutputStream fos = new FileOutputStream(fout);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 
@@ -55,6 +57,21 @@ public class StatisticsCollector {
             bw.close();
         } catch (IOException e) {
             throw new FileOperationException("Error during saving weights to  file number: ");
+        }
+    }
+
+    public static void targetOutputSample(int epoch, Layer target, Layer outPut) {
+        String name = "Target_epoch.csv";
+        try(FileWriter fileWriter = new FileWriter("@../../outputData/" + name,true)) {
+            BufferedWriter bw = new BufferedWriter(fileWriter);
+            bw.write("Epoch number: " + epoch);
+            bw.newLine();
+            bw.write(Arrays.deepToString(target.getVector()));
+            bw.write(Arrays.deepToString(outPut.getVector()));
+            bw.newLine();
+            bw.close();
+        } catch (IOException e) {
+            throw new FileOperationException("Error generating statistics on outPut Target file");
         }
     }
 
