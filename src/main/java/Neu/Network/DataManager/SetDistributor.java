@@ -8,19 +8,74 @@ import java.util.ArrayList;
 public class SetDistributor {
     private final ArrayList<Iris> allData;
     @SerializedName("testData")
-    private ArrayList<Iris> testData;
+    private ArrayList<Iris> testData = new ArrayList<>();
     @SerializedName("validationData")
-    private ArrayList<Iris> validationData;
+    private ArrayList<Iris> validationData = new ArrayList<>();
     @SerializedName("trainingData")
-    private ArrayList<Iris> trainingData;
+    private ArrayList<Iris> trainingData = new ArrayList<>();
 
 
-    public SetDistributor(ArrayList<Integer> percentageSet) {
+    public SetDistributor(int[] table) {
         this.allData = DataOperation.readData("data.csv");
-        splitSet(percentageSet);
+        initDataSets(table);
     }
 
-    private void splitSet(ArrayList<Integer> percentageSet) {
+    private void initDataSets(int[] table) {
+        ArrayList<Iris> dest = new ArrayList<>();
 
+        for (int i = 0; i < 50; i++) {
+            dest.add(allData.get(i));
+        }
+        DataSet firstSpec = new DataSet(dest);
+        dest.clear();
+
+        for (int i = 50; i < 100; i++) {
+            dest.add(allData.get(i));
+        }
+        DataSet secondSpec = new DataSet(dest);
+        dest.clear();
+
+        for (int i = 100; i < 150; i++) {
+            dest.add(allData.get(i));
+        }
+        DataSet thirdSpec = new DataSet(dest);
+        dest.clear();
+
+        for (int i = 0; i < (allData.size()/3.0)*(table[0]*0.01); i++) {
+            trainingData.add(firstSpec.getRandomIris());
+            trainingData.add(secondSpec.getRandomIris());
+            trainingData.add(thirdSpec.getRandomIris());
+        }
+
+        for (int i = 0; i < (allData.size()/3.0)*(table[1]*0.01); i++) {
+            validationData.add(firstSpec.getRandomIris());
+            validationData.add(secondSpec.getRandomIris());
+            validationData.add(thirdSpec.getRandomIris());
+        }
+
+        for (int i = 0; i < (allData.size()/3.0)*(table[2]*0.01); i++) {
+            testData.add(firstSpec.getRandomIris());
+            testData.add(secondSpec.getRandomIris());
+            testData.add(thirdSpec.getRandomIris());
+        }
+    }
+
+    public void setInformation() {
+        System.out.println("Collected " + trainingData.size() + " portions of data to train.");
+        System.out.println("Collected " + validationData.size() + " portions of validation Data.");
+        System.out.println("Collected " + testData.size() + " portions of test Data.");
+    }
+    
+
+    public ArrayList<Iris> getTestData() {
+        return testData;
+    }
+
+    public ArrayList<Iris> getValidationData() {
+        return validationData;
+    }
+
+    public ArrayList<Iris> getTrainingData() {
+        return trainingData;
     }
 }

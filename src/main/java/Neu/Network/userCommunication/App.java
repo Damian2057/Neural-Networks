@@ -1,5 +1,6 @@
 package Neu.Network.userCommunication;
 
+import Neu.Network.DataManager.SetDistributor;
 import Neu.Network.model.dao.*;
 import Neu.Network.model.exceptions.argument.ArgumentException;
 import Neu.Network.summary.SummaryCalculator;
@@ -9,24 +10,16 @@ import java.util.*;
 
 public class App {
     public static void main(String[] args) {
+
         DirectoryManager.CreateDirectories();
         if(Json.GetDeleteMode()) {
             DirectoryManager.ClearDirectories();
         }
 
         Scanner scanner= new Scanner(System.in);
-        ArrayList<Iris> data;
-        ArrayList<Iris> trainingData;
 
-        try { //Download data
-            data = DataOperation.readData("data.csv");
-            trainingData = DataOperation.readData("trainingPartOfData.csv");
-            System.out.println("Collected " + trainingData.size() + " portions of data to train.\n");
-            System.out.println("Collected " + data.size() + " portions of data.\n");
-        } catch (Exception e) {
-            System.out.println("Error occurred");
-            return;
-        }
+        SetDistributor setDistributor = new SetDistributor(Json.getPercentageSet());
+        setDistributor.setInformation();
 
         if(Json.getCreateNewNetworkMode() && Json.getLoadPrevNetworkMode()) {
             throw new ArgumentException("invalid data in the config file");
@@ -95,11 +88,11 @@ public class App {
                             }
                         }
                         neuralNetwork.showInformation();
-                        neuralNetwork.trainNetwork(trainingData);
+                        neuralNetwork.trainNetwork(setDistributor.getTrainingData());
                     }
                     case 2 -> {
                         SummaryCalculator logicCalculator = new SummaryCalculator();
-                        for (var sample : data) {
+                        for (var sample : setDistributor.getTestData()) {
                             ArrayList<Double> result = neuralNetwork.calculate(sample);
                             logicCalculator.summarize(result, sample);
                         }
