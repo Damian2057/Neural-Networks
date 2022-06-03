@@ -309,22 +309,19 @@ public class NeuralNetwork implements Serializable, Network {
     }
 
     public void showInformation() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("===================================================")
+                .append("\nNumber of hidden Neurons: " + numberOfHiddenNeurons)
+                .append("\nLearning factor: " + getLearningFactor())
+                .append("\nBias status: " + bias)
+                .append("\nMomentum factor: " + getMomentumFactor());
+
         if(epochs > 0 ) {
-            System.out.println("==================================================="
-                    + "\nNumber of hidden Neurons: " + numberOfHiddenNeurons
-                    + "\nLearning factor: " + getLearningFactor()
-                    + "\nBias status: " + bias
-                    + "\nMomentum factor: " + getMomentumFactor()
-                    + "\nTaught on: " + getEpochs() + " epochs\n"
-                    + "===================================================");
+            stringBuilder.append("\nTaught on: " + getEpochs() + " epochs");
         } else {
-            System.out.println("==================================================="
-                    + "\nNumber of hidden Neurons: " + numberOfHiddenNeurons
-                    + "\nLearning factor: " + getLearningFactor()
-                    + "\nBias status: " + bias
-                    + "\nMomentum factor: " + getMomentumFactor()
-                    +"\nTaught with accuracy: "+ getAccuracy()
-                    + "\n===================================================" );
+            stringBuilder.append("\nTaught with accuracy: "+ getAccuracy());
         }
+        stringBuilder.append("\n===================================================");
+        System.out.println(stringBuilder);
     }
 }
