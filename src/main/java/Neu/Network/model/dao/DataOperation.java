@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class DataOperation {
 
     private static final String readPath = "@../../Data/";
-    private static final String savePath = "@../../Data/SelectedData/";
+    private static final String savePath = "@../../outputData/";
 
     public static ArrayList<Iris> readData(String fileName) {
         try {
@@ -34,7 +34,11 @@ public class DataOperation {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 
             for (Iris datum : data) {
-                bw.write(datum.getSepalWidth() + ","); //TODO: Save IRIS
+                bw.write(datum.getSepalLength() + ","
+                        + datum.getSepalWidth() + ","
+                        + datum.getPetalLength() + ","
+                        + datum.getPetalWidth() + ","
+                        + datum.getType());
                 bw.newLine();
             }
 

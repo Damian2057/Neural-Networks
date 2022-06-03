@@ -7,7 +7,6 @@ public class DirectoryManager {
 
     public static void ClearDirectories() {
         ClearStats("@../../PythonCharts/statistics/");
-        ClearStats("@../../Data/SelectedData");
         ClearStats("@../../outputData");
     }
 
@@ -16,7 +15,6 @@ public class DirectoryManager {
             CreateSingleDirectory("@../../Data");
             CreateSingleDirectory("@../../archives");
             CreateSingleDirectory("@../../PythonCharts/statistics");
-            CreateSingleDirectory("@../../Data/SelectedData");
             CreateSingleDirectory("@../../outputData");
         } catch (Exception e) {
             throw new FileOperationException("error during creating paths");

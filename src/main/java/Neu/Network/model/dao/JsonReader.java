@@ -7,7 +7,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.util.Objects;
 
-public class Json {
+public class JsonReader {
 
     public static boolean getFileSaveFlag() {
         try {

@@ -5,33 +5,33 @@ import Neu.Network.model.dao.*;
 import Neu.Network.model.exceptions.argument.ArgumentException;
 import Neu.Network.summary.SummaryCalculator;
 import Neu.Network.model.components.NeuralNetwork;
-import Neu.Network.model.flower.Iris;
+
 import java.util.*;
 
 public class App {
     public static void main(String[] args) {
 
         DirectoryManager.CreateDirectories();
-        if(Json.GetDeleteMode()) {
+        if(JsonReader.GetDeleteMode()) {
             DirectoryManager.ClearDirectories();
         }
 
         Scanner scanner= new Scanner(System.in);
 
-        SetDistributor setDistributor = new SetDistributor(Json.getPercentageSet());
+        SetDistributor setDistributor = new SetDistributor(JsonReader.getPercentageSet());
         setDistributor.setInformation();
 
-        if(Json.getCreateNewNetworkMode() && Json.getLoadPrevNetworkMode()) {
+        if(JsonReader.getCreateNewNetworkMode() && JsonReader.getLoadPrevNetworkMode()) {
             throw new ArgumentException("invalid data in the config file");
         }
 
         NeuralNetwork neuralNetwork;
-            if(Json.getCreateNewNetworkMode()) {
-                neuralNetwork = new NeuralNetwork(Json.getNumberOfInPuts()
-                        ,Json.getNumberOfHiddenNeurons()
-                        ,Json.getNumberOfOutPuts()
-                        , Json.getLearningFactor());
-                neuralNetwork.setBias(Json.getBiasMode());
+            if(JsonReader.getCreateNewNetworkMode()) {
+                neuralNetwork = new NeuralNetwork(JsonReader.getNumberOfInPuts()
+                        , JsonReader.getNumberOfHiddenNeurons()
+                        , JsonReader.getNumberOfOutPuts()
+                        , JsonReader.getLearningFactor());
+                neuralNetwork.setBias(JsonReader.getBiasMode());
             } else {
                 try(FileNetworkDao<NeuralNetwork> fileManager = new FileNetworkDao<>()) {
                     String selectedFile;
@@ -64,17 +64,17 @@ public class App {
                         switch (stopCondition) {
                             case "1" -> {
                                 neuralNetwork.setStopConditionFlag(true);
-                                neuralNetwork.setEpochs(Json.getNumberOfEpochs());
+                                neuralNetwork.setEpochs(JsonReader.getNumberOfEpochs());
                             }
                             case "2" -> {
                                 neuralNetwork.setStopConditionFlag(false);
-                                neuralNetwork.setAccuracy(Json.getAccuracy());
+                                neuralNetwork.setAccuracy(JsonReader.getAccuracy());
                             }
                             default -> throw new IllegalStateException("Unexpected value: " + stopCondition);
                         }
 
-                        if (Json.getMomentumMode()) {
-                            neuralNetwork.setMomentumFactor(Json.getMomentumValue());
+                        if (JsonReader.getMomentumMode()) {
+                            neuralNetwork.setMomentumFactor(JsonReader.getMomentumValue());
                         }
 
                         System.out.println("Enter the method of entering the data:\n[1]. Random\n[2]. Sequentially");

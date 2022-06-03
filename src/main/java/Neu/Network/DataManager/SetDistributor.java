@@ -1,6 +1,8 @@
 package Neu.Network.DataManager;
 
 import Neu.Network.model.dao.DataOperation;
+import Neu.Network.model.dao.StatisticsCollector;
+import Neu.Network.model.exceptions.argument.ArgumentException;
 import Neu.Network.model.flower.Iris;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class SetDistributor {
 
 
     public SetDistributor(int[] table) {
+        checkSet(table);
         this.allData = DataOperation.readData("data.csv");
         initDataSets(table);
     }
@@ -58,6 +61,9 @@ public class SetDistributor {
             testData.add(secondSpec.getRandomIris());
             testData.add(thirdSpec.getRandomIris());
         }
+        DataOperation.writeData("trainingData",trainingData);
+        DataOperation.writeData("validationData",validationData);
+        DataOperation.writeData("testData",testData);
     }
 
     public void setInformation() {
@@ -77,5 +83,11 @@ public class SetDistributor {
 
     public ArrayList<Iris> getTrainingData() {
         return trainingData;
+    }
+
+    private void checkSet(int[] table) {
+        if(table[0] + table[1] + table[2] > 100) {
+            throw new ArgumentException("percentage greater than 100%");
+        }
     }
 }
