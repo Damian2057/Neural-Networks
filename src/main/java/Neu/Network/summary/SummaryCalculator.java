@@ -51,4 +51,10 @@ public class SummaryCalculator {
         firstSpecies.getInformation();
         secondSpecies.getInformation();
     }
+
+    public double getPositives() {
+        double value = zeroSpecies.precision() + firstSpecies.precision() + secondSpecies.precision();
+        if(Double.isNaN(value)) return 0.0;
+        return value;
+    }
 }

@@ -99,7 +99,7 @@ public class App {
                     }
                     case 3 -> neuralNetwork.showInformation();
                     case 4 -> { //Exit
-                        return;
+                        System.exit(0);
                     }
                     default -> System.out.println("Invalid option.");
                 }

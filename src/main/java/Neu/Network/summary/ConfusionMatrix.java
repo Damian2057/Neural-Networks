@@ -48,4 +48,8 @@ public class ConfusionMatrix {
                 + "\nF-Measure: " + fMeasure(precision(), recall())
                 + "\n===================================================" );
     }
+
+    public double getTruePositives() {
+        return truePositives;
+    }
 }

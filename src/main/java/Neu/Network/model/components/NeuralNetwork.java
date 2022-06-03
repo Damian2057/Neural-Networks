@@ -5,6 +5,7 @@ import Neu.Network.charts.Cord;
 import Neu.Network.model.dao.JsonReader;
 import Neu.Network.model.dao.StatisticsCollector;
 import Neu.Network.model.flower.Iris;
+import Neu.Network.summary.SummaryCalculator;
 import java.io.Serializable;
 import java.util.*;
 
@@ -36,6 +37,10 @@ public class NeuralNetwork implements Serializable, Network {
     private final int showDisplay = JsonReader.getJumpOnDisplay();
     private final boolean validationFlag = JsonReader.getValidationSetFlag();
     private double dataSize;
+    private Layer bestHiddenNeurons;
+    private Layer bestOutNeurons;
+    private Layer bestHiddenBias;
+    private Layer bestOutBias;
 
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts, double learningFactor) {
         this.numberOfHiddenNeurons = numberOfHiddenNeurons;
@@ -49,15 +54,20 @@ public class NeuralNetwork implements Serializable, Network {
         outPutBias = new Layer(numberOfOutPuts,1);
         jumpEpoch = JsonReader.getJump();
         saveFlag = JsonReader.getFileSaveFlag();
+
+        bestHiddenNeurons = hiddenNeurons.clone();
+        bestOutNeurons = outPutNeurons.clone();
+        bestHiddenBias = hiddenBias.clone();
+        bestOutBias = outPutBias.clone();
     }
 
     @Override
     public void trainNetwork(ArrayList<Iris> trainingData, ArrayList<Iris> validationData) {
         dataSize = trainingData.size();
         if(stopConditionFlag) {
-            trainByEpochs(trainingData);
+            trainByEpochs(trainingData, validationData);
         } else {
-            trainByAccuracy(trainingData);
+            trainByAccuracy(trainingData, validationData);
         }
         if(saveFlag) {
             StatisticsCollector.saveErrorFromWholeNetwork("ALL", errorList);
@@ -67,7 +77,7 @@ public class NeuralNetwork implements Serializable, Network {
         }
     }
 
-    private void trainByEpochs(ArrayList<Iris> data) {
+    private void trainByEpochs(ArrayList<Iris> data, ArrayList<Iris> validationData) {
         for (int i = 0; i < epochs; i++) {
             if(typeOfSequence) {
                 Collections.shuffle(data);
@@ -75,17 +85,23 @@ public class NeuralNetwork implements Serializable, Network {
             for (var sample : data) {
                 train(sample, i);
             }
+
             if(i % jumpEpoch == 0) {
                 printProgress(i);
                 if(saveFlag) {
                     saveStatsOnNeuron(i);
                 }
             }
+
+            if(validationFlag) {
+                validateWeight(validationData, i);
+            }
+
             sumFromAllData = 0.0;
         }
     }
 
-    private void trainByAccuracy(ArrayList<Iris> data) {
+    private void trainByAccuracy(ArrayList<Iris> data, ArrayList<Iris> validationData) {
         double prevError;
         int repeat = 0;
         int index = 0;
@@ -112,6 +128,11 @@ public class NeuralNetwork implements Serializable, Network {
                     saveStatsOnNeuron(index);
                 }
             }
+
+            if(validationFlag) {
+                validateWeight(validationData, index);
+            }
+
             sumFromAllData = 0.0;
 
             index++;
@@ -198,6 +219,30 @@ public class NeuralNetwork implements Serializable, Network {
 
     @Override
     public ArrayList<Double> calculate(Iris flower) {
+        if(validationFlag) {
+            return calculateByBestWeight(flower);
+        } else {
+            return calculateByNewWeight(flower);
+        }
+    }
+
+    private ArrayList<Double> calculateByBestWeight(Iris flower) {
+        Layer inPut = Layer.toLayer(flower);
+        Layer hiddenOutPut = Layer.multiply(bestHiddenNeurons,inPut);
+        if(bias) {
+            hiddenOutPut.add(bestHiddenBias);
+        }
+        hiddenOutPut.sigmoid();
+
+        Layer outPut = Layer.multiply(bestOutNeurons,hiddenOutPut);
+        if(bias) {
+            outPut.add(bestOutBias);
+        }
+        outPut.sigmoid();
+        return outPut.toArray();
+    }
+
+    private ArrayList<Double> calculateByNewWeight(Iris flower) {
         Layer inPut = Layer.toLayer(flower);
         Layer hiddenOutPut = Layer.multiply(hiddenNeurons,inPut);
         if(bias) {
@@ -240,10 +285,10 @@ public class NeuralNetwork implements Serializable, Network {
     }
 
     public void saveWeights() {
-        StatisticsCollector.saveWeight("HiddenNeurons", hiddenNeurons.getVector());
-        StatisticsCollector.saveWeight("outPutNeurons", outPutNeurons.getVector());
-        StatisticsCollector.saveWeight("hiddenBias", hiddenBias.getVector());
-        StatisticsCollector.saveWeight("outPutBias", outPutBias.getVector());
+        StatisticsCollector.saveWeight("HiddenNeurons", bestHiddenNeurons.getVector());
+        StatisticsCollector.saveWeight("outPutNeurons", bestOutNeurons.getVector());
+        StatisticsCollector.saveWeight("hiddenBias", bestHiddenBias.getVector());
+        StatisticsCollector.saveWeight("outPutBias", bestOutBias.getVector());
     }
 
     public int getEpochs() {
@@ -303,8 +348,24 @@ public class NeuralNetwork implements Serializable, Network {
 
     private void saveTargetOutPutVectors(int index, Layer target, Layer outOutPut) {
         if(index % showDisplay == 0) {
-            //save
             StatisticsCollector.targetOutputSample(index, target, outOutPut);
+        }
+    }
+
+    private void validateWeight(ArrayList<Iris> validationData, int epoch) {
+        SummaryCalculator first = new SummaryCalculator();
+        SummaryCalculator second = new SummaryCalculator();
+        for (var sample : validationData) {
+            first.summarize(calculateByNewWeight(sample), sample);
+            second.summarize(calculateByBestWeight(sample), sample);
+        }
+
+        if(first.getPositives() > second.getPositives()) {
+            System.out.println("Epoch: " + epoch + " Best Weights update");
+            bestHiddenNeurons = hiddenNeurons.clone();
+            bestOutNeurons = outPutNeurons.clone();
+            bestHiddenBias = hiddenBias.clone();
+            bestOutBias = outPutBias.clone();
         }
     }
 
