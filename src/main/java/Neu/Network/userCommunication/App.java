@@ -104,7 +104,7 @@ public class App {
                     default -> System.out.println("Invalid option.");
                 }
             } catch (Exception ignored) {
-
+                ignored.printStackTrace();
             }
             System.out.println("""
                                     

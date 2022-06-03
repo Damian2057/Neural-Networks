@@ -4,8 +4,8 @@
   "numberOfEpochs": 3000,
   "accuracy": 0.3,
 
-  "learningFactor": 0.3,
-  "biasStatus": false,
+  "learningFactor": 0.03,
+  "biasStatus": true,
   "momentumStatus": false,
   "momentumValue": 0.0,
 

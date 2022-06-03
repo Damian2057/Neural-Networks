@@ -133,6 +133,14 @@ public class Layer implements Serializable, Cloneable {
         return temp;
     }
 
+    public static Layer toLayerList(ArrayList<Double> list) {
+        Layer temp = new Layer(list.size(),1);
+        for (int i = 0; i < list.size(); i++) {
+            temp.getVector()[i][0] = list.get(i);
+        }
+        return temp;
+    }
+
     public static Layer substract(@NotNull Layer a, @NotNull Layer b) {
         Layer temp = new Layer(a.getNumberOfNeurons(), a.getNumberOfInputs());
         for (int i = 0; i < a.getNumberOfNeurons(); i++) {

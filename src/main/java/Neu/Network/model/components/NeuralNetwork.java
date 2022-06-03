@@ -5,7 +5,6 @@ import Neu.Network.charts.Cord;
 import Neu.Network.model.dao.JsonReader;
 import Neu.Network.model.dao.StatisticsCollector;
 import Neu.Network.model.flower.Iris;
-import Neu.Network.summary.SummaryCalculator;
 import java.io.Serializable;
 import java.util.*;
 
@@ -23,6 +22,7 @@ public class NeuralNetwork implements Serializable, Network {
     private Layer hiddenErrors;
     private Layer outputError;
     private double sumFromAllData = 0.0;
+    private double prevSumFromAllData = 0.0;
     private boolean bias;
     private boolean stopConditionFlag;
     private int epochs = 0;
@@ -41,6 +41,8 @@ public class NeuralNetwork implements Serializable, Network {
     private Layer bestOutNeurons;
     private Layer bestHiddenBias;
     private Layer bestOutBias;
+    private int numberOfUpdate = 0;
+    private int numberOfNoChange = 0;
 
     public NeuralNetwork(int numberOfInPuts, int numberOfHiddenNeurons, int numberOfOutPuts, double learningFactor) {
         this.numberOfHiddenNeurons = numberOfHiddenNeurons;
@@ -69,6 +71,12 @@ public class NeuralNetwork implements Serializable, Network {
         } else {
             trainByAccuracy(trainingData, validationData);
         }
+
+        if(validationFlag) {
+            System.out.println("number of updates: " + numberOfUpdate);
+            System.out.println("number of no changes: " + numberOfNoChange);
+        }
+
         if(saveFlag) {
             StatisticsCollector.saveErrorFromWholeNetwork("ALL", errorList);
             ChartGenerator chartGenerator = new ChartGenerator(String.valueOf(numberOfHiddenNeurons) ,errorList);
@@ -117,7 +125,7 @@ public class NeuralNetwork implements Serializable, Network {
                 repeat++;
             }
 
-            if(repeat > 1000 || index > 1000000) {
+            if(repeat > 1000) {
                 System.out.println("Successive iterations do not reduce the error.\n");
                 break;
             }
@@ -163,7 +171,7 @@ public class NeuralNetwork implements Serializable, Network {
         saveTargetOutPutVectors(iterator,target,output);
 
         outputError = Layer.calcError(target, output); //E = 0.5*(t-o)^2
-        calculateTotalError(outputError.getVector());
+        sumFromAllData += calculateTotalError(outputError.getVector());
 
         Layer gradient = output.dsigmoid(); //output * (1-output)
 
@@ -258,7 +266,7 @@ public class NeuralNetwork implements Serializable, Network {
         return outPut.toArray();
     }
 
-    private void calculateTotalError(double[][] outErrors) {
+    private double calculateTotalError(double[][] outErrors) {
         double sum = 0.0;
         for (int i = 0; i < outErrors.length; i++) {
             for (int j = 0; j < outErrors[0].length; j++) {
@@ -266,7 +274,7 @@ public class NeuralNetwork implements Serializable, Network {
             }
         }
 
-        this.sumFromAllData += sum;
+        return sum;
     }
 
     private void saveStatsOnNeuron(int i) {
@@ -353,19 +361,26 @@ public class NeuralNetwork implements Serializable, Network {
     }
 
     private void validateWeight(ArrayList<Iris> validationData, int epoch) {
-        SummaryCalculator first = new SummaryCalculator();
-        SummaryCalculator second = new SummaryCalculator();
+        double scoreFirst = 0.0;
+        double scoreSecond = 0.0;
         for (var sample : validationData) {
-            first.summarize(calculateByNewWeight(sample), sample);
-            second.summarize(calculateByBestWeight(sample), sample);
+            Layer target = Layer.expectedTarget(sample,numberOfOutPuts);
+
+            Layer error1 = Layer.calcError(target,Layer.toLayerList(calculateByNewWeight(sample)));
+            scoreFirst += calculateTotalError(error1.getVector());
+
+            Layer error2 = Layer.calcError(target,Layer.toLayerList(calculateByBestWeight(sample)));
+            scoreSecond += calculateTotalError(error2.getVector());
         }
 
-        if(first.getPositives() > second.getPositives()) {
-            System.out.println("Epoch: " + epoch + " Best Weights update");
+        if(scoreFirst/validationData.size() < scoreSecond/validationData.size()) {
+            numberOfUpdate++;
             bestHiddenNeurons = hiddenNeurons.clone();
             bestOutNeurons = outPutNeurons.clone();
             bestHiddenBias = hiddenBias.clone();
             bestOutBias = outPutBias.clone();
+        } else {
+            numberOfNoChange++;
         }
     }
 
