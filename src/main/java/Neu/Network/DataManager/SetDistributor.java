@@ -23,49 +23,54 @@ public class SetDistributor {
     }
 
     private void initDataSets(int[] table) {
-        ArrayList<Iris> dest = new ArrayList<>();
+        try {
 
-        for (int i = 0; i < 50; i++) {
-            dest.add(allData.get(i));
-        }
-        DataSet firstSpec = new DataSet(dest);
-        dest.clear();
+            ArrayList<Iris> dest = new ArrayList<>();
 
-        for (int i = 50; i < 100; i++) {
-            dest.add(allData.get(i));
-        }
-        DataSet secondSpec = new DataSet(dest);
-        dest.clear();
+            for (int i = 0; i < 50; i++) {
+                dest.add(allData.get(i));
+            }
+            DataSet firstSpec = new DataSet(dest);
+            dest.clear();
 
-        for (int i = 100; i < 150; i++) {
-            dest.add(allData.get(i));
-        }
-        DataSet thirdSpec = new DataSet(dest);
-        dest.clear();
+            for (int i = 50; i < 100; i++) {
+                dest.add(allData.get(i));
+            }
+            DataSet secondSpec = new DataSet(dest);
+            dest.clear();
 
-        for (int i = 0; i < (allData.size()/3.0)*(table[0]*0.01); i++) {
-            trainingData.add(firstSpec.getRandomIris());
-            trainingData.add(secondSpec.getRandomIris());
-            trainingData.add(thirdSpec.getRandomIris());
-        }
+            for (int i = 100; i < 150; i++) {
+                dest.add(allData.get(i));
+            }
+            DataSet thirdSpec = new DataSet(dest);
+            dest.clear();
 
-        for (int i = 0; i < (allData.size()/3.0)*(table[1]*0.01); i++) {
-            validationData.add(firstSpec.getRandomIris());
-            validationData.add(secondSpec.getRandomIris());
-            validationData.add(thirdSpec.getRandomIris());
-        }
+            for (int i = 0; i < (allData.size() / 3.0) * (table[0] * 0.01); i++) {
+                trainingData.add(firstSpec.getRandomIris());
+                trainingData.add(secondSpec.getRandomIris());
+                trainingData.add(thirdSpec.getRandomIris());
+            }
 
-        for (int i = 0; i < (allData.size()/3.0)*(table[2]*0.01); i++) {
-            testData.add(firstSpec.getRandomIris());
-            testData.add(secondSpec.getRandomIris());
-            testData.add(thirdSpec.getRandomIris());
+            for (int i = 0; i < (allData.size() / 3.0) * (table[1] * 0.01); i++) {
+                validationData.add(firstSpec.getRandomIris());
+                validationData.add(secondSpec.getRandomIris());
+                validationData.add(thirdSpec.getRandomIris());
+            }
+
+            for (int i = 0; i < (allData.size() / 3.0) * (table[2] * 0.01); i++) {
+                testData.add(firstSpec.getRandomIris());
+                testData.add(secondSpec.getRandomIris());
+                testData.add(thirdSpec.getRandomIris());
+            }
+            DataOperation.writeData("trainingData", trainingData);
+            DataOperation.writeData("validationData", validationData);
+            DataOperation.writeData("testData", testData);
+        } catch (Exception e) {
+            throw new ArgumentException("cannot split a Set in this way");
         }
-        DataOperation.writeData("trainingData",trainingData);
-        DataOperation.writeData("validationData",validationData);
-        DataOperation.writeData("testData",testData);
     }
 
-    public void setInformation() {
+    public void getInformation() {
         System.out.println("Collected " + trainingData.size() + " portions of data to train.");
         System.out.println("Collected " + validationData.size() + " portions of validation Data.");
         System.out.println("Collected " + testData.size() + " portions of test Data.");

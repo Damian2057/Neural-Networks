@@ -18,7 +18,7 @@ public class App {
         Scanner scanner= new Scanner(System.in);
 
         SetDistributor setDistributor = new SetDistributor(JsonReader.getPercentageSet());
-        setDistributor.setInformation();
+        setDistributor.getInformation();
 
         if(JsonReader.getCreateNewNetworkMode() && JsonReader.getLoadPrevNetworkMode()) {
             throw new ArgumentException("invalid data in the config file");
