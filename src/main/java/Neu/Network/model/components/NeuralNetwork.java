@@ -22,7 +22,6 @@ public class NeuralNetwork implements Serializable, Network {
     private Layer hiddenErrors;
     private Layer outputError;
     private double sumFromAllData = 0.0;
-    private double prevSumFromAllData = 0.0;
     private boolean bias;
     private boolean stopConditionFlag;
     private int epochs = 0;
