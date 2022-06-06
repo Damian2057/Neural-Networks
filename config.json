@@ -4,10 +4,10 @@
   "numberOfEpochs": 6000,
   "accuracy": 0.001,
 
-  "learningFactor": 0.03,
-  "biasStatus": true,
-  "momentumStatus": true,
-  "momentumValue": 0.0,
+  "learningFactor": 0.3,
+  "biasStatus": false,
+  "momentumStatus": false,
+  "momentumValue": 0.9,
 
   "numberOfInPuts": 4,
   "numberOfOutPuts": 3,

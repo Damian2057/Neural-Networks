@@ -22,7 +22,6 @@ public class NeuralNetwork implements Serializable, Network {
     private Layer hiddenErrors;
     private Layer outputError;
     private double sumFromAllData = 0.0;
-    private double sumFromValidData = 0.0;
     private boolean bias;
     private boolean stopConditionFlag;
     private int epochs = 0;
@@ -180,10 +179,6 @@ public class NeuralNetwork implements Serializable, Network {
         outputError = Layer.calcError(target, output); //E = 0.5*(t-o)^2
         sumFromAllData += calculateTotalError(outputError.getVector());
 
-        Layer calc = Layer.toLayerList(calculateByBestWeight(flower));
-        Layer s = Layer.calcError(target,calc);
-        sumFromValidData += calculateTotalError(s.getVector());
-
         Layer gradient = output.dsigmoid(); //output * (1-output)
 
         Layer targetDivOut = Layer.substract(target,output);   //
@@ -289,17 +284,17 @@ public class NeuralNetwork implements Serializable, Network {
     }
 
     private void saveStatsOnNeuron(int i) {
-        errorList.add(new Cord(i, sumFromAllData /dataSize));
+        errorList.add(new Cord(i, sumFromAllData / dataSize));
         sumFromAllData = 0.0;
 
         for (int j = 0; j < hiddenErrors.getVector().length; j++) {
             for (int k = 0; k < hiddenErrors.getVector()[0].length; k++) {
-                StatisticsCollector.saveErrorOnSingleNeuron("hidden", j, i, hiddenErrors.getVector()[j][k]/dataSize);
+                StatisticsCollector.saveErrorOnSingleNeuron("hidden", j, i, hiddenErrors.getVector()[j][k] / dataSize);
             }
         }
         for (int j = 0; j < outputError.getVector().length; j++) {
             for (int k = 0; k < outputError.getVector()[0].length; k++) {
-                StatisticsCollector.saveErrorOnSingleNeuron("output", j, i, outputError.getVector()[j][k]/dataSize);
+                StatisticsCollector.saveErrorOnSingleNeuron("output", j, i, outputError.getVector()[j][k] / dataSize);
             }
         }
     }
@@ -385,7 +380,7 @@ public class NeuralNetwork implements Serializable, Network {
             scoreSecond += calculateTotalError(error2.getVector());
         }
 
-        if(scoreFirst/validationData.size() < scoreSecond/validationData.size()) {
+        if(scoreFirst / validationData.size() < scoreSecond / validationData.size()) {
             numberOfUpdate++;
             bestHiddenNeurons = hiddenNeurons.clone();
             bestOutNeurons = outPutNeurons.clone();
