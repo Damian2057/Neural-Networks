@@ -22,6 +22,7 @@ public class NeuralNetwork implements Serializable, Network {
     private Layer hiddenErrors;
     private Layer outputError;
     private double sumFromAllData = 0.0;
+    private double sumFromValidData = 0.0;
     private boolean bias;
     private boolean stopConditionFlag;
     private int epochs = 0;
@@ -29,6 +30,8 @@ public class NeuralNetwork implements Serializable, Network {
     private double momentumFactor = 0.0;
     private boolean typeOfSequence;
     private final ArrayList<Cord> errorList = new ArrayList<>();
+    private final ArrayList<Cord> validListFirst = new ArrayList<>();
+    private final ArrayList<Cord> validListSecond = new ArrayList<>();
     private final int jumpEpoch;
     private final boolean saveFlag;
     private long progress;
@@ -78,6 +81,11 @@ public class NeuralNetwork implements Serializable, Network {
 
         if(saveFlag) {
             StatisticsCollector.saveErrorFromWholeNetwork("ALL", errorList);
+            if(validationFlag) {
+                ChartGenerator chartGenerator2 = new ChartGenerator(String.valueOf(numberOfHiddenNeurons), validListFirst, validListSecond);
+                chartGenerator2.pack();
+                chartGenerator2.setVisible(true);
+            }
             ChartGenerator chartGenerator = new ChartGenerator(String.valueOf(numberOfHiddenNeurons) ,errorList);
             chartGenerator.pack();
             chartGenerator.setVisible(true);
@@ -171,6 +179,10 @@ public class NeuralNetwork implements Serializable, Network {
 
         outputError = Layer.calcError(target, output); //E = 0.5*(t-o)^2
         sumFromAllData += calculateTotalError(outputError.getVector());
+
+        Layer calc = Layer.toLayerList(calculateByBestWeight(flower));
+        Layer s = Layer.calcError(target,calc);
+        sumFromValidData += calculateTotalError(s.getVector());
 
         Layer gradient = output.dsigmoid(); //output * (1-output)
 
@@ -279,6 +291,7 @@ public class NeuralNetwork implements Serializable, Network {
     private void saveStatsOnNeuron(int i) {
         errorList.add(new Cord(i, sumFromAllData /dataSize));
         sumFromAllData = 0.0;
+
         for (int j = 0; j < hiddenErrors.getVector().length; j++) {
             for (int k = 0; k < hiddenErrors.getVector()[0].length; k++) {
                 StatisticsCollector.saveErrorOnSingleNeuron("hidden", j, i, hiddenErrors.getVector()[j][k]/dataSize);
@@ -381,6 +394,8 @@ public class NeuralNetwork implements Serializable, Network {
         } else {
             numberOfNoChange++;
         }
+        validListFirst.add(new Cord(epoch, scoreSecond / validationData.size()));
+        validListSecond.add(new Cord(epoch, scoreFirst / validationData.size()));
     }
 
     public void showInformation() {
